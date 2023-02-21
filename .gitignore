@@ -1,0 +1,7 @@
+#ignore project work folder
+work/ 
+*.mpf
+*.mti
+*.wlf
+*.vcd
+transcript
