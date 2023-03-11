@@ -4,13 +4,41 @@ module RegMem(
     Reg1Data,
     Reg2Data,
     //Input(s)
-    Reg1Addr, 
-    Reg2Addr, 
-    WriteRegAddr, 
+    ReadReg1, 
+    ReadReg2, 
+    WriteReg, 
     WriteData,
-    RegWrite
+    clk,
+    rst,
+    LBI, 
+    Link, 
+    PC
 );
+    parameter REG_WIDTH = 16;
+    parameter REG_DEPTH = 8;
+    parameter REG_LENGTH = 128; // = 16 * 8
+
+    input wire clk, rst;
+    input wire LBI, Link;
+    input wire[15:0] PC;
     input wire[2:0] Reg1Addr, Reg2Addr, WriteRegAddr, WriteData;
-    input wire RegWrite; 
     output reg[15:0] Reg1Data, Reg2Data;
+
+    //Write Register address logic 
+    wire [2:0] loadImm, LinkReg;
+    assign loadImm = LBI ? ReadReg1 : WriteReg; 
+    assign LinkReg = Link ? 3'h7 : loadImm;
+
+    //Write Register Data logic
+    wire [15:0] data, PcSum2;
+    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn());
+    assign data = Link ? PcSum2, WriteData;
+
+    rf_bypass RegFile(
+                  // Outputs
+                  .read1OutData(Reg1Addr), .read2OutData(Reg2Addr), .err(),
+                  // Inputs
+                  clk(clk), .rst(rst), .read1RegSel(ReadReg1), .read2RegSel(ReadReg2),
+                  .writeRegSel(LinkReg), .writeInData(WriteData), .writeEn(1)
+                  );
 endmodule
