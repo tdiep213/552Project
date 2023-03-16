@@ -30,9 +30,10 @@ module RegMem(
     assign LinkReg = Link ? 3'h7 : loadImm;
 
     //Write Register Data logic
-    wire [15:0] data, PcSum2;
+    wire [15:0] data, PcSum2, ImmSel;
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn());
-    assign data = Link ? PcSum2, WriteData;
+    assign ImmSel = LBI ? Imm : WriteData;
+    assign data = Link ? PcSum2, ;
 
     rf_bypass RegFile(
                   // Outputs
