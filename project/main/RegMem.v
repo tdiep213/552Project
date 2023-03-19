@@ -4,9 +4,9 @@ module RegMem(
     Reg1Data,
     Reg2Data,
     //Input(s)
-    ReadReg1, 
-    ReadReg2, 
-    WriteReg, 
+    ReadReg1, //Rs
+    ReadReg2, //Rt
+    WriteReg, //Rd
     WriteData,
     clk,
     rst,
@@ -21,7 +21,7 @@ module RegMem(
     input wire clk, rst;
     input wire LBI, Link;
     input wire[15:0] PC;
-    input wire[2:0] Reg1Addr, Reg2Addr, WriteRegAddr, WriteData;
+    input wire[2:0] ReadReg1, ReadReg2, WriteRegAddr, WriteData;
     output reg[15:0] Reg1Data, Reg2Data;
 
     //Write Register address logic 
@@ -33,11 +33,11 @@ module RegMem(
     wire [15:0] data, PcSum2, ImmSel;
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn());
     assign ImmSel = LBI ? Imm : WriteData;
-    assign data = Link ? PcSum2, ;
+    assign data = Link ? PcSum2 : ImmSel ;
 
     rf_bypass RegFile(
                   // Outputs
-                  .read1OutData(Reg1Addr), .read2OutData(Reg2Addr), .err(),
+                  .read1OutData(Reg1Data), .read2OutData(Reg2Data), .err(),
                   // Inputs
                   clk(clk), .rst(rst), .read1RegSel(ReadReg1), .read2RegSel(ReadReg2),
                   .writeRegSel(LinkReg), .writeInData(WriteData), .writeEn(1)
