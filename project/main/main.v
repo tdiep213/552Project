@@ -7,8 +7,6 @@ module main();
     wire Iformat, PcSel, MemRead, MemWrite, ALUcntrl, Val2Reg, ImmExt,ImmSel, Halt, LinkReg, RegWrite;
     /* Suggested New/Renamed Signals:                            ^-------^ not sure what these control.
     ALUSel - chooses ALU input B, 
-    I1ExtSel - chooses sign or zero extension for I1-Format Imms, -- I1ExtSel and I2JExtSel would 
-    I2JExtSel - chooses I2-Imm or J-Imm to be sign extended,         take place of Iformat I believe
     WriteDataSel - chooses new PCAddr or OperOutput to write to RegFile,
     WriteRegSel - chooses which register should act as destination.
     Cin - For subtraction operations
@@ -82,7 +80,7 @@ module main();
 //============= ALU ==============//
    
     alu (.Out(aluOut[15:0]), .Ofl(Ofl), .Zero(ZeroFlag), 
-         .InA(Reg1Data), .InB(aluInB), .Cin(Cin), 
+         .InA(Reg1Data[15:0]), .InB(aluInB[15:0]), .Cin(Cin), 
          .Oper(ALUcntrl[somebits]), .invA(ALUcntrl[bit]), .invB(ALUcntrl[bit]), .sign(ALUcntrl[bit]));
          // must determine how ALUcntrl/ALUctrl is split up to control functions.
 //----------- ALU Out ------------//
