@@ -39,11 +39,11 @@ module main();
     wire [15:0] WriteDataIn, OperOutput;
     wire [2:0] WriteRegAddr, R7;
     assign R7 = 3'b111;
-    mux4_1 WriteRegAddrMux [2:0]  (.out(WriteRegAddr[2:0]), .inputA(Instruction[10:8]), .inputB(3'b111), .inputC(Instruction[7:5]), .inputD(Instruction[4:2]), .sel(WriteRegSel[2:0]));
+    mux4_1 WriteRegAddrMux [2:0]  (.out(WriteRegAddr[2:0]), .inputA(Instruction[10:8]), .inputB(R7[2:0]), .inputC(Instruction[7:5]), .inputD(Instruction[4:2]), .sel(WriteRegSel[2:0]));
     mux2_1 WriteDataMux    [15:0] (.out(WriteDataIn[15:0]), .inputA(PCAddr[15:0]), .inputB(OperOutput[15:0]), .sel(WriteDataSel));
 
-    RegMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),.Reg1Addr(Instruction[10:8]),.Reg2Addr(Instruction[7:5]),
-            .WriteRegAddr(WriteRegAddr[2:0]),.WriteData(WriteDataIn[15:0]),.RegWrite(RegWrite));
+    RegMem(.Reg1Data(Reg1Data), .Reg2Data(Reg2Data), .Reg1Addr(Instruction[10:8]), .Reg2Addr(Instruction[7:5]),
+           .WriteRegAddr(WriteRegAddr[2:0]), .WriteData(WriteDataIn[15:0]), .RegWrite(RegWrite));
 
 //--------- RegMem Out -----------//
 
@@ -56,12 +56,14 @@ module main();
 
     wire [15:0] Zext10b_16b, ZSext4b7b_16b, aluInB, JumpExt; 
     wire [10:0] ZSextOut;
+
     assign ZSext4b7b_16b = {ZSextOut[10:0],Instruction[4:0]};
     assign Zext10b_16b = {[0,0,0,0,0], Instruction[10:0]};
+
     mux4_1 ZSext [10:0] (.out(ZSextOut[10:0]), .inputA({11{0}}), .inputB({{8{0}},Instruction[7:5]}), .inputC({11{Instruction[4]}}), .inputD({{8{Instruction[7]}},Instruction[7:5]}), .sel());
 
     mux2_1 IformatMux [15:0] (.out(JumpExt[15:0]), .inputA(ZSext4b7b_16b[15:0]), .inputB(Zext10b_16b[15:0]), .sel(ImmSel));
-    mux2_1 ALUInBMux [15:0] (.out(aluInB[15:0]), .inputA(Reg2Data[15:0]), .inputB(ZSext4b7b_16b[15:0]), .sel(ALUSel));
+    mux2_1 ALUInBMux  [15:0] (.out(aluInB[15:0]), .inputA(Reg2Data[15:0]), .inputB(ZSext4b7b_16b[15:0]), .sel(ALUSel));
 
 //================================//
 
