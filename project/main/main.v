@@ -47,12 +47,21 @@ module main();
 
 //--------- RegMem Out -----------//
 
-    wire [15:0] aluInB, I1ExtMuxOut, I_sExt, I_zExt, I2_sExt, J_sExt, JumpExt;
+    // wire [15:0] aluInB, I1ExtMuxOut, I_sExt, I_zExt, I2_sExt, J_sExt, JumpExt;
 
-    mux2_1 ExtMux_I1 [15:0] (.out(I1ExtMuxOut[15:0]), .inputA(I_sExt[15:0]), inputB(I_zExt[15:0]), .sel(I1ExtSel))  // I1 and I2 ExtSel should match up with Iformat or other sel signals
-    mux2_1 SignExtMux_I2 [15:0] (.out(JumpExt[15:0]), .inputA(I2_sExt[15:0]), inputB(J_sExt[15:0]), .sel(I2JExtSel)) 
+    // mux2_1 ExtMux_I1 [15:0] (.out(I1ExtMuxOut[15:0]), .inputA(I_sExt[15:0]), inputB(I_zExt[15:0]), .sel(I1ExtSel))  // I1 and I2 ExtSel should match up with Iformat or other sel signals
+    // mux2_1 SignExtMux_I2 [15:0] (.out(JumpExt[15:0]), .inputA(I2_sExt[15:0]), inputB(J_sExt[15:0]), .sel(I2JExtSel)) 
+    
+    // mux2_1 ALUInBMux [15:0] (.out(aluInB[15:0]), .inputA(Reg2Data[15:0]), .inputB(I1ExtMuxOut[15:0]), .sel(ALUSel));
 
-    mux2_1 ALUInBMux [15:0] (.out(aluInB[15:0]), .inputA(Reg2Data[15:0]), .inputB(I1ExtMuxOut[15:0]), .sel(ALUSel));
+    wire [15:0] Zext10b_16b, ZSext4b7b_16b, aluInB; 
+    wire [10:0] ZSextOut;
+    assign ZSext4b7b_16b = {ZSextOut[10:0],Instruction[4:0]};
+    assign Zext10bto16b = {[0,0,0,0,0], Instruction[10:0]};
+    mux4_1 ZSext [10:0] (.out(ZSextOut[10:0]), .inputA({11{0}}), .inputB({{8{0}},Instruction[7:5]}), .inputC({11{Instruction[4]}}), .inputD({{8{Instruction[7]}},Instruction[7:5]}), .sel());
+
+    mux2_1 IformatMux [15:0] (.out(), .inputA(ZSext4b7b_16b[15:0]), .inputB(Zext10bto16b[15:0]), .sel(ImmSel));
+    mux2_1 ALUInBMux [15:0] (.out(aluInB[15:0]), .inputA(Reg2Data[15:0]), .inputB(ZSext4b7b_16b[15:0]), .sel(ALUSel));
 
 //================================//
 
