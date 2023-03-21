@@ -37,7 +37,7 @@ module main();
     wire [15:0] WriteDataIn, OperOutput;
     wire [2:0] WriteRegAddr, R7;
     assign R7 = 3'b111;
- 
+
     mux2_1 WriteDataMux    [15:0] (.out(WriteDataIn[15:0]), .inputA(PCAddr[15:0]), .inputB(OperOutput[15:0]), .sel(WriteDataSel));
     assign WriteRegAddr = Imm ? Instruction[7:5] : Instruction[4:2];
 
