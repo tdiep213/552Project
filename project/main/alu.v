@@ -19,56 +19,56 @@ module alu(out, opcode, Ain, Bin);
             end
             3'b001: begin //Jump NOT USED
                 case(opcode[1:0])
-                    2'00: begin //PC+DISP (J)
+                    2'b00: begin //PC+DISP (J)
                      end
-                    2'01: begin //R + Imm (JR)
+                    2'b01: begin //R + Imm (JR)
                     end 
-                    2'10: begin //JAL
+                    2'b10: begin //JAL
                     end
-                    2'11: begin //JALR
+                    2'b11: begin //JALR
                     end
                 endcase
             end
             3'b010: begin //Arithmetic Immediate
                 case(opcode[1:0])
-                    2'00: begin //ADDI
+                    2'b00: begin //ADDI
                         cla16b ImmSum(.sum(out), .cOut(), .inA(Ain), inB.(Bin), .cIn());
                     end
-                    2'01: begin //SUBI
+                    2'b01: begin //SUBI
                         TwosComp sub(.out(inv), .in(Ain));
                         cla16b ImmSub(.sum(out), .cOut(), .inA(Bin), inB.(inv), .cIn());
                     end
-                    2'10: begin //XORI
+                    2'b10: begin //XORI
                         out = Ain^Bin;
                     end
-                    2'11: begin //NANDI
+                    2'b11: begin //NANDI
                         out = ~(Ain&Bin);
                     end
                 endcase
             end
             3'b011: begin //Branch NOT USED
                 case(opcode[1:0])
-                    2'00: begin //BEQZ
+                    2'b00: begin //BEQZ
                     end
-                    2'01: begin //BNEZ
+                    2'b01: begin //BNEZ
                     end
-                    2'10: begin //BLTZ
+                    2'b10: begin //BLTZ
                     end
-                    2'11: begin //BGTZ
+                    2'b11: begin //BGTZ
                     end
                 endcase
             end
             3'b100: begin //Memory Access 
                 case(opcode[1:0])
-                    2'00: begin end
-                    2'01: begin end
-                    2'10: begin end
-                    2'11: begin end
+                    2'b00: begin end
+                    2'b01: begin end
+                    2'b10: begin end
+                    2'b11: begin end
                 endcase
             end
             3'b101: begin //Shift Immediate
                 case(opcode[1:0])
-                    2'00: begin //SLL
+                    2'b00: begin //SLL
                         s0 = Bin[0] ? {Ain[OPERAND_WIDTH - 2 : 0], 1'h0} : Ain;   //Shift 1 
                         s1 = Bin[1] ? {s0[OPERAND_WIDTH - 3 : 0], 2'h0} : s0;     //Shift 2  
                         s2 = Bin[2] ? {s1[OPERAND_WIDTH - 5 : 0], 4'h0} : s1;     //Shift 4  
