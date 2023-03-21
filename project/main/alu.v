@@ -1,17 +1,19 @@
 //Arithmetic module
-module alu(out, opcode, Ain, Bin);
+module alu(out, opcode, funct, Ain, Bin);
     parameter OPERAND_WIDTH = 16;
 
     output wire[15:0] out;
     input wire[15:0] Ain, Bin;
-    input wire[4:0]opcode;
-    input wire[1:0]funct;
+    input wire[4:0]opcode;  // passed from control
+    input wire[1:0]funct;   // passed from main
 
     wire[15:0] inv;
     wire[15:0] s0, s1, s2;
     wire ltcomp;
 
-
+// NOTE! Some of these are control signal operations, 
+// so their implementation will be moved to control.v
+// ALU ops will stay here and control will pass along opcode.
     always @* begin 
         case(opcode[4:2])
             3'b000: begin //NOP

@@ -2,31 +2,31 @@
 module control(
     //Output(s)
     RegWrite,   // Whether or not we Write to RegFile/RegMem
-    Iformat,    // Choose I-format 1 or I-format 2
+    Iformat,    // OBSElETE ? : Choose I-format 1 or I-format 2
     PcSel,      // Choose next instruction, or Jmp/Br Addr
     MemRead,    // Whether or not DataMem can be read
     MemWrite,   // Whether or not DataMem can be written to
     ALUcntrl,   // Controls operations of ALU (Add, sub, addi, subi, rol, etc)
     Val2Reg,    // Choose which value we are sending to RegMem (either ALU out or DataMem out)
-    ImmExt,     // ??
-    ImmSel,     // Choose which extension to perform on which immediate size. AKA zero_ext (2 bits). 00 or default value is zero-ext for all sizes
+    ImmExt,     // AKA ALUSel possibly. Controls whether or not to use Immediate as ALU input.
+    ImmSel,     // Choose which extension to perform on which immediate size. AKA zero_ext (2 bits).
+                // (default/00: Zero-ext any size, 01: 5-bit signed, 10: 8-bit signed, 11: 10-bit signed).
     Halt,       // Stop current and future instructions from executing
     LinkReg,    // Choose which Register to write to in RegMem (2 bits) (Rs, Rd-I, R7, Rd-R)
     //Input(s)
     Instr,      // 5 msb of instruction
-    OpCode      // 2 lsb of instruction
+
 );
     output wire RegWrite, Iformat, PcSel, MemRead, MemWrite, Val2Reg, ImmExt,ImmSel, Halt, LinkReg;
     output wire [1:0] LinkReg;
     output wire[4:0] ALUcntrl;
     input wire[4:0] Instr;
-    input wire[1:0] OpCode;
+
 
     always @* begin
         case(Instr[4:0])
             5'b00000: begin // HALT
                 assign RegWrite = ;
-                assign Iformat = ;
                 assign PcSel = ;
                 assign MemRead = ;
                 assign MemWrite = ;
@@ -36,6 +36,7 @@ module control(
                 assign Halt = ;
                 assign LinkReg[1:0] = ;
                 assign ALUcntrl[4:0] = ;
+
             end
             5'b00001: begin // NOP
                 //;
@@ -48,41 +49,56 @@ module control(
                 //;
             end
 //===================== I Format 1 =======================//
-            5'b01000: begin // ADDI
-                assign RegWrite = 1'b1;
-                assign Iformat = ;
-                assign PcSel = 1'b0;
-                assign MemRead = 1'b0;
-                assign MemWrite = 1'b0;
-                assign Val2Reg = 1'b0;
-                assign ImmExt = //TODO;
-                assign ImmSel = 1;
-                assign Halt = 1'b0;
-                assign LinkReg[1:0] = ;
-                assign ALUcntrl[4:0] = ;
 
-            end
-            5'b01001: begin // SUBI
-                //;
-            end
-            5'b01010: begin // XORI
-                //;
-            end
-            5'b01011: begin // ANDNI
-                //;
-            end
-            5'b10100: begin // ROLI
-                //;
-            end
-            5'b10101: begin // SLLI
-                //;
-            end
-            5'b10110: begin // RORI
-                //;
-            end
-            5'b10111: begin // SRLI
-                //;
-            end
+
+            5'b010??, 5'b101??: begin   // All I-format 1, non-memory instructions
+                assign RegWrite = 1'b1;         // Do write to RegMem
+                assign PcSel = 1'b0;            // Don't branch or jump
+                assign MemRead = 1'b0;          // Don't read from memory
+                assign MemWrite = 1'b0;         // Don't write to memory
+                assign Val2Reg = 1'b0;          // Transmit ALU output 
+                assign ImmExt = 1'b1;           // Use the Immediate value in ALU
+                assign Halt = 1'b0;             // Not halting
+                assign LinkReg[1:0] = 2'b01;    // Rd I-format 1
+                5'b01000: begin // ADDI
+                    assign ImmSel = 1;
+                    assign ALUcntrl[4:0] = //TODO;
+                end
+                5'b01001: begin // SUBI
+                    assign ImmSel = 1;
+                    assign LinkReg[1:0] = //TODO;
+                    assign ALUcntrl[4:0] = //TODO;
+                end
+                5'b01010: begin // XORI
+                    assign ImmSel = 1;
+                    assign LinkReg[1:0] = //TODO;
+                    assign ALUcntrl[4:0] = //TODO;
+                end
+                5'b01011: begin // ANDNI
+                    assign ImmSel = 1;
+                    assign LinkReg[1:0] = //TODO;
+                    assign ALUcntrl[4:0] = //TODO;
+                end
+                5'b10100: begin // ROLI
+                    assign ImmSel = 1;
+                    assign LinkReg[1:0] = //TODO;
+                    assign ALUcntrl[4:0] = //TODO;
+                end
+                5'b10101: begin // SLLI
+                    assign ImmSel = 1;
+                    assign LinkReg[1:0] = //TODO;
+                    assign ALUcntrl[4:0] = //TODO;
+                end
+                5'b10110: begin // RORI
+                    assign ImmSel = 1;
+                    assign LinkReg[1:0] = //TODO;
+                    assign ALUcntrl[4:0] = //TODO;
+                end
+                5'b10111: begin // SRLI
+                    assign ImmSel = 1;
+                    assign LinkReg[1:0] = //TODO;
+                    assign ALUcntrl[4:0] = //TODO;
+                end
             5'b10000: begin // ST
                 //;
             end
