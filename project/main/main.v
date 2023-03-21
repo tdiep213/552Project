@@ -40,7 +40,7 @@ module main();
     assign R7 = 3'b111;
 
     mux2_1 WriteDataMux    [15:0] (.out(WriteDataIn[15:0]), .inputA(PcAddr[15:0]), .inputB(OperOutput[15:0]), .sel(WriteDataSel));
-    assign WriteRegAddr = Imm ? Instruction[7:5] : Instruction[4:2];
+    assign WriteRegAddr = Imm ? Instruction[7:5] : Instruction[4:2]; // Unsure if necessary, see RegMem.
 
     RegMem(.Reg1Data(Reg1Data), .Reg2Data(Reg2Data), .Reg1Addr(Instruction[10:8]), .Reg2Addr(Instruction[7:5]),
            .WriteRegAddr(WriteRegAddr[2:0]), .WriteData(WriteDataIn[15:0]), .RegWrite(RegWrite));
@@ -73,7 +73,7 @@ module main();
 
     control(.RegWrite(RegWrite),.Iformat(Iformat),.PcSel(PcSel),.MemRead(MemRead),.MemWrite(MemWrite),
             .ALUcntrl(ALUcntrl),.Val2Reg(Val2Reg),.ImmSel(ImmSel),.ImmExt(ImmExt),.Halt(Halt),
-            .LinkReg(LinkReg),.Instr(Instruction[15:11]));
+            .LinkReg(LinkReg),.Instr(Instruction[15:11]),.Opcode(Instruction[1:0])));
 
 //================================//
 

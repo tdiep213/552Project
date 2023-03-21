@@ -11,7 +11,7 @@ module RegMem(
     Imm, 
     clk,
     rst,
-    LBI, Link, //Control Signals  
+    LBI, Link, //Control Signals  // clarify or rename plz
     PC
 );
     parameter REG_WIDTH = 16;
@@ -24,7 +24,9 @@ module RegMem(
     input wire[2:0] ReadReg1, ReadReg2, WriteReg, WriteData;
     output reg[15:0] Reg1Data, Reg2Data;
 
-    //Write Register address logic 
+    //Write Register address logic  <-- Currently only 3 inputs/options, need 4 (2 bit sel) b/c two Rd's
+    // (Input, LinkReg[1:0]): (Instr[10:8] (Rs), 00) , (Instr[7:5] (Rd I1-form), 01) , and (R7, 10) , (Instr[4:2] (Rd R-form), 11)
+    // These are the default values I am setting for control, feel free to change
     wire [2:0] loadImm, LinkReg;
     assign loadImm = LBI ? ReadReg1 : WriteReg; 
     assign LinkReg = Link ? 3'h7 : loadImm;
