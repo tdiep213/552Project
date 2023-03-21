@@ -1,16 +1,13 @@
-//program counter, increments by 2, jump/branch logic
+//program counter, increments by 2, Jump/branch logic
 module pc(
     //Outputs
     PcAddr,
     //Inputs
     Imm,
     Rs,
-    jump,
-    reg_jump,
-    halt
-
+    PcSel,RegJmp,Halt //Control Signals
 );
-    input wire jump, reg_jump, halt;
+    input wire PcSel, RegJmp, Halt;
     input wire[15:0] Imm, Rs;
     output wire[15:0] PcAddr;
     
@@ -22,10 +19,10 @@ module pc(
  
     cla16b RsDisp(.sum(AddrRel), .cOut(), .inA(Rs), .inB(Imm), .cIn());
     
-    assign stage1 = jump ? PcImm : Inc2;
-    assign stage2 = reg_jump ? RsImm : stage1;
+    assign stage1 = PcSel ? PcImm : Inc2;
+    assign stage2 = RegJmp ? RsImm : stage1;
 
-    assign PC = halt ? 0 : stage2;
+    assign PC = Halt ? 0 : stage2;
 
     assign PcAddr = PC;
 
