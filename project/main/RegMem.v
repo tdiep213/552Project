@@ -8,10 +8,10 @@ module RegMem(
     ReadReg2, //Rt
     WriteReg, //Rd
     WriteData,
+    Imm, 
     clk,
     rst,
-    LBI, 
-    Link, 
+    LBI, Link, //Control Signals  
     PC
 );
     parameter REG_WIDTH = 16;
@@ -20,8 +20,8 @@ module RegMem(
 
     input wire clk, rst;
     input wire LBI, Link;
-    input wire[15:0] PC;
-    input wire[2:0] ReadReg1, ReadReg2, WriteRegAddr, WriteData;
+    input wire[15:0] PC, Imm;
+    input wire[2:0] ReadReg1, ReadReg2, WriteReg, WriteData;
     output reg[15:0] Reg1Data, Reg2Data;
 
     //Write Register address logic 
@@ -39,7 +39,7 @@ module RegMem(
                   // Outputs
                   .read1OutData(Reg1Data), .read2OutData(Reg2Data), .err(),
                   // Inputs
-                  clk(clk), .rst(rst), .read1RegSel(ReadReg1), .read2RegSel(ReadReg2),
+                  .clk(clk), .rst(rst), .read1RegSel(ReadReg1), .read2RegSel(ReadReg2),
                   .writeRegSel(LinkReg), .writeInData(WriteData), .writeEn(1)
                   );
 endmodule
