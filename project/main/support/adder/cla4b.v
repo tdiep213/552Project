@@ -17,8 +17,12 @@ module cla4b(sum, cOut, inA, inB, cIn);
 
     // YOUR CODE HERE
 	wire[N-1:0] cout4, cin4, g, p, c;
-	and2 U1[N-1:0](g, inA, inB);
-	or2 U2[N-1:0](p, inA, inB);
+	
+    assign g = inA & inB;
+    assign p = inA | inB;
+    //and2 U1[N-1:0](g, inA, inB);
+	//or2 U2[N-1:0](p, inA, inB);
+
 
 /******** ReWrite so it only depends on cin[0] *********/
 	assign cin4[0] = cIn;

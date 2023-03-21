@@ -11,7 +11,7 @@ module control(
     ImmExt,
     ImmSel,
     Halt,
-    LinkReg
+    LinkReg,
     //Input(s)
     Instr
 );

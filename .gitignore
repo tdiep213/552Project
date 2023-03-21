@@ -4,5 +4,10 @@ work/
 *.mti
 *.wlf
 *.vcd
+<<<<<<< HEAD
 *.v.bak
 transcript
+=======
+*.bak
+transcript
+>>>>>>> ec87eadafd173ad03bc62653e27a6d4213502561
