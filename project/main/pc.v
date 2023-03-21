@@ -6,6 +6,7 @@ module pc(
     Imm,
     Rs,
     PcSel,RegJmp,Halt //Control Signals
+    clk, rst
 );
     input wire PcSel, RegJmp, Halt;
     input wire[15:0] Imm, Rs;
@@ -19,13 +20,12 @@ module pc(
  
     cla16b RsDisp(.sum(AddrRel), .cOut(), .inA(Rs), .inB(Imm), .cIn());
     
-    assign stage1 = PcSel ? PcImm : Inc2;
-    assign stage2 = RegJmp ? RsImm : stage1;
+    assign stage1 = PcSel ? PcImm : Inc2;    // PC + 2 + Imm : PC + 2
+    assign stage2 = RegJmp ? RsImm : stage1; // Rs + Imm : ^
 
-    assign PC = Halt ? 0 : stage2;
+    assign PcAddr = Halt ? 0 : stage2;
 
-    assign PcAddr = PC;
-
+    dff_16 PcReg(.q(PC), .err(), .d(PcAddr), .clk(clk), .rst());
 
 
 endmodule
