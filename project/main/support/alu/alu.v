@@ -10,7 +10,9 @@
     (OFL).
 */
 `default_nettype none
-module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
+
+module alu (Out, Ofl, Zero, InA, InB, Cin, Oper, invA, invB, sign);
+
 
     parameter OPERAND_WIDTH = 16;    
     parameter NUM_OPERATIONS = 3;
