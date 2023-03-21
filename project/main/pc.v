@@ -20,8 +20,8 @@ module pc(
  
     cla16b RsDisp(.sum(AddrRel), .cOut(), .inA(Rs), .inB(Imm), .cIn());
     
-    assign stage1 = PcSel ? PcImm : Inc2;
-    assign stage2 = RegJmp ? RsImm : stage1;
+    assign stage1 = PcSel ? PcImm : Inc2;    // PC + 2 + Imm : PC + 2
+    assign stage2 = RegJmp ? RsImm : stage1; // Rs + Imm : ^
 
     assign PcAddr = Halt ? 0 : stage2;
 
