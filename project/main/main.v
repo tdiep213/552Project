@@ -37,8 +37,9 @@ module main();
     wire [15:0] WriteDataIn, OperOutput;
     wire [2:0] WriteRegAddr, R7;
     assign R7 = 3'b111;
-    mux4_1 WriteRegAddrMux [2:0]  (.out(WriteRegAddr[2:0]), .inputA(Instruction[10:8]), .inputB(R7[2:0]), .inputC(Instruction[7:5]), .inputD(Instruction[4:2]), .sel(WriteRegSel[2:0]));
+
     mux2_1 WriteDataMux    [15:0] (.out(WriteDataIn[15:0]), .inputA(PCAddr[15:0]), .inputB(OperOutput[15:0]), .sel(WriteDataSel));
+    assign WriteRegAddr = Imm ? Instruction[7:5] : Instruction[4:2];
 
     RegMem(.Reg1Data(Reg1Data), .Reg2Data(Reg2Data), .Reg1Addr(Instruction[10:8]), .Reg2Addr(Instruction[7:5]),
            .WriteRegAddr(WriteRegAddr[2:0]), .WriteData(WriteDataIn[15:0]), .RegWrite(RegWrite));
