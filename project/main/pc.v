@@ -6,6 +6,7 @@ module pc(
     Imm,
     Rs,
     PcSel,RegJmp,Halt //Control Signals
+    clk, rst
 );
     input wire PcSel, RegJmp, Halt;
     input wire[15:0] Imm, Rs;
@@ -22,10 +23,9 @@ module pc(
     assign stage1 = PcSel ? PcImm : Inc2;
     assign stage2 = RegJmp ? RsImm : stage1;
 
-    assign PC = Halt ? 0 : stage2;
+    assign PcAddr = Halt ? 0 : stage2;
 
-    assign PcAddr = PC;
-
+    dff_16 PcReg(.q(PC), .err(), .d(PcAddr), .clk(clk), .rst());
 
 
 endmodule
