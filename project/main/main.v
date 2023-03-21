@@ -1,19 +1,20 @@
 //Connects various computation and storage blocks
 module main();
-    wire/*TODO*/ ReadAddr, PcAddr;
+    wire/*TODO*/ ReadAddr;
     wire[15:0] Instruction;
     wire/*TODO*/ ReadData;
     wire[15:0] Reg1Data, Reg2Data;
-    wire Iformat, PcSel, MemRead, MemWrite, ALUcntrl, Val2Reg, ImmExt,ImmSel, Halt, LinkReg, RegWrite;
-    /* Suggested New/Renamed Signals:                            ^-------^ not sure what these control.
+    wire Iformat, PcSel, MemRead, MemWrite, ALUcntrl, Val2Reg, Imm, Halt, LinkReg, RegWrite;
+    /* Suggested New/Renamed Signals:                            
     ALUSel - chooses ALU input B, 
     WriteDataSel - chooses new PCAddr or OperOutput to write to RegFile,
     WriteRegSel - chooses which register should act as destination.
     Cin - For subtraction operations
     */
 //============== PC ==============//
-   
-    pc(.PcAddr(PcAddr),.ReadAddr(ReadAddr),.ImmSel(ImmSel),.PcSel(PcSel),.Halt(Halt));
+   wire[15:0] PcAddr;
+
+    pc(.PcAddr(PcAddr),.Imm(Imm),.Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt));
 
 //------------ PC Out ------------//
 
@@ -38,7 +39,7 @@ module main();
     wire [2:0] WriteRegAddr, R7;
     assign R7 = 3'b111;
 
-    mux2_1 WriteDataMux    [15:0] (.out(WriteDataIn[15:0]), .inputA(PCAddr[15:0]), .inputB(OperOutput[15:0]), .sel(WriteDataSel));
+    mux2_1 WriteDataMux    [15:0] (.out(WriteDataIn[15:0]), .inputA(PcAddr[15:0]), .inputB(OperOutput[15:0]), .sel(WriteDataSel));
     assign WriteRegAddr = Imm ? Instruction[7:5] : Instruction[4:2];
 
     RegMem(.Reg1Data(Reg1Data), .Reg2Data(Reg2Data), .Reg1Addr(Instruction[10:8]), .Reg2Addr(Instruction[7:5]),
@@ -79,7 +80,7 @@ module main();
 
 
 //============= ALU ==============//
-   
+   wire[15:0] aluOut;
     alu (.Out(aluOut[15:0]), .Ofl(Ofl), .Zero(ZeroFlag), 
          .InA(Reg1Data[15:0]), .InB(aluInB[15:0]), .Cin(Cin), 
          .Oper(ALUcntrl[somebits]), .invA(ALUcntrl[bit]), .invB(ALUcntrl[bit]), .sign(ALUcntrl[bit]));
