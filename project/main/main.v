@@ -57,7 +57,7 @@ module main();
     wire [10:0] ZSextOut;
 
     assign ZSext4b7b_16b = {ZSextOut[10:0],Instruction[4:0]};
-    assign Zext10b_16b = {[0,0,0,0,0], Instruction[10:0]};
+    assign Zext10b_16b = {{5{0}}, Instruction[10:0]};
 
     mux4_1 ZSext [10:0] (.out(ZSextOut[10:0]), .inputA({11{0}}), .inputB({{8{0}},Instruction[7:5]}), .inputC({11{Instruction[4]}}), .inputD({{8{Instruction[7]}},Instruction[7:5]}), .sel());
 
@@ -94,7 +94,7 @@ module main();
 
     // May need a mux and ctrl signal to choose where MemAddr comes from (ALU vs. Extension)
     // MemDataIn may be just WriteData, also likely the output of a mux coming from ALU and elsewhere (maybe)
-    mem(.ReadData(ReadData),.Addr(MemAddr), WriteData(MemDataIn), .MemWrite(MemWrite), .MemRead(MemRead));
+    mem(.ReadData(ReadData),.Addr(MemAddr), .WriteData(MemDataIn), .MemWrite(MemWrite), .MemRead(MemRead));
 
 //--------- DataMem Out ----------//
 
