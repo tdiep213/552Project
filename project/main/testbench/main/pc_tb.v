@@ -1,13 +1,13 @@
-module pc_tb()
+module pc_tb();
     wire[15:0] PcAddr;
-    wire[15:0] Imm, Rs;
-    wire PcSel, RegJmp, Halt;
-    wire clk, rst;
+    reg[15:0] Imm, Rs;
+    reg PcSel, RegJmp, Halt;
+    reg clk, rst;
 
-    pc iDUT(.PcAddr(PcAddr),.Imm(Imm),Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt), .clk(clk), .rst(rst));
+    pc iDUT(.PcAddr(PcAddr),.Imm(Imm),.Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt), .clk(clk), .rst(rst));
 
-    wire[15:0] chk;
-    initial(@posedge clk) begin
+    reg[15:0] chk;
+    initial begin
         //instantiate dut inputs
         clk = 0;
         Imm = 0;
@@ -23,15 +23,16 @@ module pc_tb()
         rst = 0;
         @(negedge clk);//PC = 0
         //Sets Rs and Imm to random values, PC should keep incrementing as normal
-        Rs = $random;
-        Imm = $random;
+        Rs = 10;
+        Imm = 50;
 
         //checks that pc incremented correctly over several cycles
-        repeat (5) @ (posedge clk);
+        repeat (4) @ (posedge clk);
         if(PcAddr != 10) begin
             $display("Incorrect PC increment");
             $stop();
         end
+        // chk = PcAddr; 
         //Checks that incrementing by an immediate works
         @(negedge clk);
         chk = PcAddr; 
@@ -40,7 +41,7 @@ module pc_tb()
         PcSel = 0;
 
         @(posedge clk);
-        if((chk + Imm) != PcAddr)begin
+        if((chk + Imm +2) != PcAddr)begin
             $display("Incorrect Immediate increment");
             $stop();
         end
@@ -52,10 +53,13 @@ module pc_tb()
         RegJmp = 0;
         
         @(posedge clk); 
-        if((Rs+Imm) != PcAddr) begin
+        if((Rs+Imm + 2 ) != PcAddr) begin
             $display("Incorrect Register jump address");
             $stop();
         end
+
+        $display("YAHOO! All tests passed!");
+        $stop();
     end
 
 
