@@ -17,7 +17,7 @@ module alu(out, opcode, Ain, Bin);
             3'b000: begin //NOP
                 out = 0; 
             end
-            3'b001: begin //Jump
+            3'b001: begin //Jump NOT USED
                 case(opcode[1:0])
                     2'00: begin //PC+DISP (J)
                      end
@@ -46,7 +46,7 @@ module alu(out, opcode, Ain, Bin);
                     end
                 endcase
             end
-            3'b011: begin //Branch
+            3'b011: begin //Branch NOT USED
                 case(opcode[1:0])
                     2'00: begin //BEQZ
                     end
@@ -58,7 +58,7 @@ module alu(out, opcode, Ain, Bin);
                     end
                 endcase
             end
-            3'b100: begin //Memory Access
+            3'b100: begin //Memory Access 
                 case(opcode[1:0])
                     2'00: begin end
                     2'01: begin end
