@@ -4,11 +4,15 @@ module main();
     wire[15:0] Instruction;
     wire/*TODO*/ ReadData;
     wire[15:0] Reg1Data, Reg2Data;
-    wire Iformat, PcSel, MemRead, MemWrite, ALUcntrl, Val2Reg, Imm, Halt, LinkReg, RegWrite;
-    /* Suggested New/Renamed Signals:                            
-    WriteDataSel - chooses new PCAddr or OperOutput to write to RegFile,
-    WriteRegSel - chooses which register should act as destination.
-    */
+//===== control signal wires =====//
+    // definitions in control.v
+    wire PcSel, Pc2Reg, RegWrite, 
+         MemRead, MemWrite, ImmExt, 
+         I2JSel, Halt, Val2Reg;
+    wire [1:0] ImmSel, LinkReg;
+    wire [5:0] ALUcntrl;
+//================================//
+
 //============== PC ==============//
    wire[15:0] PcAddr;
 

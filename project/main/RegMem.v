@@ -37,9 +37,9 @@ module RegMem(
     wire [15:0] data, PcSum2, ImmSel;
     wire zero;
     assign zero = 0;
+    // perhaps replace cla with PcAddr from pc.v module as passed in value since you don't need to recalculate it. 
+    // lmk if notes getting out of hand
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
-    // NOTE! Please clarify which signal you are using for deciding what data is sent to the write register 
-    // We can reference the changes from collab night to simplify I think
     assign ImmSel = LBI ? Imm : WriteData;
     assign data = Link ? PcSum2 : ImmSel ;      
 

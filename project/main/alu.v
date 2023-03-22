@@ -1,7 +1,7 @@
 //Arithmetic module
 module alu(out, opcode, funct, Ain, Bin);
     parameter OPERAND_WIDTH = 16;
-
+    // I think we still need zero flag and sign flag, lmk.
     output reg[15:0] out;
     input wire[15:0] Ain, Bin;
     input wire[4:0]opcode;  // passed from control
@@ -11,7 +11,7 @@ module alu(out, opcode, funct, Ain, Bin);
     reg[15:0] s0, s1, s2;
     wire ltcomp;
     
-    wire zero;      // Is this zero flag? Please set as output, and add a sign flag too please!
+    wire zero;
     assign zero = 0;
 
     /* Arithmetic logic */
