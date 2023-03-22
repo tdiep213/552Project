@@ -2,7 +2,7 @@
 module control(
     //Output(s)
     RegWrite,   // Whether or not we Write to RegFile/RegMem
-    Iformat,    // OBSElETE ? : Choose I-format 1 or I-format 2
+    // Iformat,    // OBSElETE ? : Choose I-format 1 or I-format 2
     PcSel,      // Choose next instruction, or Jmp/Br Addr
     MemRead,    // Whether or not DataMem can be read
     MemWrite,   // Whether or not DataMem can be written to
@@ -50,7 +50,6 @@ module control(
             end
 //===================== I Format 1 =======================//
 
-
             5'b010??, 5'b101??: begin   // All I-format 1, non-memory instructions
                 assign RegWrite = 1'b1;         // Do write to RegMem
                 assign PcSel = 1'b0;            // Don't branch or jump
@@ -60,53 +59,44 @@ module control(
                 assign ImmExt = 1'b1;           // Use the Immediate value in ALU
                 assign Halt = 1'b0;             // Not halting
                 assign LinkReg[1:0] = 2'b01;    // Rd I-format 1
-                5'b01000: begin // ADDI
-                    assign ImmSel = 1;
-                    assign ALUcntrl[4:0] = //TODO;
+                assign ALUcntrl[4:0] = Instr[4:0];
+                case(Instr[1])
+                    1'b0: assign ImmSel[1:0] = 2'b01; // use sign extension (specific to I-format 1!!)   
+                    1'b1: assign ImmSel[1:0] = 2'b00;
+                    default: ImmSel[1:0] = 2'b00;
                 end
-                5'b01001: begin // SUBI
-                    assign ImmSel = 1;
-                    assign LinkReg[1:0] = //TODO;
-                    assign ALUcntrl[4:0] = //TODO;
-                end
-                5'b01010: begin // XORI
-                    assign ImmSel = 1;
-                    assign LinkReg[1:0] = //TODO;
-                    assign ALUcntrl[4:0] = //TODO;
-                end
-                5'b01011: begin // ANDNI
-                    assign ImmSel = 1;
-                    assign LinkReg[1:0] = //TODO;
-                    assign ALUcntrl[4:0] = //TODO;
-                end
-                5'b10100: begin // ROLI
-                    assign ImmSel = 1;
-                    assign LinkReg[1:0] = //TODO;
-                    assign ALUcntrl[4:0] = //TODO;
-                end
-                5'b10101: begin // SLLI
-                    assign ImmSel = 1;
-                    assign LinkReg[1:0] = //TODO;
-                    assign ALUcntrl[4:0] = //TODO;
-                end
-                5'b10110: begin // RORI
-                    assign ImmSel = 1;
-                    assign LinkReg[1:0] = //TODO;
-                    assign ALUcntrl[4:0] = //TODO;
-                end
-                5'b10111: begin // SRLI
-                    assign ImmSel = 1;
-                    assign LinkReg[1:0] = //TODO;
-                    assign ALUcntrl[4:0] = //TODO;
-                end
-            5'b10000: begin // ST
-                //;
-            end
-            5'b10001: begin // LD
-                //;
-            end
-            5'b10011: begin // STU
-                //;
+            5'b1000?: begin 
+                // Common for all I-format 1 Memory Ops
+                assign PcSel = 1'b0;            // Don't branch or jump
+                assign Val2Reg = 1'b1;  // 1'bX // Transmit ALU output
+                assign ImmExt = 1'b1;           // Use the Immediate value in ALU
+                assign Halt = 1'b0;             // Not halting
+                assign LinkReg[1:0] = 2'b01;    // Rd I-format 1
+                assign ALUcntrl[4:0] = 5'b01000;// Act like performing ADDI
+                assign ImmSel[1:0] = 2'b01;
+                case(Instr[0])
+                    1'b0: begin // ST Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd
+                        assign RegWrite = 1'b0;
+                        assign MemWrite = 1'b1;
+                        assign MemRead = 1'b0;
+                    end
+                    1'b1: begin // LD Rd, Rs, immediate Rd <- Mem[Rs + I(sign ext.)]
+                        assign RegWrite = 1'b1;
+                        assign MemWrite = 1'b0;
+                        assign MemRead = 1'b1;
+                    end    
+            5'b10011: begin // STU Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd
+                                                 //  Rs <- Rs + I(sign ext.)
+                assign PcSel = 1'b0;             // Don't branch or jump
+                assign Val2Reg = 1'b0;  // 1'bX // Transmit ALU output
+                assign ImmExt = 1'b1;           // Use the Immediate value in ALU
+                assign Halt = 1'b0;             // Not halting
+                assign LinkReg[1:0] = 2'b01;    // Rd I-format 1
+                assign ALUcntrl[4:0] = 5'b01000;// Act like performing ADDI
+                assign ImmSel[1:0] = 2'b01; 
+                assign RegWrite = 1'b1;
+                assign MemWrite = 1'b1;
+                assign MemRead = 1'b0;
             end
 //========================================================//
 
