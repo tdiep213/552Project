@@ -1,4 +1,4 @@
-module sign_ext_(out, in, zero_ext);
+module sign_ext(out, in, zero_ext);
     output reg[15:0] out;
     input wire[15:0] in;
     input wire[1:0] zero_ext;
