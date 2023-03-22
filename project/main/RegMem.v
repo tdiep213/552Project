@@ -11,7 +11,9 @@ module RegMem(
     Imm, 
     clk,
     rst,
-    LBI, Link, //Control Signals  // clarify or rename plz
+    LBI, Link, //Control Signals  // clarify or rename 
+                //LBI-load byte immediate
+                //Link - Jal/Jalr
     PC
 );
     parameter REG_WIDTH = 16;
