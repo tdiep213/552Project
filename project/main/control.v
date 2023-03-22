@@ -84,7 +84,8 @@ module control(
                         assign RegWrite = 1'b1;
                         assign MemWrite = 1'b0;
                         assign MemRead = 1'b1;
-                    end    
+                    end
+            end   
             5'b10011: begin // STU Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd
                                                  //  Rs <- Rs + I(sign ext.)
                 assign PcSel = 1'b0;             // Don't branch or jump
