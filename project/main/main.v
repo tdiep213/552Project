@@ -47,23 +47,31 @@ module main();
 
 //--------- RegMem Out -----------//
 
-    // wire [15:0] aluInB, I1ExtMuxOut, I_sExt, I_zExt, I2_sExt, J_sExt, JumpExt;
-
-    // mux2_1 ExtMux_I1 [15:0] (.out(I1ExtMuxOut[15:0]), .inputA(I_sExt[15:0]), inputB(I_zExt[15:0]), .sel(I1ExtSel))  // I1 and I2 ExtSel should match up with Iformat or other sel signals
-    // mux2_1 SignExtMux_I2 [15:0] (.out(JumpExt[15:0]), .inputA(I2_sExt[15:0]), inputB(J_sExt[15:0]), .sel(I2JExtSel)) 
+    //  Unoptimized old impl.
+    //mux4_1 ZSext [10:0] (.out(ZSextOut[10:0]), .inputA({11{0}}), .inputB({{8{0}},Instruction[7:5]}), .inputC({11{Instruction[4]}}), .inputD({{8{Instruction[7]}},Instruction[7:5]}), .sel());
+    //
+    //mux2_1 IformatMux [15:0] (.out(JumpExt[15:0]), .inputA(ZSext4b7b_16b[15:0]), .inputB(Zext10b_16b[15:0]), .sel(ImmSel));
     
-    // mux2_1 ALUInBMux [15:0] (.out(aluInB[15:0]), .inputA(Reg2Data[15:0]), .inputB(I1ExtMuxOut[15:0]), .sel(ALUSel));
+//---------- Extender ------------//
+    wire [15:0] extIn, extOut;
+    always @* begin         // Choose # bits to extend
+        case(ImmSel[1])
+            1'b0: assign extIn[15:0] = Instruction[4:0];   // If 5 bit, pass 5 bits
+            1'b1: begin
+                case(JSel)
+                    1'b0: assign extIn[15:0] = Instruction[7:0];   // If 8 bit, pass 8 bit
+                    1'b1: assign extIn[15:0] = Instruction[10:0];  // If 11 bit, pass 11 bit
+                    default: assign extIn[15:0] = {16{0}};
+            end
+            default: assign extIn[15:0] = {16{0}};
+    end
 
-    wire [15:0] Zext10b_16b, ZSext4b7b_16b, aluInB, JumpExt; 
-    wire [10:0] ZSextOut;
+    sign_ext EXTBLOCK (.out(extOut), .in(extIn[15:0]), .zero_ext());
 
-    assign ZSext4b7b_16b = {ZSextOut[10:0],Instruction[4:0]};
-    assign Zext10b_16b = {{5{0}}, Instruction[10:0]};
+//--------------------------------//
 
-    mux4_1 ZSext [10:0] (.out(ZSextOut[10:0]), .inputA({11{0}}), .inputB({{8{0}},Instruction[7:5]}), .inputC({11{Instruction[4]}}), .inputD({{8{Instruction[7]}},Instruction[7:5]}), .sel());
 
-    mux2_1 IformatMux [15:0] (.out(JumpExt[15:0]), .inputA(ZSext4b7b_16b[15:0]), .inputB(Zext10b_16b[15:0]), .sel(ImmSel));
-    mux2_1 ALUInBMux  [15:0] (.out(aluInB[15:0]), .inputA(Reg2Data[15:0]), .inputB(ZSext4b7b_16b[15:0]), .sel(ALUSel));
+    mux2_1 ALUInBMux  [15:0] (.out(aluInB[15:0]), .inputA(Reg2Data[15:0]), .inputB(extOut[15:0]), .sel(ALUSel));
 
 //================================//
 

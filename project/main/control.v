@@ -11,6 +11,7 @@ module control(
     ImmExt,     // AKA ALUSel possibly. Controls whether or not to use Immediate as ALU input.
     ImmSel,     // Choose which extension to perform on which immediate size. AKA zero_ext (2 bits).
                 // (default/00: Zero-ext any size, 01: 5-bit signed, 10: 8-bit signed, 11: 10-bit signed).
+    I2JSel,     // Selects # of bits to pass to extender. (0: 8bits, 1: 11bits). Works in combo with ImmSel[1].
     Halt,       // Stop current and future instructions from executing
     LinkReg,    // Choose which Register to write to in RegMem (2 bits) (Rs, Rd-I, R7, Rd-R)
     //Input(s)
