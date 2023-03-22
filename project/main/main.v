@@ -62,8 +62,10 @@ module main();
                     1'b0: assign extIn[15:0] = Instruction[7:0];   // If 8 bit, pass 8 bit
                     1'b1: assign extIn[15:0] = Instruction[10:0];  // If 11 bit, pass 11 bit
                     default: assign extIn[15:0] = {16{0}};
+                endcase
             end
             default: assign extIn[15:0] = {16{0}};
+        endcase
     end
 
     sign_ext EXTBLOCK (.out(extOut), .in(extIn[15:0]), .zero_ext());
