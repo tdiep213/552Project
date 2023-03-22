@@ -36,8 +36,10 @@ module RegMem(
     wire zero;
     assign zero = 0;
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
+    // NOTE! Please clarify which signal you are using for deciding what data is sent to the write register 
+    // We can reference the changes from collab night to simplify I think
     assign ImmSel = LBI ? Imm : WriteData;
-    assign data = Link ? PcSum2 : ImmSel ;
+    assign data = Link ? PcSum2 : ImmSel ;      
 
     wire[15:0] out1, out2;
     rf_bypass RegFile(.read1OutData(out1), .read2OutData(out2), .err(),

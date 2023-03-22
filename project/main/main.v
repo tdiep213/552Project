@@ -58,7 +58,7 @@ module main();
         case(ImmSel[1])
             1'b0: assign extIn[15:0] = Instruction[4:0];   // If 5 bit, pass 5 bits
             1'b1: begin
-                case(JSel)
+                case(I2JSel)
                     1'b0: assign extIn[15:0] = Instruction[7:0];   // If 8 bit, pass 8 bit
                     1'b1: assign extIn[15:0] = Instruction[10:0];  // If 11 bit, pass 11 bit
                     default: assign extIn[15:0] = {16{0}};

@@ -11,7 +11,7 @@ module alu(out, opcode, funct, Ain, Bin);
     reg[15:0] s0, s1, s2;
     wire ltcomp;
     
-    wire zero;
+    wire zero;      // Is this zero flag? Please set as output, and add a sign flag too please!
     assign zero = 0;
 
     /* Arithmetic logic */
@@ -115,6 +115,7 @@ module alu(out, opcode, funct, Ain, Bin);
                     end
                 endcase
             end
+            // NOTE! Please insert BTR operation :)
             3'b110: begin //Arithmetic/Shift Reg
                 case(opcode[1:0])
                     2'b11: begin // Register Arithmetic

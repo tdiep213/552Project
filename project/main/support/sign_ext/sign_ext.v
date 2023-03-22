@@ -18,7 +18,7 @@ module sign_ext(out, in, zero_ext);
             2'b11: begin //11 bit input
                 out = {{5{in[10]}},in[10:0]};
             end
-            
+            // NOTE! For later optimization, we can drop a control signal if 5 and 8 bit sel share a bit
         endcase
     end
 
