@@ -6,9 +6,9 @@
 */
 `default_nettype none
 //PC + Instruction Memory
-module fetch (Instr, Imm, Rs, RegJmp, Halt, PcSel, clk, rst);
+module fetch (Instr, PcAddr, Imm, Rs, RegJmp, Halt, PcSel, clk, rst);
    // TODO: Your code here
-   output wire[15:0] Instr; 
+   output wire[15:0] Instr, PcAddr; 
    
    input wire[15:0] Imm, Rs;
    input wire RegJmp, Halt, PcSel;
