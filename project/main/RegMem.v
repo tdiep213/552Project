@@ -37,9 +37,11 @@ module RegMem(
     wire [15:0] data, PcSum2, ImmSel;
     wire zero;
     assign zero = 0;
+    // perhaps replace cla with PcAddr from pc.v module as passed in value since you don't need to recalculate it. 
+    // lmk if notes getting out of hand
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
     assign ImmSel = LBI ? Imm : WriteData;
-    assign data = Link ? PcSum2 : ImmSel ;
+    assign data = Link ? PcSum2 : ImmSel ;      
 
     wire[15:0] out1, out2;
     rf_bypass RegFile(.read1OutData(out1), .read2OutData(out2), .err(),

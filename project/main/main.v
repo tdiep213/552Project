@@ -4,13 +4,15 @@ module main();
     wire[15:0] Instruction;
     wire/*TODO*/ ReadData;
     wire[15:0] Reg1Data, Reg2Data;
-    wire Iformat, PcSel, MemRead, MemWrite, ALUcntrl, Val2Reg, Imm, Halt, LinkReg, RegWrite;
-    /* Suggested New/Renamed Signals:                            
-    ALUSel - chooses ALU input B, 
-    WriteDataSel - chooses new PCAddr or OperOutput to write to RegFile,
-    WriteRegSel - chooses which register should act as destination.
-    Cin - For subtraction operations
-    */
+//===== control signal wires =====//
+    // definitions in control.v
+    wire PcSel, Pc2Reg, RegWrite, 
+         MemRead, MemWrite, ImmExt, 
+         I2JSel, Halt, Val2Reg;
+    wire [1:0] ImmSel, LinkReg;
+    wire [5:0] ALUcntrl;
+//================================//
+
 //============== PC ==============//
    wire[15:0] PcAddr;
 
@@ -58,7 +60,7 @@ module main();
         case(ImmSel[1])
             1'b0: assign extIn[15:0] = Instruction[4:0];   // If 5 bit, pass 5 bits
             1'b1: begin
-                case(JSel)
+                case(I2JSel)
                     1'b0: assign extIn[15:0] = Instruction[7:0];   // If 8 bit, pass 8 bit
                     1'b1: assign extIn[15:0] = Instruction[10:0];  // If 11 bit, pass 11 bit
                     default: assign extIn[15:0] = {16{0}};
@@ -68,7 +70,7 @@ module main();
         endcase
     end
 
-    sign_ext EXTBLOCK (.out(extOut), .in(extIn[15:0]), .zero_ext());
+    sign_ext EXTBLOCK (.out(extOut[15:0]), .in(extIn[15:0]), .zero_ext(ImmSel[1:0]));
 
 //--------------------------------//
 
@@ -92,9 +94,9 @@ module main();
 //============= ALU ==============//
    wire[15:0] aluOut;
     alu (.Out(aluOut[15:0]), .Ofl(Ofl), .Zero(ZeroFlag), 
-         .InA(Reg1Data[15:0]), .InB(aluInB[15:0]), .Cin(Cin), 
+         .InA(Reg1Data[15:0]), .InB(aluInB[15:0]), .Cin(Cin), // NOTE! If ALU controls (i.e. subtractions) are contained within alu.v, we can remove Cin from module i/o.
          .Oper(ALUcntrl[somebits]), .invA(ALUcntrl[bit]), .invB(ALUcntrl[bit]), .sign(ALUcntrl[bit]));
-         // must determine how ALUcntrl/ALUctrl is split up to control functions.
+         
 //----------- ALU Out ------------//
 
 //================================//
@@ -103,7 +105,7 @@ module main();
 
 //=========== DataMem ============//
 
-    // May need a mux and ctrl signal to choose where MemAddr comes from (ALU vs. Extension)
+    // May need a mux and ctrl signal to choose where MemAddr comes from (ALU vs. (--Extension--> no direction use))
     // MemDataIn may be just WriteData, also likely the output of a mux coming from ALU and elsewhere (maybe)
     mem(.ReadData(ReadData),.Addr(MemAddr), .WriteData(MemDataIn), .MemWrite(MemWrite), .MemRead(MemRead));
 

@@ -1,7 +1,7 @@
 //Arithmetic module
 module alu(out, opcode, funct, Ain, Bin);
     parameter OPERAND_WIDTH = 16;
-
+    // I think we still need zero flag and sign flag, lmk.
     output reg[15:0] out;
     input wire[15:0] Ain, Bin;
     input wire[4:0]opcode;  // passed from control
@@ -115,6 +115,7 @@ module alu(out, opcode, funct, Ain, Bin);
                     end
                 endcase
             end
+            // NOTE! Please insert BTR operation :)
             3'b110: begin //Arithmetic/Shift Reg
                 case(opcode[1:0])
                     2'b11: begin // Register Arithmetic
