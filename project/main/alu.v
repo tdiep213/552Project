@@ -7,6 +7,11 @@ module alu(out, opcode, funct, Ain, Bin);
     input wire[4:0]opcode;  // passed from control
     input wire[1:0]funct;   // passed from main
 
+    // inverse is done internally
+    // Sign is assumed
+    // There are two operands - opcode and funct, opcode is Instr[15:11] and funct is Instr[1:0]
+    // Ofl and zero aren't used yet?
+
     wire[15:0] inv;
     reg[15:0] s0, s1, s2;
     wire ltcomp;

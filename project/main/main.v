@@ -96,6 +96,12 @@ module main();
     alu (.Out(aluOut[15:0]), .Ofl(Ofl), .Zero(ZeroFlag), 
          .InA(Reg1Data[15:0]), .InB(aluInB[15:0]), .Cin(Cin), // NOTE! If ALU controls (i.e. subtractions) are contained within alu.v, we can remove Cin from module i/o.
          .Oper(ALUcntrl[somebits]), .invA(ALUcntrl[bit]), .invB(ALUcntrl[bit]), .sign(ALUcntrl[bit]));
+
+         // NOTE! Currently ALU is written as alu(out, opcode, funct, Ain, Bin);
+         // inverse(2's comp) is done internally
+         // Sign is assumed
+         // There are two operands - opcode and funct, opcode is Instr[15:11] and funct is Instr[1:0]
+         // Ofl and zero aren't used yet? idk about those
          
 //----------- ALU Out ------------//
 
