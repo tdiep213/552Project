@@ -38,7 +38,9 @@ module proc (/*AUTOARG*/
    wire ALUSel;
    execute (.out(out), .RsVal(Rs), .RtVal(Rt), .Imm(ImmExt), .ALUSel(ALUSel), .opcode(Instr[15:11]), .funct(Instr[1:0]));
 
-   execute
+   wire[2:0] ImmSel;
+   sign_ext(.out(ImmExt), .err(), .in(Instr), .zero_ext(ImmSel));
+
 endmodule // proc
 `default_nettype wire
 // DUMMY LINE FOR REV CONTROL :0:
