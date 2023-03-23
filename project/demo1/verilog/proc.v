@@ -25,6 +25,20 @@ module proc (/*AUTOARG*/
    
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
    
+   wire[15:0] Instr, PC, ImmExt, Rs;
+   wire RegJmp, Halt, PcSel;
+
+   fetch (.Instr(Instr), .PC(PC), .Imm(ImmExt), .Rs(Rs), .RegJmp(RegJmp), .Halt(Halt), .PcSel(PcSel), .clk(clk), .rst(rst));
+
+   wire[15:0] Rt;
+   wire LBI, Link, Iformat; 
+   decode ( .Reg1Data(Rs), .Reg2Data(Rt), .Instr(Instr), .Imm(ImmExt), .PC(PC), .LBI(LBI), .Link(Link), .Iformat(Iformat), .clk(clk), .rst(rst) );
+
+   wire[15:0] out;
+   wire ALUSel;
+   execute (.out(out), .RsVal(Rs), .RtVal(Rt), .Imm(ImmExt), .ALUSel(ALUSel), .opcode(Instr[15:11]), .funct(Instr[1:0]));
+
+   execute
 endmodule // proc
 `default_nettype wire
 // DUMMY LINE FOR REV CONTROL :0:
