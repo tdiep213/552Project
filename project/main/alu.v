@@ -1,8 +1,9 @@
 //Arithmetic module
-module alu(out, opcode, funct, Ain, Bin);
+module alu(out, opcode, funct, Ain, Bin, Ofl, zero);
     parameter OPERAND_WIDTH = 16;
     // I think we still need zero flag and sign flag, lmk.
     output reg[15:0] out;
+    output Ofl, zero;
     input wire[15:0] Ain, Bin;
     input wire[4:0]opcode;  // Instr[15:11]
     input wire[1:0]funct;   // Instr[1:0]
@@ -10,21 +11,18 @@ module alu(out, opcode, funct, Ain, Bin);
     // inverse is done internally
     // Sign is assumed
     // There are two operands - opcode and funct, opcode is Instr[15:11] and funct is Instr[1:0]
-    // Ofl and zero aren't used yet?
+    // Ofl and zero 
 
     wire[15:0] inv;
     reg[15:0] s0, s1, s2;
     wire ltcomp;
-    
-    wire zero;
-    assign zero = 0;
 
     /* Arithmetic logic */
     wire[15:0] sum, diff;
-    cla16b RegSum(.sum(sum), .cOut(), .inA(Ain), .inB(Bin), .cIn(zero));
+    cla16b RegSum(.sum(sum), .cOut(), .inA(Ain), .inB(Bin), .cIn(1'b0));
 
     TwosComp sub(.out(inv), .in(Ain));
-    cla16b RegSub(.sum(diff), .cOut(), .inA(Bin), .inB(inv), .cIn(zero));
+    cla16b RegSub(.sum(diff), .cOut(), .inA(Bin), .inB(inv), .cIn(1'b0));
 
 
     /* Conditional logic */
@@ -34,7 +32,7 @@ module alu(out, opcode, funct, Ain, Bin);
     lt16b le(.out(ltcomp), .Ain(Ain), .Bin(Bin));
     assign sle16 = ltcomp | (&(Ain==Bin));    
 
-    cla16b COSum(.sum(), .cOut(sCoSum), .inA(Ain), .inB(Bin), .cIn(zero));
+    cla16b COSum(.sum(), .cOut(sCoSum), .inA(Ain), .inB(Bin), .cIn(1'b0));
 
 // NOTE! Some of these are control signal operations, 
 // so their implementation will be moved to control.v
