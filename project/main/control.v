@@ -5,8 +5,8 @@ module control(
     Iformat,    // Choose Rd Tru: I-format 1, False: R-format 
     PcSel,      // Choose next instruction, or Jmp/Br Addr
     Pc2Reg,     // True: Write calculated PC value to RegMem, False: Write output of ALU/DataMem to RegMem
-    MemRead,    // Whether or not DataMem can be read
-    MemWrite,   // Whether or not DataMem can be written to
+    MemEnable,  // Whether or not DataMem can be read           //MOTE! Looks like the provided memory module used "enable" and "wr" 
+    MemWr,      // Whether or not DataMem can be written to     // instead of MemEnable/MemWr
     ALUcntrl,   // Controls operations of ALU (Add, sub, addi, subi, rol, etc)
     Val2Reg,    // Choose which value we are sending to RegMem (either ALU out or DataMem out)
     ALUSel,     // AKA ALUSel possibly. Controls whether or not to use Immediate as ALU input.
@@ -17,7 +17,7 @@ module control(
     Instr,      // 5 msb of instruction
 
 );
-    output wire RegWrite, Iformat, PcSel, Pc2Reg, MemRead, MemWrite, Val2Reg, ALUSel, Halt, LinkReg;
+    output wire RegWrite, Iformat, PcSel, Pc2Reg, MemEnable, MemWr, Val2Reg, ALUSel, Halt, LinkReg;
     output wire [1:0] LinkReg; // TODO
     output wire [2:0] ImmSel;
     output wire[4:0] ALUcntrl;
@@ -26,8 +26,8 @@ module control(
 /*  assign RegWrite = ;
     assign PcSel = ;
     assign Pc2Reg = ;
-    assign MemRead = ;
-    assign MemWrite = ;
+    assign MemEnable = ;
+    assign MemWr = ;
     assign Val2Reg = ;
     assign ALUSel = ;
     assign ImmSel[2:0] = ;
@@ -57,8 +57,8 @@ module control(
                 assign RegWrite      = 1'b1;        // Do write to RegMem
                 assign PcSel         = 1'b0;        // Do Not branch or jump
                 assign Pc2Reg        = 1'b0;        // Do Not write PC to RegMem
-                assign MemRead       = 1'b0;        // Do Not read from memory
-                assign MemWrite      = 1'b0;        // Do Not write to memory
+                assign MemEnable     = 1'b0;      // Do Not read from memory
+                assign MemWr         = 1'b0;           // Do Not write to memory
                 assign Val2Reg       = 1'b0;        // Do transmit ALU output 
                 assign ALUSel        = 1'b1;        // Do use the Immediate value in ALU
                 assign Halt          = 1'b0;        // Do Not halt
@@ -83,14 +83,14 @@ module control(
                     1'b0: begin // ST Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd
                         assign Val2Reg = 1'b1;          // Do transmit ALU output
                         assign RegWrite = 1'b0;         // Do Not write to register
-                        assign MemWrite = 1'b1;         // Do write to memory
-                        assign MemRead = 1'b0;          // Do Not read from memory
+                        assign MemWr = 1'b1;            // Do write to memory
+                        assign MemEnable = 1'b0;        // Do Not read from memory
                     end
                     1'b1: begin // LD Rd, Rs, immediate Rd <- Mem[Rs + I(sign ext.)]
                         assign Val2Reg = 1'b0;          // Do Not transmit ALU output
                         assign RegWrite = 1'b1;         // Do write to register
-                        assign MemWrite = 1'b0;         // Do Not write to memory
-                        assign MemRead = 1'b1;          // Do read from memory
+                        assign MemWr = 1'b0;            // Do Not write to memory
+                        assign MemEnable = 1'b1;        // Do read from memory
                     end
             end   
             5'b10011: begin // STU Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd and //  Rs <- Rs + I(sign ext.)
@@ -103,8 +103,8 @@ module control(
                 assign ALUcntrl[4:0] = 5'b01000;// Do act like performing ADDI
                 assign ImmSel[3:0]   = 3'b101;  // Do sign extend 5 bits.
                 assign RegWrite      = 1'b1;    // Do write to register
-                assign MemWrite      = 1'b1;    // Do write to memory
-                assign MemRead       = 1'b0;    // Do Not read from memory
+                assign MemWr         = 1'b1;    // Do write to memory
+                assign MemEnable     = 1'b0;    // Do Not read from memory
             end
 //========================================================//
 
@@ -120,8 +120,8 @@ module control(
                 assign ALUcntrl[4:0] = Instr[4:0];  // Pass Thru?
                 assign ImmSel[3:0]   = 3'b000;      // zero extend 5 bits. // Don't Cares 3'bXXX
                 assign RegWrite      = 1'b1;        // Do write to register
-                assign MemWrite      = 1'b0;        // Do Not write to memory
-                assign MemRead       = 1'b0;        // Do Not read from memory
+                assign MemWr         = 1'b0;        // Do Not write to memory
+                assign MemEnable     = 1'b0;        // Do Not read from memory
             end
 //========================================================//
 
@@ -135,8 +135,8 @@ module control(
                 assign ALUcntrl[4:0] = Instr[4:0];  // Don't Care // Pass Thru?
                 assign ImmSel[2:0]   = 3'b101;      // Do sign extend 8 bits.
                 assign RegWrite      = 1'b0;        // Do Not write to register
-                assign MemWrite      = 1'b0;        // Do Not write to memory
-                assign MemRead       = 1'b0;        // Do Not read
+                assign MemWr         = 1'b0;        // Do Not write to memory
+                assign MemEnable     = 1'b0;        // Do Not read
                 case(Instr[1:0])
                     2'b00: assign PcSel = Zflag;    // BEQZ Rs, immediate if (Rs == 0) then PC <- PC + 2 + I(sign ext.)   
                     2'b01: assign PcSel = ~Zflag;   // BNEZ Rs, immediate if (Rs != 0) then PC <- PC + 2 + I(sign ext.)
@@ -156,8 +156,8 @@ module control(
                 assign Halt          = 1'b0;        // Do Not halt
                 assign LinkReg[1:0]  = 2'b11;       // Sometimes Care // Do use R7 // TODO
                 assign ALUcntrl[4:0] = ADDi;        // Pass ADDI Cpcode
-                assign MemWrite      = 1'b0;        // Do Not write to memory
-                assign MemRead       = 1'b0;        // Do Not read from memory
+                assign MemWr         = 1'b0;        // Do Not write to memory
+                assign MemEnable     = 1'b0;        // Do Not read from memory
                 case(Instr[0])
 //---------------------- J Format ------------------------//
                     1'b0:  begin 
