@@ -10,17 +10,16 @@ module control(
     ALUcntrl,   // Controls operations of ALU (Add, sub, addi, subi, rol, etc)
     Val2Reg,    // Choose which value we are sending to RegMem (either ALU out or DataMem out)
     ALUSel,     // AKA ALUSel possibly. Controls whether or not to use Immediate as ALU input.
-    ImmSel,     // Choose which extension to perform on which immediate size. AKA zero_ext (2 bits). // TODO 2 to 3
-                // (default/00: Zero-ext any size, 01: 5-bit signed, 10: 8-bit signed, 11: 10-bit signed).
-    I2JSel,     // Selects # of bits to pass to extender. (0: 8bits, 1: 11bits). Works in combo with ImmSel[1]. // TODO merge with ImmSel
+    ImmSel,     // Choose which extension to perform on which immediate size. (sign?, ImmSize[1:0]) (00: 5, 01: 8, 10: 11)
     Halt,       // Stop current and future instructions from executing
     LinkReg,    // LinkReg[1] = Link, LinkReg[0] = LBI Choose which Register to write to in RegMem (00: Rd, 01: Rs, 10: R7, 11: XX) // TODO Remap!
     //Input(s)
     Instr,      // 5 msb of instruction
 
 );
-    output wire RegWrite, Iformat, PcSel, Pc2Reg, MemRead, MemWrite, Val2Reg, ALUSel,ImmSel, I2JSel, Halt, LinkReg // TODO;
+    output wire RegWrite, Iformat, PcSel, Pc2Reg, MemRead, MemWrite, Val2Reg, ALUSel, Halt, LinkReg // TODO;
     output wire [1:0] LinkReg; // TODO
+    output wire [2:0] ImmSel;
     output wire[4:0] ALUcntrl;
     input wire[4:0] Instr;
     input wire Zflag, Sflag;
@@ -31,8 +30,7 @@ module control(
     assign MemWrite = ;
     assign Val2Reg = ;
     assign ALUSel = ;
-    assign ImmSel[1:0] = ;
-    assign I2JSel = ;
+    assign ImmSel[2:0] = ;
     assign Halt = ;
     assign LinkReg[1:0] = ; // TODO
     assign ALUcntrl[4:0] = ;
@@ -66,11 +64,10 @@ module control(
                 assign Halt          = 1'b0;        // Do Not halt
                 assign LinkReg[1:0]  = 2'b01;       // Do use Rd I-format 1 // TODO
                 assign ALUcntrl[4:0] = Instr[4:0];  // Do pass opcode to ALU
-                assign I2JSel = 1'b0;               // Do pass 5 bits to sign extender // TODO
                 case(Instr[1])
-                    1'b0: assign ImmSel[1:0] = 2'b01;   // Do use sign extension (specific to I-format 1!!) // TODO
-                    1'b1: assign ImmSel[1:0] = 2'b00;   // Do use zero extension // TODO
-                    default: ImmSel[1:0]     = 2'b00;       // Do default to zero-extension // TODO
+                    1'b0: assign ImmSel[2:0] = 3'b100;   // Do use sign extension (specific to I-format 1!!)
+                    1'b1: assign ImmSel[2:0] = 3'b000;   // Do use zero extension
+                    default: ImmSel[2:0]     = 3'b000;   // Do default to 5 bit zero-extension // TODO
                 end
             5'b1000?: begin 
                 // Common for all I-format 1 Memory Ops
@@ -80,8 +77,7 @@ module control(
                 assign Halt          = 1'b0;        // Do Not
                 assign LinkReg[1:0]  = 2'b01;       // Do use Rd I-format 1 for write reg // TODO
                 assign ALUcntrl[4:0] = 5'b01000;    // Do act like performing ADDI
-                assign ImmSel[1:0]   = 2'b01;       // Do sign extend 5 bits // TODO
-                assign I2JSel        = 1'b0;        // Don't Care // Do pass 5 bits to extender // TODO
+                assign ImmSel[2:0]   = 3'b101;      // Do sign extend 5 bits
                 case(Instr[0])
                     1'b0: begin // ST Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd
                         assign Val2Reg = 1'b1;          // Do transmit ALU output
@@ -104,8 +100,7 @@ module control(
                 assign Halt          = 1'b0;    // Do Not halt
                 assign LinkReg[1:0]  = 2'b01;   // Do Rd I-format 1 // TODO
                 assign ALUcntrl[4:0] = 5'b01000;// Do act like performing ADDI
-                assign ImmSel[1:0]   = 2'b01;   // sign extend 5 bits. // TODO
-                assign I2JSel        = 1'b0;    // Do pass 5 bits to extender. // TODO
+                assign ImmSel[3:0]   = 3'b101;  // Do sign extend 5 bits.
                 assign RegWrite      = 1'b1;    // Do write to register
                 assign MemWrite      = 1'b1;    // Do write to memory
                 assign MemRead       = 1'b0;    // Do Not read from memory
@@ -122,8 +117,7 @@ module control(
                 assign Halt          = 1'b0;        // Do Not halt
                 assign LinkReg[1:0]  = 2'b11;       // Do use Rd R-format // TODO
                 assign ALUcntrl[4:0] = Instr[4:0];  // Pass Thru?
-                assign ImmSel[1:0]   = 2'b00;       // zero extend 5 bits. // Don't Cares 2'bXX // TODO
-                assign I2JSel        = 1'b0;        // Do pass 5 bits to extender. // Don't Care 1'bX // TODO
+                assign ImmSel[3:0]   = 3'b000;      // zero extend 5 bits. // Don't Cares 3'bXXX
                 assign RegWrite      = 1'b1;        // Do write to register
                 assign MemWrite      = 1'b0;        // Do Not write to memory
                 assign MemRead       = 1'b0;        // Do Not read from memory
@@ -138,8 +132,7 @@ module control(
                 assign Halt          = 1'b0;        // Do Not halt
                 assign LinkReg[1:0]  = 2'b00;       // Don't Care // Do use Rs // TODO
                 assign ALUcntrl[4:0] = Instr[4:0];  // Don't Care // Pass Thru?
-                assign ImmSel[1:0]   = 2'b10;       // Do sign extend 8 bits. // TODO
-                assign I2JSel        = 1'b0;        // Do pass 8 bits to extender. // TODO
+                assign ImmSel[2:0]   = 3'b101;      // Do sign extend 8 bits.
                 assign RegWrite      = 1'b0;        // Do Not write to register
                 assign MemWrite      = 1'b0;        // Do Not write to memory
                 assign MemRead       = 1'b0;        // Do Not read
@@ -167,8 +160,7 @@ module control(
                 case(Instr[0])
 //---------------------- J Format ------------------------//
                     1'b0:  begin 
-                        assign ImmSel[1:0]   = 2'b11;       // Do sign extend 11 bits. // TODO
-                        assign I2JSel        = 1'b1;        // Do pass 11 bits to extender. // TODO
+                        assign ImmSel[2:0]   = 3'b110;         // Do sign extend 11 bits.
                         case(Instr[1]) // J-format
                             1'b0: begin // J displacement PC <- PC + 2 + D(sign ext.)
                                 assign Pc2Reg   = 1'b0;        // Do Not write PC to RegMem
@@ -181,8 +173,7 @@ module control(
                     end
 //--------------------------------------------------------//
                     1'b1: begin
-                        assign ImmSel[1:0]   = 2'b10;       // Do sign extend 8 bits. // TODO
-                        assign I2JSel        = 1'b0;        // Do pass 8 bits to extender. // TODO
+                        assign ImmSel[2:0]   = 3'b101;         // Do sign extend 8 bits.
                         case(Instr[1])
                             1'b0: begin // JR Rs, immediate PC <- Rs + I(sign ext.)
                                 assign Pc2Reg   = 1'b0;        // Do Not write PC to RegMem
