@@ -14,7 +14,7 @@ module RegMem(
     LBI, Link, //Control Signals  // clarify or rename 
                 //LBI-load byte immediate
                 //Link - Jal/Jalr
-    PC
+    PcAddr
 );
     parameter REG_WIDTH = 16;
     parameter REG_DEPTH = 8;
@@ -22,7 +22,7 @@ module RegMem(
 
     input wire clk, rst;
     input wire LBI, Link;
-    input wire[15:0] PC, Imm;
+    input wire[15:0] PcAddr, Imm;
     input wire[2:0] ReadReg1, ReadReg2, WriteReg ;
     output wire[15:0] Reg1Data, Reg2Data, WriteData;
 
@@ -38,10 +38,12 @@ module RegMem(
     wire zero;
     assign zero = 0;
     // perhaps replace cla with PcAddr from pc.v module as passed in value since you don't need to recalculate it. 
-    // lmk if notes getting out of hand
-    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
+    // lmk if notes getting out of hand 
+
+    /*Made recomended changes*/
+    // cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
     assign ImmSel = LBI ? Imm : WriteData;
-    assign data = Link ? PcSum2 : ImmSel ;      
+    assign data = Link ? PcAddr : ImmSel ;      
 
     wire[15:0] out1, out2;
     rf_bypass RegFile(.read1OutData(out1), .read2OutData(out2), .err(),
