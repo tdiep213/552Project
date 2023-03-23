@@ -57,8 +57,8 @@ module control(
                 assign RegWrite      = 1'b1;        // Do write to RegMem
                 assign PcSel         = 1'b0;        // Do Not branch or jump
                 assign Pc2Reg        = 1'b0;        // Do Not write PC to RegMem
-                assign MemEnable     = 1'b0;      // Do Not read from memory
-                assign MemWr         = 1'b0;           // Do Not write to memory
+                assign MemEnable     = 1'b0;        // Do Not read from memory
+                assign MemWr         = 1'b0;        // Do Not write to memory
                 assign Val2Reg       = 1'b0;        // Do transmit ALU output 
                 assign ALUSel        = 1'b1;        // Do use the Immediate value in ALU
                 assign Halt          = 1'b0;        // Do Not halt
@@ -84,13 +84,13 @@ module control(
                         assign Val2Reg = 1'b1;          // Do transmit ALU output
                         assign RegWrite = 1'b0;         // Do Not write to register
                         assign MemWr = 1'b1;            // Do write to memory
-                        assign MemEnable = 1'b0;        // Do Not read from memory
+                        assign MemEnable = 1'b1;        // Do enable mem access
                     end
                     1'b1: begin // LD Rd, Rs, immediate Rd <- Mem[Rs + I(sign ext.)]
                         assign Val2Reg = 1'b0;          // Do Not transmit ALU output
                         assign RegWrite = 1'b1;         // Do write to register
                         assign MemWr = 1'b0;            // Do Not write to memory
-                        assign MemEnable = 1'b1;        // Do read from memory
+                        assign MemEnable = 1'b1;        // Do enable mem access
                     end
             end   
             5'b10011: begin // STU Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd and //  Rs <- Rs + I(sign ext.)
@@ -104,7 +104,7 @@ module control(
                 assign ImmSel[3:0]   = 3'b101;  // Do sign extend 5 bits.
                 assign RegWrite      = 1'b1;    // Do write to register
                 assign MemWr         = 1'b1;    // Do write to memory
-                assign MemEnable     = 1'b0;    // Do Not read from memory
+                assign MemEnable     = 1'b1;    // Do enable mem access
             end
 //========================================================//
 
@@ -121,7 +121,7 @@ module control(
                 assign ImmSel[3:0]   = 3'b000;      // zero extend 5 bits. // Don't Cares 3'bXXX
                 assign RegWrite      = 1'b1;        // Do write to register
                 assign MemWr         = 1'b0;        // Do Not write to memory
-                assign MemEnable     = 1'b0;        // Do Not read from memory
+                assign MemEnable     = 1'b0;        // Do Not enable mem access
             end
 //========================================================//
 
@@ -136,7 +136,7 @@ module control(
                 assign ImmSel[2:0]   = 3'b101;      // Do sign extend 8 bits.
                 assign RegWrite      = 1'b0;        // Do Not write to register
                 assign MemWr         = 1'b0;        // Do Not write to memory
-                assign MemEnable     = 1'b0;        // Do Not read
+                assign MemEnable     = 1'b0;        // Do Not enable mem access
                 case(Instr[1:0])
                     2'b00: assign PcSel = Zflag;    // BEQZ Rs, immediate if (Rs == 0) then PC <- PC + 2 + I(sign ext.)   
                     2'b01: assign PcSel = ~Zflag;   // BNEZ Rs, immediate if (Rs != 0) then PC <- PC + 2 + I(sign ext.)
@@ -155,9 +155,8 @@ module control(
                 assign ALUSel        = 1'b1;        // Sometimes Care // Do Not use the Immediate value in ALU
                 assign Halt          = 1'b0;        // Do Not halt
                 assign LinkReg[1:0]  = 2'b11;       // Sometimes Care // Do use R7 // TODO
-                assign ALUcntrl[4:0] = ADDi;        // Pass ADDI Cpcode
+                assign ALUcntrl[4:0] = 5'b01000;    // Pass ADDI Opcode
                 assign MemWr         = 1'b0;        // Do Not write to memory
-                assign MemEnable     = 1'b0;        // Do Not read from memory
                 case(Instr[0])
 //---------------------- J Format ------------------------//
                     1'b0:  begin 
@@ -166,10 +165,12 @@ module control(
                             1'b0: begin // J displacement PC <- PC + 2 + D(sign ext.)
                                 assign Pc2Reg   = 1'b0;        // Do Not write PC to RegMem
                                 assign RegWrite = 1'b0;        // Do Not write to register
+                                assign MemEnable= 1'b0;        // Do Not enable mem acces
                             end
                             1'b1: begin // JAL displacement R7 <- PC + 2 and PC <- PC + 2 + D(sign ext.)
                                 assign Pc2Reg   = 1'b1;        // Do write PC to RegMem
                                 assign RegWrite = 1'b1;        // Do write to register
+                                assign MemEnable= 1'b1;        // Do enable mem access
                             end  
                     end
 //--------------------------------------------------------//
@@ -179,10 +180,12 @@ module control(
                             1'b0: begin // JR Rs, immediate PC <- Rs + I(sign ext.)
                                 assign Pc2Reg   = 1'b0;        // Do Not write PC to RegMem
                                 assign RegWrite = 1'b0;        // Do Not write to register
+                                assign MemEnable= 1'b0;        // Do enable mem access
                             end
                             1'b1: begin // JALR Rs, immediate R7 <- PC + 2 and PC <- Rs + I(sign ext.)
                                 assign Pc2Reg   = 1'b1;        // Do write PC to RegMem
                                 assign RegWrite = 1'b1;        // Do write to register
+                                assign MemEnable= 1'b1;        // Do enable mem access
                             end 
                     end    
             end    
