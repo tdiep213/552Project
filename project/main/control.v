@@ -5,8 +5,8 @@ module control(
     Iformat,     // Choose Rd Tru: I-format 1, False: R-format 
     PcSel,      // Choose next instruction, or Jmp/Br Addr
     Pc2Reg,    // True: Write calculated PC value to RegMem, False: Write output of ALU/DataMem to RegMem
-    MemRead,    // Whether or not DataMem can be read
-    MemWrite,   // Whether or not DataMem can be written to
+    MemRead,    // Whether or not DataMem can be read           //MOTE! Looks like the provided memory module used "enable" and "wr" 
+    MemWrite,   // Whether or not DataMem can be written to     // instead of MemRead/MemWrite
     ALUcntrl,   // Controls operations of ALU (Add, sub, addi, subi, rol, etc)
     Val2Reg,    // Choose which value we are sending to RegMem (either ALU out or DataMem out)
     ALUSel,     // AKA ALUSel possibly. Controls whether or not to use Immediate as ALU input.
