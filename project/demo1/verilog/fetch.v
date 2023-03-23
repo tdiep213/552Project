@@ -6,9 +6,9 @@
 */
 `default_nettype none
 //PC + Instruction Memory
-module fetch (Instr, PcAddr, Imm, Rs, RegJmp, Halt, PcSel, clk, rst);
+module fetch (Instr, PC, Imm, Rs, RegJmp, Halt, PcSel, clk, rst);
    // TODO: Your code here
-   output wire[15:0] Instr, PcAddr; 
+   output wire[15:0] Instr, PcAddr, PC; 
    
    input wire[15:0] Imm, Rs;
    input wire RegJmp, Halt, PcSel;
@@ -19,7 +19,7 @@ module fetch (Instr, PcAddr, Imm, Rs, RegJmp, Halt, PcSel, clk, rst);
    wire[15:0] PcAddr;
    
    
-   pc ProgCnt(.PcAddr(PcAddr), .Imm(Imm),.Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt),.clk(clk), .rst(rst));
+   pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(Imm),.Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt),.clk(clk), .rst(rst));
    memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PcAddr), .enable(1'b1), .wr(1'b0), 
                      .createdump(), .clk(clk), .rst(rst));
 
