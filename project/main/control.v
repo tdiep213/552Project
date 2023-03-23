@@ -2,9 +2,9 @@
 module control(
     //Output(s)
     RegWrite,   // Whether or not we Write to RegFile/RegMem
-    Iformat,     // Choose Rd Tru: I-format 1, False: R-format 
+    Iformat,    // Choose Rd Tru: I-format 1, False: R-format 
     PcSel,      // Choose next instruction, or Jmp/Br Addr
-    Pc2Reg,    // True: Write calculated PC value to RegMem, False: Write output of ALU/DataMem to RegMem
+    Pc2Reg,     // True: Write calculated PC value to RegMem, False: Write output of ALU/DataMem to RegMem
     MemRead,    // Whether or not DataMem can be read
     MemWrite,   // Whether or not DataMem can be written to
     ALUcntrl,   // Controls operations of ALU (Add, sub, addi, subi, rol, etc)
@@ -17,7 +17,7 @@ module control(
     Instr,      // 5 msb of instruction
 
 );
-    output wire RegWrite, Iformat, PcSel, Pc2Reg, MemRead, MemWrite, Val2Reg, ALUSel, Halt, LinkReg // TODO;
+    output wire RegWrite, Iformat, PcSel, Pc2Reg, MemRead, MemWrite, Val2Reg, ALUSel, Halt, LinkReg;
     output wire [1:0] LinkReg; // TODO
     output wire [2:0] ImmSel;
     output wire[4:0] ALUcntrl;
@@ -62,7 +62,8 @@ module control(
                 assign Val2Reg       = 1'b0;        // Do transmit ALU output 
                 assign ALUSel        = 1'b1;        // Do use the Immediate value in ALU
                 assign Halt          = 1'b0;        // Do Not halt
-                assign LinkReg[1:0]  = 2'b01;       // Do use Rd I-format 1 // TODO
+                assign LinkReg[1:0]  = 2'b00;       // Do use Rd
+                assign Iformat       = 1'b1;        // Do use Rd-I
                 assign ALUcntrl[4:0] = Instr[4:0];  // Do pass opcode to ALU
                 case(Instr[1])
                     1'b0: assign ImmSel[2:0] = 3'b100;   // Do use sign extension (specific to I-format 1!!)
