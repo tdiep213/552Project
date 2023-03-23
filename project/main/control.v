@@ -2,7 +2,8 @@
 module control(
     //Output(s)
     RegWrite,   // Whether or not we Write to RegFile/RegMem
-    // Iformat,     // OBSElETE ? : Choose I-format 1 or I-format 2
+     Iformat,     // OBSElETE ? : Choose I-format 1 or I-format 2 
+    //^I'm gonna use this to pick between Instr[4:2] and Instr[7:5] for Rd in decode
     PcSel,      // Choose next instruction, or Jmp/Br Addr
     Pc2Reg,    // True: Write calculated PC value to RegMem, False: Write output of ALU/DataMem to RegMem
     MemRead,    // Whether or not DataMem can be read
