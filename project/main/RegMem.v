@@ -41,10 +41,10 @@ module RegMem(
     wire zero;
     assign zero = 0; 
 
-    /*Made recomended changes*/
-    // cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
+    /*Made recomended changes*/ // I was wrong about this, b/c we only ever write PC + 2 to R7, no other PCAddrs go to registers.
+    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
     assign ImmSel = LBI ? Imm : WriteData;
-    assign data = Link ? PcAddr : ImmSel ;      
+    assign data = Link ? PcSum2 : ImmSel ;      
 
     wire[15:0] out1, out2;
     rf_bypass RegFile(.read1OutData(out1), .read2OutData(out2), .err(),
