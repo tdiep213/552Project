@@ -60,6 +60,7 @@ module control(
                         assign ALUcntrl = 5'b00001; // Do pass on NOP opcode
                     end
                     default: assign ctrlErr = 1'b1;
+                endcase
             end
 //========================================================//
 
@@ -82,7 +83,8 @@ module control(
                     1'b0: assign ImmSel[2:0] = 3'b100;   // Do use sign extension (specific to I-format 1!!)
                     1'b1: assign ImmSel[2:0] = 3'b000;   // Do use zero extension
                     default: assign ctrlErr = 1'b1;
-                end
+                endcase
+            end
             5'b1000?: begin 
                 // Common for all I-format 1 Memory Ops
                 assign PcSel         = 1'b0;        // Do Not add Imm to PC + 2
@@ -108,6 +110,7 @@ module control(
                         assign MemEnable = 1'b1;    // Do enable mem access
                     end
                     default: assign ctrlErr = 1'b1;
+                endcase
             end   
             5'b10011: begin // STU Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd and //  Rs <- Rs + I(sign ext.)
                 assign PcSel         = 1'b0;    // Do Not add Imm to PC + 2
@@ -165,6 +168,7 @@ module control(
                     2'b10: assign PcSel = Sflag;    // BLTZ Rs, immediate if (Rs < 0) then PC <- PC + 2 + I(sign ext.)
                     2'b11: assign PcSel = ~Sflag;   // BGEZ Rs, immediate if (Rs >= 0) then PC <- PC + 2 + I(sign ext.)
                     default: assign ctrlErr = 1'b1;
+                endcase
             end
             5'b11000, 5'b10010: begin // LBI and SLBI
                 assign PcSel         = 1'b0;    // Do Not add Imm to PC + 2
@@ -183,6 +187,7 @@ module control(
                     5'b11000: assign Immsel[2:0] = 3'b101; // Do sign extend 8 bits   // LBI Rs, immediate Rs <- I(sign ext.)
                     5'b10010: assign ImmSel[2:0] = 3'b001;  // Do zero extend 8 bits. // SLBI Rs, immediate Rs <- (Rs << 8) | I(zero ext.)
                     default:  assign ctrlErr = 1'b1;
+                endcase
             end
             5'b001??: begin 
                 assign PcSel         = 1'b1;        // Do add Imm to PC + 2
@@ -210,6 +215,7 @@ module control(
                                 assign MemEnable= 1'b1;        // Do enable mem access
                             end
                             default: assign ctrlErr = 1'b1;  
+                        endcase
                     end
 //--------------------------------------------------------//
                     1'b1: begin
@@ -227,10 +233,13 @@ module control(
                                 assign MemEnable= 1'b1;        // Do enable mem access
                             end
                             default: assign ctrlErr = 1'b1; 
+                        endcase
                     end
-                    default: assign ctrlErr = 1'b1;    
+                    default: assign ctrlErr = 1'b1;   
+                endcase 
             end
-            default: assign ctrlErr = 1'b1;    
+            default: assign ctrlErr = 1'b1;
+        endcase 
 //========================================================//
     end
 
