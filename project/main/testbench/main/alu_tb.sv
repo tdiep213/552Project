@@ -17,7 +17,13 @@ module alu_tb();
     Bin = 3;
 
     @(negedge clk);
+    Ain = 16'h00aa;
+    opcode = 11001;
 
+    @(negedge clk);
+    if(out != 16'h5500)
+        $display("Incorrect bit reversal");
+    $stop();
     
     /*-----------Arithmetic Immediate-----------*/
     opcode = 5'b01000;

@@ -123,6 +123,7 @@ module alu(out, opcode, funct, Ain, Bin);
             // NOTE! Please insert BTR operation :)
             3'b110: begin //Arithmetic/Shift Reg
                 case(opcode[1:0])
+
                     2'b11: begin // Register Arithmetic
                         case(funct)
                             2'b00: begin //ADD
@@ -167,11 +168,12 @@ module alu(out, opcode, funct, Ain, Bin);
                                 out = Bin[3] ? { s2[OPERAND_WIDTH - 7: 0], s2[OPERAND_WIDTH - 1 : 8]} : s2;    //Shift 8
                             end
                         endcase
-                    
-                    2'b01: begin //BTR
-                            out = Ain[0:15];
                     end
-                end
+                    2'b01: begin //BTR
+                            out = {Ain[0],Ain[1],Ain[2],Ain[3],Ain[4],Ain[5],Ain[6],Ain[7],Ain[8],Ain[9],Ain[10],
+                                   Ain[11],Ain[12],Ain[13],Ain[14],Ain[15]};
+                    end
+                    //2'b00 LBI
                 endcase
             end
             3'b111: begin //Conditional
