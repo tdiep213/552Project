@@ -12,12 +12,14 @@ module control(
     ALUSel,     // AKA ALUSel possibly. Controls whether or not to use Immediate as ALU input.
     ImmSel,     // Choose which extension to perform on which immediate size. (sign?, ImmSize[1:0]) (00: 5, 01: 8, 10: 11)
     Halt,       // Stop current and future instructions from executing
-    LinkReg,    // LinkReg[1] = Link, LinkReg[0] = LBI Choose which Register to write to in RegMem (00: Rd, 01: Rs, 10: R7, 11: XX) // TODO Remap!
+    LinkReg,    // (Link, LBI) Choose which Register to write to in RegMem (00: Rd, 01: Rs, 10: R7, 11: XX) // TODO Remap!
+    ctrlErr,    // temporary err flag for phase 1.
     //Input(s)
     Instr,      // 5 msb of instruction
-
+    Zflag, 
+    Sflag
 );
-    output wire RegWrite, Iformat, PcSel, Pc2Reg, MemEnable, MemWr, Val2Reg, ALUSel, Halt, LinkReg;
+    output wire RegWrite, Iformat, PcSel, Pc2Reg, MemEnable, MemWr, Val2Reg, ALUSel, Halt, LinkReg, ctrlErr;
     output wire [1:0] LinkReg; // TODO
     output wire [2:0] ImmSel;
     output wire[4:0] ALUcntrl;
@@ -33,12 +35,12 @@ module control(
     assign ImmSel[2:0] = ;
     assign Iformat = ;
     assign Halt = ;
-    assign LinkReg[1:0] = ; // TODO
+    assign LinkReg[1:0] = ;
     assign ALUcntrl[4:0] = ;
 */
 
     always @* begin
-        case(Instr[4:0])
+        casez(Instr[4:0])
             5'b00000: begin // HALT
                 //;
             end
@@ -69,7 +71,7 @@ module control(
                 case(Instr[1])
                     1'b0: assign ImmSel[2:0] = 3'b100;   // Do use sign extension (specific to I-format 1!!)
                     1'b1: assign ImmSel[2:0] = 3'b000;   // Do use zero extension
-                    default: ImmSel[2:0]     = 3'b000;   // Do default to 5 bit zero-extension // TODO
+                    default: assign ctrlErr = 1'b1;
                 end
             5'b1000?: begin 
                 // Common for all I-format 1 Memory Ops
@@ -80,7 +82,7 @@ module control(
                 assign LinkReg[1:0]  = 2'b00;       // Do use Rd I-format 1 for write reg
                 assign Iformat       = 1'b1;        // Do use Rd-I
                 assign ALUcntrl[4:0] = 5'b01000;    // Do act like performing ADDI
-                assign ImmSel[2:0]   = 3'b101;      // Do sign extend 5 bits
+                assign ImmSel[2:0]   = 3'b100;      // Do sign extend 5 bits
                 case(Instr[0])
                     1'b0: begin // ST Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd
                         assign Val2Reg = 1'b1;          // Do transmit ALU output
@@ -89,22 +91,23 @@ module control(
                         assign MemEnable = 1'b1;        // Do enable mem access
                     end
                     1'b1: begin // LD Rd, Rs, immediate Rd <- Mem[Rs + I(sign ext.)]
-                        assign Val2Reg = 1'b0;          // Do Not transmit ALU output
-                        assign RegWrite = 1'b1;         // Do write to register
-                        assign MemWr = 1'b0;            // Do Not write to memory
-                        assign MemEnable = 1'b1;        // Do enable mem access
+                        assign Val2Reg   = 1'b0;    // Do Not transmit ALU output
+                        assign RegWrite  = 1'b1;    // Do write to register
+                        assign MemWr     = 1'b0;    // Do Not write to memory
+                        assign MemEnable = 1'b1;    // Do enable mem access
                     end
+                    default: assign ctrlErr = 1'b1;
             end   
             5'b10011: begin // STU Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd and //  Rs <- Rs + I(sign ext.)
                 assign PcSel         = 1'b0;    // Do Not branch or jump
-                assign Pc2Reg = 1'b0;           // Do Not write PC to RegMem
+                assign Pc2Reg        = 1'b0;    // Do Not write PC to RegMem
                 assign Val2Reg       = 1'b0;    // Do transmit ALU output // 1'bX 
                 assign ALUSel        = 1'b1;    // Do use the Immediate value in ALU
                 assign Halt          = 1'b0;    // Do Not halt
                 assign LinkReg[1:0]  = 2'b00;   // Do Rd I-format 1
                 assign Iformat       = 1'b1;    // Do use Rd-I
                 assign ALUcntrl[4:0] = 5'b01000;// Do act like performing ADDI
-                assign ImmSel[3:0]   = 3'b101;  // Do sign extend 5 bits.
+                assign ImmSel[2:0]   = 3'b100;  // Do sign extend 5 bits.
                 assign RegWrite      = 1'b1;    // Do write to register
                 assign MemWr         = 1'b1;    // Do write to memory
                 assign MemEnable     = 1'b1;    // Do enable mem access
@@ -122,7 +125,7 @@ module control(
                 assign LinkReg[1:0]  = 2'b00;       // Do use Rd R-format
                 assign Iformat       = 1'b0;        // Do Not use Rd-I
                 assign ALUcntrl[4:0] = Instr[4:0];  // Pass Thru?
-                assign ImmSel[3:0]   = 3'b000;      // zero extend 5 bits. // Don't Cares 3'bXXX
+                assign ImmSel[2:0]   = 3'b000;      // zero extend 5 bits. // Don't Cares 3'bXXX
                 assign RegWrite      = 1'b1;        // Do write to register
                 assign MemWr         = 1'b0;        // Do Not write to memory
                 assign MemEnable     = 1'b0;        // Do Not enable mem access
@@ -147,12 +150,24 @@ module control(
                     2'b01: assign PcSel = ~Zflag;   // BNEZ Rs, immediate if (Rs != 0) then PC <- PC + 2 + I(sign ext.)
                     2'b10: assign PcSel = Sflag;    // BLTZ Rs, immediate if (Rs < 0) then PC <- PC + 2 + I(sign ext.)
                     2'b11: assign PcSel = ~Sflag;   // BGEZ Rs, immediate if (Rs >= 0) then PC <- PC + 2 + I(sign ext.)
+                    default: assign ctrlErr = 1'b1;
             end
-            5'b11000: begin // LBI Rs, immediate Rs <- I(sign ext.)
-                // TODO;
-            end
-            5'b10010: begin // SLBI Rs, immediate Rs <- (Rs << 8) | I(zero ext.)
-                // TODO;
+            5'b11000, 5'b10010: begin // LBI and SLBI
+                assign PcSel         = 1'b0;    // Do Not branch or jump
+                assign Pc2Reg        = 1'b0;    // Do Not write PC to RegMem
+                assign Val2Reg       = 1'b0;    // Do transmit ALU output // 1'bX 
+                assign ALUSel        = 1'b1;    // Do use the Immediate value in ALU
+                assign Halt          = 1'b0;    // Do Not halt
+                assign LinkReg[1:0]  = 2'b01;   // Do use Rs
+                assign Iformat       = 1'b1;    // Don't Care // Do use Rd-I
+                assign ALUcntrl[4:0] = 5'b11000;// Do pass LBI instr to ALU
+                assign RegWrite      = 1'b1;    // Do write to register
+                assign MemWr         = 1'b0;    // Do Not write to memory
+                assign MemEnable     = 1'b0;    // Do Not enable mem access
+                case(Instr[4:0])
+                    5'b11000: assign Immsel[2:0] = 3'b101; // Do sign extend 8 bits   // LBI Rs, immediate Rs <- I(sign ext.)
+                    5'b10010: assign ImmSel[2:0] = 3'b001;  // Do zero extend 8 bits. // SLBI Rs, immediate Rs <- (Rs << 8) | I(zero ext.)
+                    default: assign ctrlErr = 1'b1;
             end
             5'b001??: begin 
                 assign PcSel         = 1'b1;        // Do branch or jump
@@ -177,7 +192,8 @@ module control(
                                 assign Pc2Reg   = 1'b1;        // Do write PC to RegMem
                                 assign RegWrite = 1'b1;        // Do write to register
                                 assign MemEnable= 1'b1;        // Do enable mem access
-                            end  
+                            end
+                            default: assign ctrlErr = 1'b1;  
                     end
 //--------------------------------------------------------//
                     1'b1: begin
@@ -192,9 +208,12 @@ module control(
                                 assign Pc2Reg   = 1'b1;        // Do write PC to RegMem
                                 assign RegWrite = 1'b1;        // Do write to register
                                 assign MemEnable= 1'b1;        // Do enable mem access
-                            end 
-                    end    
-            end    
+                            end
+                            default: assign ctrlErr = 1'b1; 
+                    end
+                    default: assign ctrlErr = 1'b1;    
+            end
+            default: assign ctrlErr = 1'b1;    
 //========================================================//
     end
 
