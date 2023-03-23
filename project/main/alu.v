@@ -4,8 +4,8 @@ module alu(out, opcode, funct, Ain, Bin);
     // I think we still need zero flag and sign flag, lmk.
     output reg[15:0] out;
     input wire[15:0] Ain, Bin;
-    input wire[4:0]opcode;  // passed from control
-    input wire[1:0]funct;   // passed from main
+    input wire[4:0]opcode;  // Instr[15:11]
+    input wire[1:0]funct;   // Instr[1:0]
 
     // inverse is done internally
     // Sign is assumed
@@ -120,7 +120,7 @@ module alu(out, opcode, funct, Ain, Bin);
                     end
                 endcase
             end
-            // NOTE! Please insert BTR operation :)
+
             3'b110: begin //Arithmetic/Shift Reg
                 case(opcode[1:0])
 
