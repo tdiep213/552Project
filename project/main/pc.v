@@ -2,6 +2,7 @@
 module pc(
     //Outputs
     PcAddr,
+    PC,
     //Inputs
     Imm,
     Rs,
@@ -11,7 +12,7 @@ module pc(
     input wire PcSel, RegJmp, Halt;
     input wire clk, rst;
     input wire[15:0] Imm, Rs;
-    output wire[15:0] PcAddr;
+    output wire[15:0] PcAddr, PC;
     
     wire [15:0] Inc2, AddrDisp, stage1, stage2, AddrRel, PcImm, RsImm, PC;
     wire zero;
@@ -27,7 +28,7 @@ module pc(
     assign stage2 = RegJmp ? RsImm : stage1; // Rs + Imm : ^
 
     assign PcAddr = Halt ? 0 : stage2;
-
+    assign PC = Inc2;
     dff_16 PcReg(.q(PC), .err(), .d(PcAddr), .clk(clk), .rst(rst));
 
 
