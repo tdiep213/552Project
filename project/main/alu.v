@@ -167,7 +167,11 @@ module alu(out, opcode, funct, Ain, Bin);
                                 out = Bin[3] ? { s2[OPERAND_WIDTH - 7: 0], s2[OPERAND_WIDTH - 1 : 8]} : s2;    //Shift 8
                             end
                         endcase
+                    
+                    2'b01: begin //BTR
+                            out = Ain[0:15];
                     end
+                end
                 endcase
             end
             3'b111: begin //Conditional
