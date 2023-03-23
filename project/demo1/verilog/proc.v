@@ -30,9 +30,9 @@ module proc (/*AUTOARG*/
 
    fetch (.Instr(Instr), .PC(PC), .Imm(ImmExt), .Rs(Rs), .RegJmp(RegJmp), .Halt(Halt), .PcSel(PcSel), .clk(clk), .rst(rst));
 
-   wire[15:0] Rt;
+   wire[15:0] Rt, Writeback;
    wire LBI, Link, Iformat; 
-   decode ( .Reg1Data(Rs), .Reg2Data(Rt), .Instr(Instr), .Imm(ImmExt), .PC(PC), .LBI(LBI), .Link(Link), .Iformat(Iformat), .clk(clk), .rst(rst) );
+   decode ( .Reg1Data(Rs), .Reg2Data(Rt), .Instr(Instr), .Imm(ImmExt), .Writeback(Writeback) .PC(PC), .LBI(LBI), .Link(Link), .Iformat(Iformat), .clk(clk), .rst(rst) );
 
    wire[15:0] out;
    wire ALUSel;
