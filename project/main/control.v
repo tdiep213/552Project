@@ -31,6 +31,7 @@ module control(
     assign Val2Reg = ;
     assign ALUSel = ;
     assign ImmSel[2:0] = ;
+    assign Iformat = ;
     assign Halt = ;
     assign LinkReg[1:0] = ; // TODO
     assign ALUcntrl[4:0] = ;
@@ -76,7 +77,8 @@ module control(
                 assign Pc2Reg        = 1'b0;        // Do Not write PC to RegMem
                 assign ALUSel        = 1'b1;        // Do use the Immediate value in ALU
                 assign Halt          = 1'b0;        // Do Not
-                assign LinkReg[1:0]  = 2'b01;       // Do use Rd I-format 1 for write reg // TODO
+                assign LinkReg[1:0]  = 2'b00;       // Do use Rd I-format 1 for write reg
+                assign Iformat       = 1'b1;        // Do use Rd-I
                 assign ALUcntrl[4:0] = 5'b01000;    // Do act like performing ADDI
                 assign ImmSel[2:0]   = 3'b101;      // Do sign extend 5 bits
                 case(Instr[0])
@@ -99,7 +101,8 @@ module control(
                 assign Val2Reg       = 1'b0;    // Do transmit ALU output // 1'bX 
                 assign ALUSel        = 1'b1;    // Do use the Immediate value in ALU
                 assign Halt          = 1'b0;    // Do Not halt
-                assign LinkReg[1:0]  = 2'b01;   // Do Rd I-format 1 // TODO
+                assign LinkReg[1:0]  = 2'b00;   // Do Rd I-format 1
+                assign Iformat       = 1'b1;    // Do use Rd-I
                 assign ALUcntrl[4:0] = 5'b01000;// Do act like performing ADDI
                 assign ImmSel[3:0]   = 3'b101;  // Do sign extend 5 bits.
                 assign RegWrite      = 1'b1;    // Do write to register
@@ -116,7 +119,8 @@ module control(
                 assign Val2Reg       = 1'b0;        // Do transmit ALU output // 1'bX 
                 assign ALUSel        = 1'b0;        // Do Not use the Immediate value in ALU
                 assign Halt          = 1'b0;        // Do Not halt
-                assign LinkReg[1:0]  = 2'b11;       // Do use Rd R-format // TODO
+                assign LinkReg[1:0]  = 2'b00;       // Do use Rd R-format
+                assign Iformat       = 1'b0;        // Do Not use Rd-I
                 assign ALUcntrl[4:0] = Instr[4:0];  // Pass Thru?
                 assign ImmSel[3:0]   = 3'b000;      // zero extend 5 bits. // Don't Cares 3'bXXX
                 assign RegWrite      = 1'b1;        // Do write to register
@@ -131,7 +135,8 @@ module control(
                 assign Val2Reg       = 1'b0;        // Don't Care // Do transmit ALU output // 1'bX 
                 assign ALUSel        = 1'b0;        // Don't Care // Do Not use the Immediate value in ALU
                 assign Halt          = 1'b0;        // Do Not halt
-                assign LinkReg[1:0]  = 2'b00;       // Don't Care // Do use Rs // TODO
+                assign LinkReg[1:0]  = 2'b01;       // Don't Care // Do use Rs
+                assign Iformat       = 1'b1;        // Don't Care // Don't Use Rd-I
                 assign ALUcntrl[4:0] = Instr[4:0];  // Don't Care // Pass Thru?
                 assign ImmSel[2:0]   = 3'b101;      // Do sign extend 8 bits.
                 assign RegWrite      = 1'b0;        // Do Not write to register
@@ -154,7 +159,8 @@ module control(
                 assign Val2Reg       = 1'b0;        // Sometimes Care // Do transmit ALU output
                 assign ALUSel        = 1'b1;        // Sometimes Care // Do Not use the Immediate value in ALU
                 assign Halt          = 1'b0;        // Do Not halt
-                assign LinkReg[1:0]  = 2'b11;       // Sometimes Care // Do use R7 // TODO
+                assign LinkReg[1:0]  = 2'b10;       // Sometimes Care // Do use R7 //
+                assign Iformat       = 1'b1;        // Don't Care // Do use Rd-I
                 assign ALUcntrl[4:0] = 5'b01000;    // Pass ADDI Opcode
                 assign MemWr         = 1'b0;        // Do Not write to memory
                 case(Instr[0])
