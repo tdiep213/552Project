@@ -41,19 +41,39 @@ module control(
 
     always @* begin
         casez(Instr[4:0])
-            5'b00000: begin // HALT
-                //;
+//=================== Special Ops B) =====================//
+            5'b000??: begin // These base values do not make permanent changes to the proc state.
+                assign PcSel         = 1'b0;    // Do Not branch or jump
+                assign Pc2Reg        = 1'b0;    // Do Not write PC to RegMem
+                assign Val2Reg       = 1'b0;    // Do transmit ALU output // 1'bX 
+                assign ALUSel        = 1'b1;    // Do use the Immediate value in ALU
+                assign LinkReg[1:0]  = 2'b00;   // Do Rd I-format 1
+                assign Iformat       = 1'b1;    // Do use Rd-I
+                assign ImmSel[2:0]   = 3'b100;  // Do sign extend 5 bits.
+                assign RegWrite      = 1'b0;    // Do write to register
+                assign MemWr         = 1'b0;    // Do write to memory
+                assign MemEnable     = 1'b0;    // Do enable mem access
+                case(Instr[1:0])
+                    2'b00: begin
+                        assign Halt = 1'b1; // Do Halt PC from executing new instructions
+                        assign ALUcntrl = ALUcntrl; // Do pass on Halt opcode
+                    end
+                    2'b01: begin    // NOP
+                        assign Halt = 1'b0; // Do Not Halt PC from executing new instructions
+                        assign ALUcntrl = ALUcntrl; // Do pass on NOP opcode
+                    end
+                    2'b10: begin    // siic // Currently NOP/Okay if it breaks
+                        assign Halt = 1'b1; // Don't Care allowed to break // Do Halt
+                        assign ALUcntrl = ALUcntrl; // Don't Care allowed to break // Do pass along opcode
+                    end
+                    2'b11: begin    // RTI // Currently NOP
+                        assign Halt = 1'b0; // Do Not Halt PC from executing new instructions 
+                        assign ALUcntrl = 5'b00001; // Do pass on NOP opcode
+                    end
+                    default: assign ctrlErr = 1'b1;
             end
-            5'b00001: begin // NOP
-                //;
-            end
-            
-            5'b00010: begin // siic
-                //;
-            end
-            5'b00011: begin // NOP/RTI
-                //;
-            end
+//========================================================//
+
 //===================== I Format 1 =======================//
 
             5'b010??, 5'b101??: begin   // All I-format 1, non-memory instructions
