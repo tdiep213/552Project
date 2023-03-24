@@ -43,6 +43,7 @@ module proc (/*AUTOARG*/
    wire ALUSel;               //EXECUTE
    wire MemEnable, MemWr;     //MEMORY
    wire Val2Reg;              //WRITEBACK
+   wire ctrlErr, ext_err;     //ERRORs
 
    /*-----FETCH-----*/
 
@@ -66,7 +67,7 @@ module proc (/*AUTOARG*/
 
 
    /*-----CONTROL-----*/
-   sign_ext EXT(.out(ImmExt), .err(), .in(Instr), .zero_ext(ImmSel));
+   sign_ext EXT(.out(ImmExt), .err(ext_err), .in(Instr), .zero_ext(ImmSel));
 
     assign sign = ALUout[15];
     assign zero = (ALUTout == 0);
@@ -76,7 +77,9 @@ module proc (/*AUTOARG*/
     .RegWrite(RegWrite), .Iformat(Iformat), .PcSel(PcSel), .RegJmp(RegJmp), .MemEnable(MemEnable), .MemWr(MemWr),
     .ALUcntrl(ALUcntrl), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(Link), .ctrlErr(ctrlErr),   
     //Input(s)
-    .Instr(Instr[15:11]), .Zflag(zero), .Sflag(sign) );
+    .Instr(Instr[15:11]), .Zflag(zero), .Sflag(sign));
+
+    assign err = ctrlErr | ext_err;
 
 endmodule // proc
 `default_nettype wire
