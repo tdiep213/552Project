@@ -9,9 +9,9 @@ module cla16b(sum, cOut, inA, inB, cIn);
     // declare constant for size of inputs, outputs (N)
     parameter   N = 16;
 
-    output wire [N-1:0] sum;
+    output wire [15:0] sum;
     output wire         cOut;
-    input wire [N-1: 0] inA, inB;
+    input wire [15: 0] inA, inB;
     input wire          cIn;
 
 	// YOUR CODE HERE

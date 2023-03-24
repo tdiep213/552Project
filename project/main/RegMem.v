@@ -11,9 +11,9 @@ module RegMem(
     Imm, 
     clk,
     rst,
-    LBI, Link, //Control Signals  // clarify or rename 
-                //LBI-load byte immediate (True: use Rs, False: Else)
-                //Link - Jal/Jalr (True: use R7)
+    LBI, Link, en,   //Control Signals  // clarify or rename 
+                    //LBI-load byte immediate (True: use Rs, False: Else)
+                    //Link - Jal/Jalr (True: use R7)
     PcAddr
 );
     parameter REG_WIDTH = 16;
@@ -21,7 +21,7 @@ module RegMem(
     parameter REG_LENGTH = 128; // = 16 * 8
 
     input wire clk, rst;
-    input wire LBI, Link;
+    input wire LBI, Link, en;
     input wire[15:0] PcAddr, Imm;
     input wire[2:0] ReadReg1, ReadReg2, WriteReg ;
     output wire[15:0] Reg1Data, Reg2Data, WriteData;
@@ -47,7 +47,7 @@ module RegMem(
     assign data = Link ? PcSum2 : ImmSel ;      
 
     wire[15:0] out1, out2;
-    rf_bypass RegFile(.read1OutData(out1), .read2OutData(out2), .err(),
+    rf RegFile(.read1OutData(out1), .read2OutData(out2), .err(),
                   .clk(clk), .rst(rst), .read1RegSel(ReadReg1), .read2RegSel(ReadReg2),
-                  .writeRegSel(LinkReg), .writeInData(data), .writeEn(1'b1));
+                  .writeRegSel(LinkReg), .writeInData(data), .writeEn(en));
 endmodule
