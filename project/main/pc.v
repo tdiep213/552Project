@@ -12,13 +12,14 @@ module pc(
     input wire PcSel, RegJmp, Halt;
     input wire clk, rst;
     input wire[15:0] Imm, Rs;
-    output wire[15:0] PcAddr, PC;
+    output wire[15:0] PcAddr, //Next Instruction 
+                      PC;     //Previous Instruction + 2
     
-    wire [15:0] Inc2, AddrDisp, stage1, stage2, AddrRel, PcImm, RsImm, PC;
+    wire [15:0] Inc2, AddrDisp, stage1, stage2, AddrRel, PcImm, RsImm, PcQ;
     wire zero;
     assign zero = 0;
 
-    cla16b PcInc(.sum(Inc2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
+    cla16b PcInc(.sum(Inc2), .cOut(), .inA(PcQ), .inB(2), .cIn(zero));
     cla16b PImm(.sum(PcImm), .cOut(), .inA(Inc2), .inB(Imm), .cIn(zero));
     cla16b RImm(.sum(RsImm), .cOut(), .inA(Rs), .inB(Imm), .cIn(zero));
  
@@ -29,7 +30,7 @@ module pc(
 
     assign PcAddr = Halt ? 0 : stage2;
     assign PC = Inc2;
-    dff_16 PcReg(.q(PC), .err(), .d(PcAddr), .clk(clk), .rst(rst));
+    dff_16 PcReg(.q(PcQ), .err(), .d(PcAddr), .clk(clk), .rst(rst));
 
 
 endmodule

@@ -7,7 +7,7 @@
 `default_nettype none
 module decode (Reg1Data, Reg2Data, Instr, Imm, Writeback, PC, LBI, Link, Iformat, clk, rst );
    // TODO: Your code here
-   output[15:0] Reg1Data, Reg2Data; 
+   output wire[15:0] Reg1Data, Reg2Data; 
 
    input wire[15:0] Instr, Imm, PC;
    input wire[15:0] Writeback;

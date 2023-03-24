@@ -24,7 +24,7 @@ module memory (data_out, data_in, addr, enable, wr, createdump, clk, rst);
    ------------------------------------------
 */
    wire[15:0] mem_out;
-   assign data_out = (~enable | Wr) ? 16'h0000 : mem_out;
+   assign data_out = (~enable | wr) ? 16'h0000 : mem_out;
 
    memory2c DATA_MEM ( .data_out   (mem_out), 
                        .data_in    (data_in), 

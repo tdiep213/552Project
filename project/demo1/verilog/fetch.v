@@ -8,13 +8,12 @@
 //PC + Instruction Memory
 module fetch (Instr, PC, Imm, Rs, RegJmp, Halt, PcSel, clk, rst);
    // TODO: Your code here
-   output wire[15:0] Instr, PcAddr, PC; 
+   output wire[15:0] Instr, PC; 
    
    input wire[15:0] Imm, Rs;
    input wire RegJmp, Halt, PcSel;
    
    input wire clk, rst;
-   
 
    wire[15:0] PcAddr;
    

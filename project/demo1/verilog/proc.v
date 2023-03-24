@@ -48,7 +48,8 @@ module proc (/*AUTOARG*/
 
    /*-----DECODE-----*/
 
-   decode D( .Reg1Data(Rs), .Reg2Data(Rt), .Instr(Instr), .Imm(ImmExt), .Writeback(Writeback) .PC(PC), .LBI(LBI), .Link(Link), .Iformat(Iformat), .clk(clk), .rst(rst) );
+   decode D( .Reg1Data(Rs), .Reg2Data(Rt), .Instr(Instr), .Imm(ImmExt), .Writeback(Writeback),
+             .PC(PC), .LBI(LBI), .Link(Link), .Iformat(Iformat), .clk(clk), .rst(rst) );
 
    /*-----EXECUTE-----*/
 
@@ -68,9 +69,9 @@ module proc (/*AUTOARG*/
    control CNTRL(
     //Output(s)
     .RegWrite(), .Iformat(Iformat), .PcSel(PcSel), .RegJmp(RegJmp), .Pc2Reg(), .MemEnable(MemEnable), .MemWr(MemWr),
-    .ALUcntrl(), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(Link), .ctrlErr(),.   
+    .ALUcntrl(), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(Link), .ctrlErr(),   
     //Input(s)
-    .Instr(Instr[15:11]), Zflag(), Sflag()); 
+    .Instr(Instr[15:11]), .Zflag(), .Sflag() );
 
 endmodule // proc
 `default_nettype wire
