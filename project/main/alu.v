@@ -1,9 +1,8 @@
 //Arithmetic module
-module alu(out, opcode, funct, Ain, Bin, Ofl, zero);
+module alu(out, Ofl, opcode, funct, Ain, Bin);
     parameter OPERAND_WIDTH = 16;
-    // I think we still need zero flag and sign flag, lmk.
     output reg[15:0] out;
-    output Ofl, zero;
+    output wire Ofl;
     input wire[15:0] Ain, Bin;
     input wire[4:0]opcode;  // Instr[15:11]
     input wire[1:0]funct;   // Instr[1:0]
@@ -11,7 +10,7 @@ module alu(out, opcode, funct, Ain, Bin, Ofl, zero);
     // inverse is done internally
     // Sign is assumed
     // There are two operands - opcode and funct, opcode is Instr[15:11] and funct is Instr[1:0]
-    // Ofl and zero 
+    // Ofl for post-Phase 1, maybe
 
     wire[15:0] inv;
     reg[15:0] s0, s1, s2;

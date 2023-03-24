@@ -14,7 +14,7 @@ module execute (out, RsVal, RtVal, Imm, ALUSel, opcode, funct);
    input wire[1:0] funct;
 
    wire [15:0]RdVal;
-   assign RdVal = ALUSel ? Imm : RtVal;
+   assign RdVal = ALUSel ? Imm : RtVal;   // Select Bin
 
    alu ArithLogUnit(.out(out), .opcode(opcode), .funct(funct), .Ain(RsVal), .Bin(RdVal));
    
