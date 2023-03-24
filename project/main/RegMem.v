@@ -14,7 +14,7 @@ module RegMem(
     LBI, Link, en,   //Control Signals  // clarify or rename 
                     //LBI-load byte immediate (True: use Rs, False: Else)
                     //Link - Jal/Jalr (True: use R7)
-    PcAddr
+    PC
 );
     parameter REG_WIDTH = 16;
     parameter REG_DEPTH = 8;
@@ -41,10 +41,13 @@ module RegMem(
     wire zero;
     assign zero = 0; 
 
-    /*Made recomended changes*/ // I was wrong about this, b/c we only ever write PC + 2 to R7, no other PCAddrs go to registers.
-    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
+    // PC_1 -> Jump Instr: set Rs to PC_1 + 2 (next instr), set PC_addr to PC_1 + 2 + Imm, currently we output PC_1+2
+    // PC_2 +2 -> ...
+    // So, we can cut out cla16b again (sorry) and just use PC in place of PcSum2, unless cylce shenanigans occur.
+    
+    // cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));   
     assign ImmSel = LBI ? Imm : WriteData;
-    assign data = Link ? PcSum2 : ImmSel ;      
+    assign data = Link ? PC : ImmSel ;      
 
     wire[15:0] out1, out2;
     rf RegFile(.read1OutData(out1), .read2OutData(out2), .err(),

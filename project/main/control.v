@@ -5,7 +5,6 @@ module control(
     Iformat,    // Choose Rd Tru: I-format 1, False: R-format 
     PcSel,      // Choose False: PC incr, or True: PC incr + Imm
     RegJmp,     // Choose False: above, or True: Rs + sign_ext(Imm)
-    Pc2Reg,     // True: Write calculated PC value to RegMem, False: Write output of ALU/DataMem to RegMem
     MemEnable,  // Whether or not DataMem can be read           //MOTE! Looks like the provided memory module used "enable" and "wr" 
     MemWr,      // Whether or not DataMem can be written to     // instead of MemEnable/MemWr
     ALUcntrl,   // Controls operations of ALU (Add, sub, addi, subi, rol, etc)
@@ -20,7 +19,7 @@ module control(
     Zflag, 
     Sflag
 );
-    output reg RegWrite, Iformat, PcSel, RegJmp, Pc2Reg, MemEnable, MemWr, Val2Reg, ALUSel, Halt, ctrlErr;
+    output reg RegWrite, Iformat, PcSel, RegJmp, MemEnable, MemWr, Val2Reg, ALUSel, Halt, ctrlErr;
     output reg [1:0] LinkReg; // TODO
     output reg [2:0] ImmSel;
     output reg[4:0] ALUcntrl;
@@ -33,7 +32,6 @@ module control(
             5'b000??: begin // These base values do not make permanent changes to the proc state.
                   PcSel         = 1'b0;    // Do Not add Imm to PC + 2
                   RegJmp        = 1'b0;    // Do Not Jmp from Rs
-                  Pc2Reg        = 1'b0;    // Do Not write PC to RegMem
                   Val2Reg       = 1'b0;    // Do transmit ALU output // 1'bX 
                   ALUSel        = 1'b1;    // Do use the Immediate value in ALU
                   LinkReg[1:0]  = 2'b00;   // Do Rd I-format 1
@@ -70,7 +68,6 @@ module control(
                 RegWrite      = 1'b1;        // Do write to RegMem
                 PcSel         = 1'b0;        // Do Not add Imm to PC + 2
                 RegJmp        = 1'b0;        // Do Not Jmp from Rs
-                Pc2Reg        = 1'b0;        // Do Not write PC to RegMem
                 MemEnable     = 1'b0;        // Do Not read from memory
                 MemWr         = 1'b0;        // Do Not write to memory
                 Val2Reg       = 1'b0;        // Do transmit ALU output 
@@ -89,7 +86,6 @@ module control(
                 // Common for all I-format 1 Memory Ops
                 PcSel         = 1'b0;        // Do Not add Imm to PC + 2
                 RegJmp        = 1'b0;        // Do Not Jmp from Rs
-                Pc2Reg        = 1'b0;        // Do Not write PC to RegMem
                 ALUSel        = 1'b1;        // Do use the Immediate value in ALU
                 Halt          = 1'b0;        // Do Not
                 LinkReg[1:0]  = 2'b00;       // Do use Rd I-format 1 for write reg
@@ -115,7 +111,6 @@ module control(
             5'b10011: begin // STU Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd and //  Rs <- Rs + I(sign ext.)
                 PcSel         = 1'b0;    // Do Not add Imm to PC + 2
                 RegJmp        = 1'b0;    // Do Not Jmp from Rs
-                Pc2Reg        = 1'b0;    // Do Not write PC to RegMem
                 Val2Reg       = 1'b0;    // Do transmit ALU output // 1'bX 
                 ALUSel        = 1'b1;    // Do use the Immediate value in ALU
                 Halt          = 1'b0;    // Do Not halt
@@ -134,7 +129,6 @@ module control(
             5'b11001, 5'b1101?, 5'b111??: begin     // Excludes 5'b11000 (LBI)
                 PcSel         = 1'b0;        // Do Not add Imm to PC + 2
                 RegJmp        = 1'b0;        // Do Not Jmp from Rs
-                Pc2Reg        = 1'b0;        // Do Not write PC to RegMem
                 Val2Reg       = 1'b0;        // Do transmit ALU output // 1'bX 
                 ALUSel        = 1'b0;        // Do Not use the Immediate value in ALU
                 Halt          = 1'b0;        // Do Not halt
@@ -151,7 +145,6 @@ module control(
 //===================== I Format 2 =======================//
             5'b011??: begin
                 RegJmp        = 1'b0;        // Do Not Jmp from Rs
-                Pc2Reg        = 1'b0;        // Don't write PC to RegMem
                 Val2Reg       = 1'b0;        // Don't Care // Do transmit ALU output // 1'bX 
                 ALUSel        = 1'b0;        // Don't Care // Do Not use the Immediate value in ALU
                 Halt          = 1'b0;        // Do Not halt
@@ -173,7 +166,6 @@ module control(
             5'b11000, 5'b10010: begin // LBI and SLBI
                 PcSel         = 1'b0;    // Do Not add Imm to PC + 2
                 RegJmp        = 1'b0;    // Do Not Jmp from Rs
-                Pc2Reg        = 1'b0;    // Do Not write PC to RegMem
                 Val2Reg       = 1'b0;    // Do transmit ALU output // 1'bX 
                 ALUSel        = 1'b1;    // Do use the Immediate value in ALU
                 Halt          = 1'b0;    // Do Not halt
@@ -184,7 +176,7 @@ module control(
                 MemWr         = 1'b0;    // Do Not write to memory
                 MemEnable     = 1'b0;    // Do Not enable mem access
                 case(Instr[4:0])
-                    5'b11000: ImmSel[2:0] = 3'b101; // Do sign extend 8 bits   // LBI Rs, immediate Rs <- I(sign ext.)
+                    5'b11000: ImmSel[2:0] = 3'b101;  // Do sign extend 8 bits   // LBI Rs, immediate Rs <- I(sign ext.)
                     5'b10010: ImmSel[2:0] = 3'b001;  // Do zero extend 8 bits. // SLBI Rs, immediate Rs <- (Rs << 8) | I(zero ext.)
                     default: ctrlErr = 1'b1;
                 endcase
@@ -205,12 +197,10 @@ module control(
                         ImmSel[2:0]   = 3'b110;         // Do sign extend 11 bits.
                         case(Instr[1]) // J-format
                             1'b0: begin // J displacement PC <- PC + 2 + D(sign ext.)
-                                Pc2Reg   = 1'b0;        // Do Not write PC + 2 to RegMem
                                 RegWrite = 1'b0;        // Do Not write to register
                                 MemEnable= 1'b0;        // Do Not enable mem acces
                             end
                             1'b1: begin // JAL displacement R7 <- PC + 2 and PC <- PC + 2 + D(sign ext.)
-                                Pc2Reg   = 1'b1;        // Do write PC + 2 to RegMem
                                 RegWrite = 1'b1;        // Do write to register
                                 MemEnable= 1'b1;        // Do enable mem access
                             end
@@ -223,12 +213,10 @@ module control(
                         ImmSel[2:0]   = 3'b101;         // Do sign extend 8 bits.
                         case(Instr[1])
                             1'b0: begin // JR Rs, immediate PC <- Rs + I(sign ext.)
-                                Pc2Reg   = 1'b0;        // Do Not write PC + 2 to RegMem
                                 RegWrite = 1'b0;        // Do Not write to register
                                 MemEnable= 1'b0;        // Do enable mem access
                             end
                             1'b1: begin // JALR Rs, immediate R7 <- PC + 2 and PC <- Rs + I(sign ext.)
-                                Pc2Reg   = 1'b1;        // Do write PC + 2 to RegMem
                                 RegWrite = 1'b1;        // Do write to register
                                 MemEnable= 1'b1;        // Do enable mem access
                             end
