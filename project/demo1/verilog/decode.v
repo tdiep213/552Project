@@ -19,7 +19,7 @@ module decode (Reg1Data, Reg2Data, Instr, Imm, Writeback, PC, LBI, Link, Iformat
   
    assign Rs = Instr[10:8];
    assign Rt = Instr[7:5];
-   assign Rd = Iformat ? Instr[7:5] : Instr[4:2]; // Unsure if necessary, see RegMem.
+   assign Rd = Iformat ? Instr[7:5] : Instr[4:2];
 
 
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
