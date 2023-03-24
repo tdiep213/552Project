@@ -55,7 +55,7 @@ module proc (/*AUTOARG*/
 
    /*-----EXECUTE-----*/
 
-   execute X(.out(ALUout), .Ofl(alu_ofl), .zero(alu_zero), .sign(alu_sign), .RsVal(Rs), .RtVal(Rt), .Imm(ImmExt), .ALUSel(ALUSel), .opcode(Instr[15:11]), .funct(Instr[1:0]));
+   execute X(.out(ALUout), .Ofl(alu_ofl), .zero(alu_zero), .sign(alu_sign), .RsVal(Rs), .RtVal(Rt), .Imm(ImmExt), .ALUSel(ALUSel), .opcode(ALUcntrl), .funct(Instr[1:0]));
 
    /*-----MEMORY-----*/
    
@@ -71,7 +71,7 @@ module proc (/*AUTOARG*/
    control CNTRL(
     //Output(s)
     .RegWrite(RegWrite), .Iformat(Iformat), .PcSel(PcSel), .RegJmp(RegJmp), .MemEnable(MemEnable), .MemWr(MemWr),
-    .ALUcntrl(), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(Link), .ctrlErr(ctrlErr),   
+    .ALUcntrl(ALUcntrl), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(Link), .ctrlErr(ctrlErr),   
     //Input(s)
     .Instr(Instr[15:11]), .Zflag(alu_zero), .Sflag(alu_sign) );
 
