@@ -27,7 +27,7 @@ module control(
     input wire Zflag, Sflag;
 
     always @* begin
-        casez(Instr[4:0])
+        casex(Instr[4:0])
 //=================== Special Ops B) =====================//
             5'b000??: begin // These base values do not make permanent changes to the proc state.
                   PcSel         = 1'b0;    // Do Not add Imm to PC + 2
