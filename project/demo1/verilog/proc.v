@@ -24,27 +24,53 @@ module proc (/*AUTOARG*/
    
    
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
+
+
+   wire[2:0] ImmSel;
    
    wire[15:0] Instr, PC, ImmExt, Rs;
-   wire RegJmp, Halt, PcSel;
+   wire[15:0] Rt, Writeback;
+
+   wire[15:0] ALUout;
+   wire[15:0] MEMout;
+
+   //Control signals
+   
+   wire RegJmp, Halt, PcSel;  //FETCH
+   wire LBI, Link, Iformat;   //DECODE
+   wire ALUSel;               //EXECUTE
+   wire MemEnable, MemWr;     //MEMORY
+   wire Val2Reg;              //WRITEBACK
+
+   /*-----FETCH-----*/
 
    fetch F(.Instr(Instr), .PC(PC), .Imm(ImmExt), .Rs(Rs), .RegJmp(RegJmp), .Halt(Halt), .PcSel(PcSel), .clk(clk), .rst(rst));
 
-   wire[15:0] Rt, Writeback;
-   wire LBI, Link, Iformat; 
+   /*-----DECODE-----*/
+
    decode D( .Reg1Data(Rs), .Reg2Data(Rt), .Instr(Instr), .Imm(ImmExt), .Writeback(Writeback) .PC(PC), .LBI(LBI), .Link(Link), .Iformat(Iformat), .clk(clk), .rst(rst) );
 
-   wire[15:0] ALUout;
-   wire ALUSel;
+   /*-----EXECUTE-----*/
+
    execute X(.out(ALUout), .RsVal(Rs), .RtVal(Rt), .Imm(ImmExt), .ALUSel(ALUSel), .opcode(Instr[15:11]), .funct(Instr[1:0]));
 
-   wire[2:0] ImmSel;
+   /*-----MEMORY-----*/
+   
+   memory M (.data_out(MEMout), .data_in(Rt), .addr(ALUout), .enable(MemEnable), .wr(MemWr), .createdump(), .clk(clk), .rst(rst));
+
+   /*-----WRITEBACK-----*/
+   wb W(.Writeback(Writeback), .ALUout(ALUout), .MEMout(MEMout), .Val2Reg(Val2Reg));
+
+
+   /*-----CONTROL-----*/
    sign_ext EXT(.out(ImmExt), .err(), .in(Instr), .zero_ext(ImmSel));
 
-   wire[15:0] MEMout;
-   memory M (.data_out(MEMout), .data_in(Rt), .addr(ALUout), .enable(), .wr(), .createdump(), .clk(clk), .rst(rst));
-
-   wb W(.Writeback(Writeback), .ALUout(ALUout), .MEMout(MEMout), .Val2Reg(Val2Reg));
+   control CNTRL(
+    //Output(s)
+    .RegWrite(), .Iformat(Iformat), .PcSel(PcSel), .RegJmp(RegJmp), .Pc2Reg(), .MemEnable(MemEnable), .MemWr(MemWr),
+    .ALUcntrl(), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(Link), .ctrlErr(),.   
+    //Input(s)
+    .Instr(Instr[15:11]), Zflag(), Sflag()); 
 
 endmodule // proc
 `default_nettype wire
