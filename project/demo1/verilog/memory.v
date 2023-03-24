@@ -6,7 +6,7 @@
                      processor.
 */
 `default_nettype none
-module memory (/* TODO: Add appropriate inputs/outputs for your memory stage here*/);
+module memory (data_out, data_in, addr, enable, wr, createdump, clk, rst);
 
    // TODO: Your code here
    output wire [15:0] data_out;
@@ -23,15 +23,17 @@ module memory (/* TODO: Add appropriate inputs/outputs for your memory stage her
    |   1    | 1  | Write data_in |    0     |
    ------------------------------------------
 */
+   wire[15:0] mem_out;
+   assign data_out = (~enable | Wr) ? 16'h0000 : mem_out;
 
-   memory2c DATA_MEM ( .data_out   (), 
-                       .data_in    (), 
-                       .addr       (), 
-                       .enable     (), 
-                       .wr         (), 
-                       .createdump (), 
-                       .clk        (), 
-                       .rst        ());
+   memory2c DATA_MEM ( .data_out   (mem_out), 
+                       .data_in    (data_in), 
+                       .addr       (addr), 
+                       .enable     (enable), 
+                       .wr         (wr), 
+                       .createdump (createdump), 
+                       .clk        (clk), 
+                       .rst        (rst));
 
 endmodule
 `default_nettype wire

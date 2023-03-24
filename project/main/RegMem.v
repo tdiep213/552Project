@@ -12,8 +12,8 @@ module RegMem(
     clk,
     rst,
     LBI, Link, //Control Signals  // clarify or rename 
-                //LBI-load byte immediate
-                //Link - Jal/Jalr
+                //LBI-load byte immediate (True: use Rs, False: Else)
+                //Link - Jal/Jalr (True: use R7)
     PcAddr
 );
     parameter REG_WIDTH = 16;
@@ -26,9 +26,12 @@ module RegMem(
     input wire[2:0] ReadReg1, ReadReg2, WriteReg ;
     output wire[15:0] Reg1Data, Reg2Data, WriteData;
 
-    //Write Register address logic  <-- Currently only 3 inputs/options, need 4 (2 bit sel) b/c two Rd's
-    // (Input, LinkReg[1:0]): (Instr[10:8] (Rs), 00) , (Instr[7:5] (Rd I1-form), 01) , and (R7, 10) , (Instr[4:2] (Rd R-form), 11)
-    // These are the default values I am setting for control, feel free to change
+    //Write Register Logic
+    // WriteReg: Rd
+    // LBI True: Pass Rs
+    // LBI False: Rd
+    // Link True: Pass R7
+    // Link False: Rd or Rs
     wire [2:0] loadImm, LinkReg;
     assign loadImm = LBI ? ReadReg1 : WriteReg; 
     assign LinkReg = Link ? 3'h7 : loadImm;
@@ -36,14 +39,12 @@ module RegMem(
     //Write Register Data logic
     wire [15:0] data, PcSum2, ImmSel;
     wire zero;
-    assign zero = 0;
-    // perhaps replace cla with PcAddr from pc.v module as passed in value since you don't need to recalculate it. 
-    // lmk if notes getting out of hand 
+    assign zero = 0; 
 
-    /*Made recomended changes*/
-    // cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
+    /*Made recomended changes*/ // I was wrong about this, b/c we only ever write PC + 2 to R7, no other PCAddrs go to registers.
+    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
     assign ImmSel = LBI ? Imm : WriteData;
-    assign data = Link ? PcAddr : ImmSel ;      
+    assign data = Link ? PcSum2 : ImmSel ;      
 
     wire[15:0] out1, out2;
     rf_bypass RegFile(.read1OutData(out1), .read2OutData(out2), .err(),

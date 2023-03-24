@@ -86,7 +86,9 @@ module alu(out, opcode, funct, Ain, Bin, Ofl, zero);
                 case(opcode[1:0])
                     2'b00: begin end
                     2'b01: begin end
-                    2'b10: begin end
+                    2'b10: begin    // SLBI 
+                        out = (Ain << 8) | Bin;
+                    end
                     2'b11: begin end
                 endcase
             end
@@ -171,7 +173,9 @@ module alu(out, opcode, funct, Ain, Bin, Ofl, zero);
                             out = {Ain[0],Ain[1],Ain[2],Ain[3],Ain[4],Ain[5],Ain[6],Ain[7],Ain[8],Ain[9],Ain[10],
                                    Ain[11],Ain[12],Ain[13],Ain[14],Ain[15]};
                     end
-                    //2'b00 LBI
+                    2'b00: begin // LBI
+                        out = Bin;
+                    end
                 endcase
             end
             3'b111: begin //Conditional
