@@ -11,7 +11,7 @@ module cla16b(sum, cOut, inA, inB, cIn);
 
     output wire [15:0] sum;
     output wire         cOut;
-    input wire [15: 0] inA, inB;
+    input wire [15:0] inA, inB;
     input wire          cIn;
 
 	// YOUR CODE HERE

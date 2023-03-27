@@ -58,15 +58,15 @@ module main();
     wire [15:0] extIn, extOut;
     always @* begin         // Choose # bits to extend
         case(ImmSel[1])
-            1'b0: assign extIn[15:0] = Instruction[4:0];   // If 5 bit, pass 5 bits
+            1'b0: extIn = Instruction[4:0];   // If 5 bit, pass 5 bits
             1'b1: begin
                 case(I2JSel)
-                    1'b0: assign extIn[15:0] = Instruction[7:0];   // If 8 bit, pass 8 bit
-                    1'b1: assign extIn[15:0] = Instruction[10:0];  // If 11 bit, pass 11 bit
-                    default: assign extIn[15:0] = {16{0}};
+                    1'b0: extIn = Instruction[7:0];   // If 8 bit, pass 8 bit
+                    1'b1: extIn = Instruction[10:0];  // If 11 bit, pass 11 bit
+                    default: extIn[15:0] = 16'h0000;
                 endcase
             end
-            default: assign extIn[15:0] = {16{0}};
+            default: extIn[15:0] = 16'h0000;
         endcase
     end
 
@@ -74,7 +74,7 @@ module main();
 
 //--------------------------------//
 
-
+    wire [15:0] aluInB;
     mux2_1 ALUInBMux  [15:0] (.out(aluInB[15:0]), .inputA(Reg2Data[15:0]), .inputB(extOut[15:0]), .sel(ALUSel));
 
 //================================//
@@ -85,7 +85,7 @@ module main();
 
     control(.RegWrite(RegWrite),.Iformat(Iformat),.PcSel(PcSel),.MemRead(MemRead),.MemWrite(MemWrite),
             .ALUcntrl(ALUcntrl),.Val2Reg(Val2Reg),.ImmSel(ImmSel),.ImmExt(ImmExt),.Halt(Halt),
-            .LinkReg(LinkReg),.Instr(Instruction[15:11]),.Opcode(Instruction[1:0])));
+            .LinkReg(LinkReg),.Instr(Instruction[15:11]),.Opcode(Instruction[1:0]));
 
 //================================//
 
