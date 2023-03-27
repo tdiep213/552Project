@@ -38,8 +38,8 @@ module pc(
     always @* begin 
         case({PcSel, RegJmp, Halt})
             3'b000: PcAddr = Inc2;
-            3'b010: PcAddr = RegJmp;        
-            3'b100: PcAddr = PcImm;
+            3'b010: PcAddr = stage2;        
+            3'b100: PcAddr = stage1;
             default: PcAddr = PcQ;
         endcase
     end

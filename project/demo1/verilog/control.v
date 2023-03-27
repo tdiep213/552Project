@@ -219,7 +219,7 @@ module control(
                         case(Instr[1])
                             1'b0: begin // JR Rs, immediate PC <- Rs + I(sign ext.)
                                 RegWrite = 1'b0;        // Do Not write to register
-                                MemEnable= 1'b0;        // Do enable mem access
+                                MemEnable= 1'b0;        // Do Not enable mem access
                             end
                             1'b1: begin // JALR Rs, immediate R7 <- PC + 2 and PC <- Rs + I(sign ext.)
                                 RegWrite = 1'b1;        // Do write to register
