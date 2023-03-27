@@ -22,11 +22,9 @@ module pc(
     cla16b PcInc(.sum(Inc2), .cOut(), .inA(PcQ), .inB(16'h0002), .cIn(zero));
     cla16b PImm(.sum(PcImm), .cOut(), .inA(Inc2), .inB(Imm), .cIn(zero));
     cla16b RImm(.sum(RsImm), .cOut(), .inA(Rs), .inB(Imm), .cIn(zero));
- 
-    cla16b RsDisp(.sum(AddrRel), .cOut(), .inA(Rs), .inB(Imm), .cIn(zero));
     
-    assign stage1 = PcSel ? PcImm : Inc2;    // PC + 2 + Imm : PC + 2
-    assign stage2 = RegJmp ? RsImm : stage1; // Rs + Imm : ^
+    // assign stage1 = PcSel ? PcImm : Inc2;    // PC + 2 + Imm : PC + 2
+    // assign stage2 = RegJmp ? RsImm : stage1; // Rs + Imm : ^
 
     // assign PcAddr = rst ? 0 : stage2;
 
@@ -36,9 +34,9 @@ module pc(
 
 
     always @* begin 
-        case({PcSel, RegJmp, Halt})
+        casex({PcSel, RegJmp, Halt})
             3'b000: PcAddr = Inc2;
-            3'b010: PcAddr = stage2;        
+            3'b?10: PcAddr = stage2;        
             3'b100: PcAddr = stage1;
             default: PcAddr = PcQ;
         endcase
