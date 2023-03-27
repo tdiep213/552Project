@@ -29,7 +29,7 @@ module pc(
     assign stage2 = RegJmp ? RsImm : stage1; // Rs + Imm : ^
 
     assign PcAddr = Halt ? 0 : stage2;
-    assign PC = Inc2;
+    assign PC = PcQ;
     dff_16 PcReg(.q(PcQ), .err(), .d(PcAddr), .clk(clk), .rst(rst));
 
 

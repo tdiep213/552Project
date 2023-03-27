@@ -1,9 +1,8 @@
 //Arithmetic module
-module alu(out, opcode, funct, Ain, Bin, Ofl, zero);
+module alu(out, opcode, funct, Ain, Bin);
     parameter OPERAND_WIDTH = 16;
     // I think we still need zero flag and sign flag, lmk.
     output reg[15:0] out;
-    output Ofl, zero;
     input wire[15:0] Ain, Bin;
     input wire[4:0]opcode;  // Instr[15:11]
     input wire[1:0]funct;   // Instr[1:0]
