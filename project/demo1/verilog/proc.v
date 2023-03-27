@@ -39,7 +39,8 @@ module proc (/*AUTOARG*/
    //Control signals
    wire[4:0] ALUcntrl;
    wire RegJmp, Halt, PcSel;  //FETCH
-   wire LBI, Link, Iformat, RegWrite;   //DECODE
+   wire LBI, Iformat, RegWrite;   //DECODE
+   wire[1:0] Link;
    wire ALUSel;               //EXECUTE
    wire MemEnable, MemWr;     //MEMORY
    wire Val2Reg;              //WRITEBACK
@@ -52,7 +53,7 @@ module proc (/*AUTOARG*/
    /*-----DECODE-----*/
 
    decode D( .Reg1Data(Rs), .Reg2Data(Rt), .Instr(Instr), .Imm(ImmExt), .Writeback(Writeback),
-             .PC(PC), .LBI(LBI), .Link(Link), .Iformat(Iformat), .en(RegWrite), .clk(clk), .rst(rst) );
+             .PC(PC), .LBI(Link[0]), .Link(Link[1]), .Iformat(Iformat), .en(RegWrite), .clk(clk), .rst(rst) );
 
    /*-----EXECUTE-----*/
 

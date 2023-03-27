@@ -31,7 +31,7 @@ module pc(
     // assign PcAddr = rst ? 0 : stage2;
 
     // assign PcAddr = PcQ+2;
-    assign PC = Inc2;
+    assign PC = PcQ;
     dff_16 PcReg(.q(PcQ), .err(), .d(PcAddr), .clk(clk), .rst(rst));
 
 
@@ -40,7 +40,7 @@ module pc(
             3'b000: PcAddr = Inc2;
             3'b010: PcAddr = RegJmp;        
             3'b100: PcAddr = PcImm;
-            default: PcAddr = 0;
+            default: PcAddr = PcQ;
         endcase
     end
 
