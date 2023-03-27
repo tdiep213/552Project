@@ -9,7 +9,7 @@ z2
 cModel Technology
 Z0 d/home/timo/private/552/project/project/demo1/verilog
 valu
-Z1 !s110 1679883037
+Z1 !s110 1679884868
 !i10b 1
 !s100 cZ]TLf?I1WE6k5ocOHQe_3
 I7V_GU_zS;H79i:[G[?lfJ3
@@ -23,7 +23,7 @@ Z3 OP;L;10.7c;67
 r1
 !s85 0
 31
-Z4 !s108 1679883037.000000
+Z4 !s108 1679884868.000000
 !s107 wb.v|TwosComp.v|sign_ext.v|rf.v|rf_bypass.v|RegMem.v|proc.v|proc_hier.v|proc_hier_bench.v|pc.v|memory.v|memory2c.v|lt1b.v|lt16b.v|InstrMem.v|gt1b.v|fullAdder1b.v|fetch.v|execute.v|dff.v|dff_16b.v|decode.v|control.v|clkrst.v|cla4b.v|cla16b.v|alu.v|
 Z5 !s90 +define+RANDSEED=3|-work|__work|alu.v|cla16b.v|cla4b.v|clkrst.v|control.v|decode.v|dff_16b.v|dff.v|execute.v|fetch.v|fullAdder1b.v|gt1b.v|InstrMem.v|lt16b.v|lt1b.v|memory2c.v|memory.v|pc.v|proc_hier_bench.v|proc_hier.v|proc.v|RegMem.v|rf_bypass.v|rf.v|sign_ext.v|TwosComp.v|wb.v|
 !i113 1
@@ -475,11 +475,11 @@ R8
 vRegMem
 R1
 !i10b 1
-!s100 @?mPB45>[IW[]=kbf68QS3
-Ie8mE_VTiTn61zB3b7IV8[3
+!s100 j9UX?RAbh5WJc3OoM?W:I3
+Idc25N^=Mf?@g<l4I6D?B82
 R2
 R0
-w1679673706
+w1679883445
 8RegMem.v
 FRegMem.v
 L0 2
@@ -542,11 +542,11 @@ R8
 vsign_ext
 R1
 !i10b 1
-!s100 dhh^JozN4<ZBiS9ZTVNCD0
-IQDGiB=dh@GnEW<`SnJjff3
+!s100 `=g3jdFmW]FFgX9i;7h8h3
+I_>oz1Qke3zz2mJmAaSCT<1
 R2
 R0
-R9
+w1679884866
 8sign_ext.v
 Fsign_ext.v
 L0 1

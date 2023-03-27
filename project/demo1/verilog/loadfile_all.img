@@ -1,19 +1,19 @@
-Reading line: // Original test: ./ziliang/hw4/problem6/add_1.asm
+Reading line: // Original test: ./ziliang/hw4/problem6/add_2.asm
 Reading line: // Author: ziliang
 Reading line: // Test source code follows
 Reading line: 
 Reading line: 
-Reading line: //This tests the 0 output value check in the ALU
+Reading line: //This tests the overflow check in the ALU
 Reading line: 
-Reading line: lbi r1, 0
-Reading line: lbi r2, 0
-Reading line: add r3, r1, r2
+Reading line: lbi r1, 0xff	//expected value in r1 = -1
+Reading line: lbi r2, 1	//expected value in r2 = 1
+Reading line: add r3, r1, r2	//expected value in r3 = 0
 Reading line: halt
 @0
 c1
-00
+ff
 c2
-00
+01
 d9
 4c
 00
