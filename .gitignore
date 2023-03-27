@@ -7,3 +7,10 @@ work/
 *.bak
 transcript
 .__afsA602
+*.trace
+*.img
+*.log
+*.lst
+*.out
+*.ptrace
+*.reg
