@@ -41,7 +41,9 @@ module proc (/*AUTOARG*/
    wire RegJmp, Halt, PcSel;  //FETCH
    wire RegWrite;   //DECODE
    wire[1:0] LinkReg, DestRegSel;
+   wire SIIC;
 
+    wire[15:0] EPC, EPC_D;
 
    wire ALUSel;               //EXECUTE
    wire MemEnable, MemWr;     //MEMORY
@@ -50,7 +52,7 @@ module proc (/*AUTOARG*/
 
    /*-----FETCH-----*/
 
-   fetch F(.Instr(Instr), .PC(PC), .Imm(ImmExt), .Rs(Rs), .RegJmp(RegJmp), .Halt(Halt), .PcSel(PcSel), .clk(clk), .rst(rst));
+   fetch F(.Instr(Instr), .PC(PC), .Imm(ImmExt), .Rs(Rs), .RegJmp(RegJmp), .Halt(Halt), .PcSel(PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
 
    /*-----DECODE-----*/
 
@@ -78,7 +80,8 @@ module proc (/*AUTOARG*/
     control CNTRL(
     //Output(s)
     .RegWrite(RegWrite), .DestRegSel(DestRegSel), .PcSel(PcSel), .RegJmp(RegJmp), .MemEnable(MemEnable), .MemWr(MemWr),
-    .ALUcntrl(ALUcntrl), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(LinkReg), .ctrlErr(ctrlErr),   
+    .ALUcntrl(ALUcntrl), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(LinkReg), .ctrlErr(ctrlErr),
+    .SIIC(SIIC),   
     //Input(s)
     .Instr(Instr[15:11]), .Zflag(zero), .Sflag(sign));
 
@@ -87,6 +90,9 @@ module proc (/*AUTOARG*/
 	    default: err =0; //ctrlErr | ext_err;
         endcase
     end
+
+    assign EPC_D = SIIC ? PC : EPC;
+    dff_16 EPC_REG(.q(EPC), .err(), .d(EPC_D), .clk(clk), .rst(rst));
 
 endmodule // proc
 `default_nettype wire

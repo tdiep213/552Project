@@ -14,12 +14,13 @@ module control(
     Halt,       // Stop current and future instructions from executing
     LinkReg,    // (Link, LBI) Choose which Register to write to in RegMem (00: Rd, 01: Rs, 10: R7, 11: XX) // TODO Remap!
     ctrlErr,    // temporary err flag for phase 1.
+    SIIC,
     //Input(s)
     Instr,      // 5 msb of instruction
     Zflag, 
     Sflag
 );
-    output reg RegWrite, PcSel, RegJmp, MemEnable, MemWr, Val2Reg, ALUSel, Halt, ctrlErr;
+    output reg RegWrite, PcSel, RegJmp, MemEnable, MemWr, Val2Reg, ALUSel, Halt, ctrlErr, SIIC;
     output reg [1:0] LinkReg, DestRegSel; // TODO
     output reg [2:0] ImmSel;
     output reg[4:0] ALUcntrl;
@@ -50,6 +51,7 @@ module control(
                         ALUcntrl = ALUcntrl; // Do pass on NOP opcode
                     end
                     2'b10: begin    // siic // Currently NOP/Okay if it breaks
+                        SIIC = 1'b1;
                         Halt = 1'b1; // Don't Care allowed to break // Do Halt
                         ALUcntrl = ALUcntrl; // Don't Care allowed to break // Do pass along opcode
                     end

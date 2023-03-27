@@ -6,10 +6,10 @@ module pc(
     //Inputs
     Imm,
     Rs,
-    PcSel,RegJmp,Halt, //Control Signals
+    PcSel,RegJmp,Halt,SIIC, //Control Signals
     clk, rst
 );
-    input wire PcSel, RegJmp, Halt;
+    input wire PcSel, RegJmp, Halt, SIIC;
     input wire clk, rst;
     input wire[15:0] Imm, Rs;
     output reg[15:0] PcAddr; //Next Instruction 
