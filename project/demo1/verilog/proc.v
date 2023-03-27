@@ -39,8 +39,8 @@ module proc (/*AUTOARG*/
    //Control signals
    wire[4:0] ALUcntrl;
    wire RegJmp, Halt, PcSel;  //FETCH
-   wire LBI, Iformat, RegWrite;   //DECODE
-   wire[1:0] Link;
+   wire RegWrite;   //DECODE
+   wire[1:0] LinkReg, DestRegSel;
    wire ALUSel;               //EXECUTE
    wire MemEnable, MemWr;     //MEMORY
    wire Val2Reg;              //WRITEBACK
@@ -53,7 +53,7 @@ module proc (/*AUTOARG*/
    /*-----DECODE-----*/
 
    decode D( .Reg1Data(Rs), .Reg2Data(Rt), .Instr(Instr), .Imm(ImmExt), .Writeback(Writeback),
-             .PC(PC), .LBI(Link[0]), .Link(Link[1]), .Iformat(Iformat), .en(RegWrite), .clk(clk), .rst(rst) );
+             .PC(PC), .LBI(LinkReg[0]), .Link(LinkReg[1]), .DestRegSel(DestRegSel), .en(RegWrite), .clk(clk), .rst(rst) );
 
    /*-----EXECUTE-----*/
 
@@ -75,7 +75,7 @@ module proc (/*AUTOARG*/
 
     control CNTRL(
     //Output(s)
-    .RegWrite(RegWrite), .Iformat(Iformat), .PcSel(PcSel), .RegJmp(RegJmp), .MemEnable(MemEnable), .MemWr(MemWr),
+    .RegWrite(RegWrite), .DestRegSel(DestRegSel), .PcSel(PcSel), .RegJmp(RegJmp), .MemEnable(MemEnable), .MemWr(MemWr),
     .ALUcntrl(ALUcntrl), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(Link), .ctrlErr(ctrlErr),   
     //Input(s)
     .Instr(Instr[15:11]), .Zflag(zero), .Sflag(sign));
