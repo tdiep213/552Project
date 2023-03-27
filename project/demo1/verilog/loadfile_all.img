@@ -1,25 +1,15 @@
-Reading line: // Original test: ./nfischer/hw4/problem6/ld_1.asm
-Reading line: // Author: nfischer
+Reading line: // Original test: ./shojaei/hw4/problem6/xori_2.asm
+Reading line: // Author: shojaei
 Reading line: // Test source code follows
 Reading line: 
 Reading line: 
-Reading line: //load at offset
-Reading line: lbi  r1, 50     //mem location
-Reading line: lbi  r2, 8      //value to store
-Reading line: lbi  r3, 0      //clear r3
-Reading line: st   r2, r1, 10  //store at mem location +10
-Reading line: ld   r3, r1, 10  //load from mem location +10
+Reading line: lbi r1, 24
+Reading line: xori r2, r1, 7
 Reading line: halt
 @0
 c1
-32
-c2
-08
-c3
-00
-81
-4a
-89
-6a
+18
+51
+47
 00
 00
