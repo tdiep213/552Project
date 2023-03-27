@@ -25,7 +25,7 @@ module alu(out, opcode, funct, Ain, Bin);
 
 
     /* Conditional logic */
-    wire[15:0] slt16, sle16, sCoSum;
+    wire slt16, sle16, sCoSum;
     lt16b lt(.out(slt16), .Ain(Ain), .Bin(Bin));
 
     lt16b le(.out(ltcomp), .Ain(Ain), .Bin(Bin));
