@@ -207,7 +207,7 @@ module control(
                             end
                             1'b1: begin // JAL displacement R7 <- PC + 2 and PC <- PC + 2 + D(sign ext.)
                                 RegWrite = 1'b1;        // Do write to register
-                                MemEnable= 1'b1;        // Do enable mem access
+                                MemEnable= 1'b0;        // Do enable mem access
                             end
                             default: ctrlErr = 1'b1;  
                         endcase
@@ -223,7 +223,7 @@ module control(
                             end
                             1'b1: begin // JALR Rs, immediate R7 <- PC + 2 and PC <- Rs + I(sign ext.)
                                 RegWrite = 1'b1;        // Do write to register
-                                MemEnable= 1'b1;        // Do enable mem access
+                                MemEnable= 1'b0;        // Do enable mem access
                             end
                             default: ctrlErr = 1'b1; 
                         endcase
