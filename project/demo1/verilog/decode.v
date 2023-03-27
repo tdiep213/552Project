@@ -16,7 +16,8 @@ module decode (Reg1Data, Reg2Data, Instr, Imm, Writeback, PC, LBI, Link, DestReg
    input wire clk, rst;
 
    // wire[2:0] WriteRegAddr; 
-   wire[2:0] Rs, Rt, WriteRegAddr;
+   wire[2:0] Rs, Rt;
+   reg[2:0] WriteRegAddr;
   
    assign Rs = Instr[10:8];
    assign Rt = Instr[7:5];
@@ -36,13 +37,13 @@ module decode (Reg1Data, Reg2Data, Instr, Imm, Writeback, PC, LBI, Link, DestReg
     assign zero = 0; 
 
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(16'h0002), .cIn(zero));
-    assign ImmSel = LBI ? Imm : WriteBack;
+    assign ImmSel = LBI ? Imm : Writeback;
     assign WriteData = Link ? PcSum2 : ImmSel;      
 
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
                      .ReadReg1(Rs), .ReadReg2(Rt),.WriteReg(WriteRegAddr), .WriteData(WriteData), 
    //                 //Rs                    //Rd                 //Rt
-                     .Imm(Imm), .LBI(LBI), .Link(Link), .PcAddr(PC), .en(en), .clk(clk), .rst(rst));
+                     .en(en), .clk(clk), .rst(rst));
     
 
 

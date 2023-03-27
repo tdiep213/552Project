@@ -5,29 +5,13 @@ Type "help" for more information
 
 Loading program...
 Executing...
-lbi r1, 1
-INUM:        0 PC: 0x0000 REG: 1 VALUE: 0x0001
-lbi r2, 2
-INUM:        1 PC: 0x0002 REG: 2 VALUE: 0x0002
-lbi r4, 1
-INUM:        2 PC: 0x0004 REG: 4 VALUE: 0x0001
-slt r3, r1, r2
-INUM:        3 PC: 0x0006 REG: 3 VALUE: 0x0001
-beqz r3, 2
-INUM:        4 PC: 0x0008
-addi r4, r4, 1
-INUM:        5 PC: 0x000a REG: 4 VALUE: 0x0002
-lbi r1, 2
-INUM:        6 PC: 0x000c REG: 1 VALUE: 0x0002
-lbi r2, 1
-INUM:        7 PC: 0x000e REG: 2 VALUE: 0x0001
-slt r3, r1, r2
-INUM:        8 PC: 0x0010 REG: 3 VALUE: 0x0000
-beqz r3, 4
-INUM:        9 PC: 0x0012
-addi r4, r4, 2
-INUM:       10 PC: 0x0018 REG: 4 VALUE: 0x0004
+slbi r1, -1
+INUM:        0 PC: 0x0000 REG: 1 VALUE: 0x00ff
+slbi r1, -1
+INUM:        1 PC: 0x0002 REG: 1 VALUE: 0xffff
+btr r1, r1
+INUM:        2 PC: 0x0004 REG: 1 VALUE: 0xffff
 halt
 program halted
-INUM:       11 PC: 0x001a
+INUM:        3 PC: 0x0006
 Program Finished
