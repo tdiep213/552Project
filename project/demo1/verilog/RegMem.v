@@ -47,7 +47,7 @@ module RegMem(
     assign data = Link ? PcSum2 : ImmSel ;      
 
     wire[15:0] out1, out2;
-    rf RegFile(.read1OutData(out1), .read2OutData(out2), .err(),
+    rf RegFile(.read1OutData(Reg1Data), .read2OutData(Reg2Data), .err(),
                   .clk(clk), .rst(rst), .read1RegSel(ReadReg1), .read2RegSel(ReadReg2),
                   .writeRegSel(LinkReg), .writeInData(data), .writeEn(en));
 endmodule
