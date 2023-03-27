@@ -10,7 +10,7 @@ module RegMem(
     WriteData,
     clk,
     rst,
-    en,   //Control Signals  // clarify or rename 
+    en   //Control Signals  // clarify or rename 
                     //LBI-load byte immediate (data selection)
                     //Link - Jal/Jalr (data selection)
 );
