@@ -57,7 +57,7 @@ module proc (/*AUTOARG*/
 
    /*-----EXECUTE-----*/
 
-   execute X(.out(ALUout), .RsVal(Rs), .RtVal(Rt), .Imm(ImmExt), .ALUSel(ALUSel), .opcode(ALUcntrl), .funct(Instr[1:0]));
+   execute X(.out(ALUout), .RsVal(Rs), .RtVal(Rt), .Imm(ImmExt), .ALUSel(ALUSel), .opcode(Instr[15:11]), .funct(Instr[1:0]));
 
    /*-----MEMORY-----*/
    
