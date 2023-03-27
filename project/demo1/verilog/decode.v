@@ -14,7 +14,7 @@ module decode (Reg1Data, Reg2Data, Instr, Imm, Writeback, PC, LBI, Link, Iformat
    input wire LBI, Link, Iformat, en;
    input wire clk, rst;
 
-   wire[2:0] WriteRegAddr; 
+   // wire[2:0] WriteRegAddr; 
    wire[2:0] Rs, Rt, Rd;
   
    assign Rs = Instr[10:8];

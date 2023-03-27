@@ -135,7 +135,7 @@ module proc_hier_bench();
    assign WriteRegister = DUT.p0.D.RegisterMem.LinkReg;
    // The name of the register being written to. (3 bit signal)
 
-   assign WriteData = DUT.p0.D.RegisterMem.data;
+   assign WriteData = DUT.p0.D.RegisterMem.WriteData;
    // Data being written to the register. (16 bits)
    
    assign MemRead =  (DUT.p0.M.en & ~DUT.p0.M.wr);
