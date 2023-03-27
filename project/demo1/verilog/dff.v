@@ -1,14 +1,24 @@
-/* $Author: karu $ */
-/* $LastChangedDate: 2009-03-04 23:09:45 -0600 (Wed, 04 Mar 2009) $ */
-/* $Rev: 45 $ */
-// D-flipflop
-`default_nettype none
-module dff (q, d, clk, rst);
+/*
+   CS/ECE 552, Spring '23
+   Homework #3, Problem #1
+  
+   This module creates a 1-bit D-flipflop (DFF).
 
-    output wire        q;
-    input wire         d;
-    input wire         clk;
-    input wire         rst;
+   YOU SHALL NOT EDIT THIS FILE. ANY CHANGES TO THIS FILE WILL
+   RESULT IN ZERO FOR THIS PROBLEM.
+*/
+`default_nettype none
+module dff (
+            // Output
+            q,
+            // Inputs
+            d, clk, rst
+            );
+
+    output wire    q;
+    input wire     d;
+    input wire     clk;
+    input wire     rst;
 
     reg            state;
 
@@ -17,6 +27,6 @@ module dff (q, d, clk, rst);
     always @(posedge clk) begin
       state = rst? 0 : d;
     end
+
 endmodule
 `default_nettype wire
-// DUMMY LINE FOR REV CONTROL :0:

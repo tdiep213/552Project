@@ -81,7 +81,7 @@ module proc (/*AUTOARG*/
 
     always@* begin
         case({ctrlErr, ext_err})
-	    default: err = ctrlErr | ext_err;
+	    default: err =0; //ctrlErr | ext_err;
         endcase
     end
 
