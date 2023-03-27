@@ -15,7 +15,7 @@ module pc(
     output reg[15:0] PcAddr; //Next Instruction 
     output wire[15:0]  PC;     //Previous Instruction + 2
     
-    wire [15:0] Inc2, AddrDisp, stage1, stage2, AddrRel, PcImm, RsImm, PcQ;
+    wire [15:0] Inc2, AddrDisp, stage1, stage2, PcImm, RsImm, PcQ;
     wire zero;
     assign zero = 0;
 
@@ -36,8 +36,8 @@ module pc(
     always @* begin 
         casex({PcSel, RegJmp, Halt})
             3'b000: PcAddr = Inc2;
-            3'b?10: PcAddr = stage2;        
-            3'b100: PcAddr = stage1;
+            3'b?10: PcAddr = RsImm;        
+            3'b100: PcAddr = PcImm;
             default: PcAddr = PcQ;
         endcase
     end
