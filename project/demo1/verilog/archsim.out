@@ -5,13 +5,17 @@ Type "help" for more information
 
 Loading program...
 Executing...
-slbi r1, -1
-INUM:        0 PC: 0x0000 REG: 1 VALUE: 0x00ff
-slbi r1, -1
-INUM:        1 PC: 0x0002 REG: 1 VALUE: 0xffff
-btr r1, r1
-INUM:        2 PC: 0x0004 REG: 1 VALUE: 0xffff
+lbi r0, 0
+INUM:        0 PC: 0x0000 REG: 0 VALUE: 0x0000
+slbi r0, 26
+INUM:        1 PC: 0x0002 REG: 0 VALUE: 0x001a
+lbi r1, 0
+INUM:        2 PC: 0x0004 REG: 1 VALUE: 0x0000
+st r1, r0, 0
+INUM:        3 PC: 0x0006 ADDR: 0x001a VALUE: 0x0000
+ld r2, r0, 0
+INUM:        4 PC: 0x0008 REG: 2 VALUE: 0x0000 ADDR: 0x001a
 halt
 program halted
-INUM:        3 PC: 0x0006
+INUM:        5 PC: 0x000a
 Program Finished

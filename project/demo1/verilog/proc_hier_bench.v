@@ -132,7 +132,7 @@ module proc_hier_bench();
    assign RegWrite = DUT.p0.D.RegisterMem.en;
    // Is register being written, one bit signal (1 means yes, 0 means no)
    
-   assign WriteRegister = DUT.p0.D.RegisterMem.LinkReg;
+   assign WriteRegister = DUT.p0.D.RegisterMem.WriteReg;
    // The name of the register being written to. (3 bit signal)
 
    assign WriteData = DUT.p0.D.RegisterMem.WriteData;

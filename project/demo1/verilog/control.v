@@ -94,13 +94,13 @@ module control(
                 ImmSel[2:0]     = 3'b100;      // Do sign extend 5 bits
                 case(Instr[0])
                     1'b0: begin // ST Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd
-                        Val2Reg = 1'b1;          // Do transmit ALU output
+                        Val2Reg = 1'b0;          // Do transmit ALU output
                         RegWrite = 1'b0;         // Do Not write to register
                         MemWr = 1'b1;            // Do write to memory
                         MemEnable = 1'b1;        // Do enable mem access
                     end
                     1'b1: begin // LD Rd, Rs, immediate Rd <- Mem[Rs + I(sign ext.)]
-                        Val2Reg   = 1'b0;    // Do Not transmit ALU output
+                        Val2Reg   = 1'b1;    // Do Not transmit ALU output
                         RegWrite  = 1'b1;    // Do write to register
                         MemWr     = 1'b0;    // Do Not write to memory
                         MemEnable = 1'b1;    // Do enable mem access

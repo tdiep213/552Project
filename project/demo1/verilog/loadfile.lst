@@ -1,8 +1,20 @@
-          // Test provided by Karu 
-          // btr_1.asm
+          // Original test: ./english/hw4/problem6/st_0.asm
+          // Author: english
+          // Test source code follows
           
-          // Test extereme case high
-0000 91ff slbi r1, 0xff
-0002 91ff slbi r1, 0xff
-0004 c904 btr r1, r1
-0006 0000 halt
+          
+0000 c000 lbi r0, U.Here
+0002 901a slbi r0, L.Here   // r0 contains address of ".Here"
+0004 c100 lbi r1, 0
+0006 8020 st r1, r0, 0      // .Here should have the value 0
+0008 8840 ld r2, r0, 0      // r2 = 0
+000a 0000 halt
+000c 0000 halt
+000e 0000 halt
+0010 0000 halt
+0012 0000 halt
+0014 0000 halt
+0016 0000 halt
+0018 0000 halt
+001a      .Here:
+001a 0000 halt
