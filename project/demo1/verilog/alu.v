@@ -83,8 +83,10 @@ module alu(out, opcode, funct, Ain, Bin);
             end
             3'b100: begin //Memory Access 
                 case(opcode[1:0])
-                    2'b00: begin end
-                    2'b01: begin end
+                    2'b00: begin //ST
+                        out = sum;
+                    end 
+                    2'b01: begin end //LD
                     2'b10: begin    // SLBI 
                         out = (Ain << 8) | Bin;
                     end

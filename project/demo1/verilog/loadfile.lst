@@ -1,20 +1,12 @@
-          // Original test: ./english/hw4/problem6/st_0.asm
-          // Author: english
+          // Original test: ./nfischer/hw4/problem6/ld_1.asm
+          // Author: nfischer
           // Test source code follows
           
           
-0000 c000 lbi r0, U.Here
-0002 901a slbi r0, L.Here   // r0 contains address of ".Here"
-0004 c100 lbi r1, 0
-0006 8020 st r1, r0, 0      // .Here should have the value 0
-0008 8840 ld r2, r0, 0      // r2 = 0
+          //load at offset
+0000 c132 lbi  r1, 50     //mem location
+0002 c208 lbi  r2, 8      //value to store
+0004 c300 lbi  r3, 0      //clear r3
+0006 814a st   r2, r1, 10  //store at mem location +10
+0008 896a ld   r3, r1, 10  //load from mem location +10
 000a 0000 halt
-000c 0000 halt
-000e 0000 halt
-0010 0000 halt
-0012 0000 halt
-0014 0000 halt
-0016 0000 halt
-0018 0000 halt
-001a      .Here:
-001a 0000 halt

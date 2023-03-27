@@ -9,27 +9,27 @@ z2
 cModel Technology
 Z0 d/home/timo/private/552/project/project/demo1/verilog
 valu
-Z1 !s110 1679895604
+Z1 !s110 1679896240
 !i10b 1
-!s100 JP31a?bE7Eb::X`BMN4jf3
-I5RXEoTMZ1VUEiLI]@0WXf0
+!s100 9XKK4?C;fAeanRog`W1Xa1
+I_RNWg2M6>9]?0BA=mC=;@0
 Z2 VDg1SIo80bB@j0V0VzS_@n1
 R0
-Z3 w1679886623
+w1679896238
 8alu.v
 Falu.v
 L0 2
-Z4 OP;L;10.7c;67
+Z3 OP;L;10.7c;67
 r1
 !s85 0
 31
-Z5 !s108 1679895604.000000
+Z4 !s108 1679896240.000000
 !s107 wb.v|TwosComp.v|sign_ext.v|rf.v|rf_bypass.v|RegMem.v|proc.v|proc_hier.v|proc_hier_bench.v|pc.v|memory.v|memory2c.v|lt1b.v|lt16b.v|InstrMem.v|gt1b.v|fullAdder1b.v|fetch.v|execute.v|dff.v|dff_16b.v|decode.v|control.v|clkrst.v|cla4b.v|cla16b.v|alu.v|
-Z6 !s90 +define+RANDSEED=3|-work|__work|alu.v|cla16b.v|cla4b.v|clkrst.v|control.v|decode.v|dff_16b.v|dff.v|execute.v|fetch.v|fullAdder1b.v|gt1b.v|InstrMem.v|lt16b.v|lt1b.v|memory2c.v|memory.v|pc.v|proc_hier_bench.v|proc_hier.v|proc.v|RegMem.v|rf_bypass.v|rf.v|sign_ext.v|TwosComp.v|wb.v|
+Z5 !s90 +define+RANDSEED=3|-work|__work|alu.v|cla16b.v|cla4b.v|clkrst.v|control.v|decode.v|dff_16b.v|dff.v|execute.v|fetch.v|fullAdder1b.v|gt1b.v|InstrMem.v|lt16b.v|lt1b.v|memory2c.v|memory.v|pc.v|proc_hier_bench.v|proc_hier.v|proc.v|RegMem.v|rf_bypass.v|rf.v|sign_ext.v|TwosComp.v|wb.v|
 !i113 1
-Z7 o-work __work
-Z8 !s92 +define+RANDSEED=3 -work __work
-Z9 tCvgOpt 0
+Z6 o-work __work
+Z7 !s92 +define+RANDSEED=3 -work __work
+Z8 tCvgOpt 0
 vcla16b
 R1
 !i10b 1
@@ -37,21 +37,21 @@ R1
 Il?EF_ToEe`ldRHoIhO<Rb2
 R2
 R0
-Z10 w1679673702
+Z9 w1679673702
 8cla16b.v
 Fcla16b.v
 L0 8
-R4
+R3
 r1
 !s85 0
 31
+R4
+Z10 !s107 wb.v|TwosComp.v|sign_ext.v|rf.v|rf_bypass.v|RegMem.v|proc.v|proc_hier.v|proc_hier_bench.v|pc.v|memory.v|memory2c.v|lt1b.v|lt16b.v|InstrMem.v|gt1b.v|fullAdder1b.v|fetch.v|execute.v|dff.v|dff_16b.v|decode.v|control.v|clkrst.v|cla4b.v|cla16b.v|alu.v|
 R5
-Z11 !s107 wb.v|TwosComp.v|sign_ext.v|rf.v|rf_bypass.v|RegMem.v|proc.v|proc_hier.v|proc_hier_bench.v|pc.v|memory.v|memory2c.v|lt1b.v|lt16b.v|InstrMem.v|gt1b.v|fullAdder1b.v|fetch.v|execute.v|dff.v|dff_16b.v|decode.v|control.v|clkrst.v|cla4b.v|cla16b.v|alu.v|
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vcla4b
 R1
 !i10b 1
@@ -59,21 +59,21 @@ R1
 IfAWhf[B^gW=W_j`;P^QhF0
 R2
 R0
-R10
+R9
 8cla4b.v
 Fcla4b.v
 L0 8
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vclkrst
 R1
 !i10b 1
@@ -85,17 +85,17 @@ w1646504881
 8clkrst.v
 Fclkrst.v
 L0 13
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vcontrol
 R1
 !i10b 1
@@ -103,21 +103,21 @@ R1
 I[LZ1G;bD9E0E2mO3c[k3K3
 R2
 R0
-w1679895569
+w1679896146
 8control.v
 Fcontrol.v
 L0 2
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vdecode
 R1
 !i10b 1
@@ -129,17 +129,17 @@ w1679892061
 8decode.v
 Fdecode.v
 L0 8
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vdff
 R1
 !i10b 1
@@ -147,21 +147,21 @@ R1
 INRlK<6adzl]fdB>GaPlF91
 R2
 R0
-R10
+R9
 8dff.v
 Fdff.v
-Z12 L0 11
-R4
+Z11 L0 11
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vdff_16
 R1
 !i10b 1
@@ -169,21 +169,21 @@ R1
 Ifcn@RH4G?:g5z>Sh7PLI70
 R2
 R0
-R10
+R9
 8dff_16b.v
 Fdff_16b.v
 L0 9
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vexecute
 R1
 !i10b 1
@@ -195,17 +195,17 @@ w1679875954
 8execute.v
 Fexecute.v
 L0 8
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vfetch
 R1
 !i10b 1
@@ -217,17 +217,17 @@ w1679891655
 8fetch.v
 Ffetch.v
 L0 9
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vfullAdder1b
 R1
 !i10b 1
@@ -235,21 +235,21 @@ R1
 I:;a<<;f1QAmJ067U6bd5G3
 R2
 R0
-R10
+R9
 8fullAdder1b.v
 FfullAdder1b.v
 L0 8
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 nfull@adder1b
 vgt1b
 R1
@@ -262,17 +262,17 @@ w1679889330
 8gt1b.v
 Fgt1b.v
 L0 1
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vInstrMem
 R1
 !i10b 1
@@ -284,17 +284,17 @@ w1679673704
 8InstrMem.v
 FInstrMem.v
 L0 2
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 n@instr@mem
 vlt16b
 R1
@@ -303,21 +303,21 @@ R1
 ITL^PbdNmFgj@]^;?YNiV?3
 R2
 R0
-R10
+R9
 8lt16b.v
 Flt16b.v
 L0 1
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vlt1b
 R1
 !i10b 1
@@ -329,17 +329,17 @@ w1679889287
 8lt1b.v
 Flt1b.v
 L0 1
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vmemory
 R1
 !i10b 1
@@ -351,17 +351,17 @@ w1679619852
 8memory.v
 Fmemory.v
 L0 9
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vmemory2c
 R1
 !i10b 1
@@ -373,39 +373,39 @@ w1646511252
 8memory2c.v
 Fmemory2c.v
 L0 35
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vpc
 R1
 !i10b 1
-!s100 BKk7EoQ2COfZfZHdfVWYL0
-I=KFI:I2eW<koBdIIf[03^1
+!s100 <Do<=N=VOQGdXjlYRJ8@A0
+IK@i2JY[Ah9BT3<ddXEe^n2
 R2
 R0
-w1679895126
+w1679895973
 8pc.v
 Fpc.v
 L0 2
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vproc
 R1
 !i10b 1
@@ -417,17 +417,17 @@ w1679891842
 8proc.v
 Fproc.v
 L0 5
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vproc_hier
 R1
 !i10b 1
@@ -439,17 +439,17 @@ w1646504514
 8proc_hier.v
 Fproc_hier.v
 L0 6
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vproc_hier_bench
 R1
 !i10b 1
@@ -461,17 +461,17 @@ w1679895186
 8proc_hier_bench.v
 Fproc_hier_bench.v
 L0 5
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vRegMem
 R1
 !i10b 1
@@ -483,17 +483,17 @@ w1679894977
 8RegMem.v
 FRegMem.v
 L0 2
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 n@reg@mem
 vrf
 R1
@@ -502,21 +502,21 @@ R1
 IP>DVT_GQg@@6NVi3D>:eX1
 R2
 R0
-R10
+R9
 8rf.v
 Frf.v
-R12
-R4
+R11
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vrf_bypass
 R1
 !i10b 1
@@ -524,21 +524,21 @@ R1
 I?Q8_;]dhL;1bhcN[o5jjR0
 R2
 R0
-R10
+R9
 8rf_bypass.v
 Frf_bypass.v
 L0 9
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vsign_ext
 R1
 !i10b 1
@@ -550,17 +550,17 @@ w1679884866
 8sign_ext.v
 Fsign_ext.v
 L0 1
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 vTwosComp
 R1
 !i10b 1
@@ -568,21 +568,21 @@ R1
 IzXZ<BggfHBH=6ZM0cVPD01
 R2
 R0
-R3
+w1679886623
 8TwosComp.v
 FTwosComp.v
 L0 2
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
 n@twos@comp
 vwb
 R1
@@ -595,14 +595,14 @@ w1679616524
 8wb.v
 Fwb.v
 L0 8
-R4
+R3
 r1
 !s85 0
 31
+R4
+R10
 R5
-R11
-R6
 !i113 1
+R6
 R7
 R8
-R9
