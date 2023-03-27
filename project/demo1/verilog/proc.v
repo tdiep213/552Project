@@ -74,8 +74,8 @@ module proc (/*AUTOARG*/
     /*-----CONTROL-----*/
     sign_ext EXT(.out(ImmExt), .err(ext_err), .in(Instr), .zero_ext(ImmSel));
 
-    assign sign = ALUout[15];
-    assign zero = (ALUout == 0);
+    assign sign = Rs[15];
+    assign zero = &(Rs == 16'h0000);
 
     control CNTRL(
     //Output(s)

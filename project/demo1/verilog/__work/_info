@@ -9,7 +9,7 @@ z2
 cModel Technology
 Z0 d/home/timo/private/552/project/project/demo1/verilog
 valu
-Z1 !s110 1679905776
+Z1 !s110 1679958115
 !i10b 1
 !s100 CGmL@0DSIfh7zIl[XF>Y03
 I29=7D;04SK=7in1aa[YS^3
@@ -23,7 +23,7 @@ Z3 OP;L;10.7c;67
 r1
 !s85 0
 31
-Z4 !s108 1679905776.000000
+Z4 !s108 1679958114.000000
 !s107 wb.v|TwosComp.v|sign_ext.v|rf.v|rf_bypass.v|RegMem.v|proc.v|proc_hier.v|proc_hier_bench.v|pc.v|memory.v|memory2c.v|lt1b.v|lt16b.v|InstrMem.v|gt1b.v|fullAdder1b.v|fetch.v|execute.v|dff.v|dff_16b.v|decode.v|control.v|clkrst.v|cla4b.v|cla16b.v|alu.v|
 Z5 !s90 +define+RANDSEED=3|-work|__work|alu.v|cla16b.v|cla4b.v|clkrst.v|control.v|decode.v|dff_16b.v|dff.v|execute.v|fetch.v|fullAdder1b.v|gt1b.v|InstrMem.v|lt16b.v|lt1b.v|memory2c.v|memory.v|pc.v|proc_hier_bench.v|proc_hier.v|proc.v|RegMem.v|rf_bypass.v|rf.v|sign_ext.v|TwosComp.v|wb.v|
 !i113 1
@@ -103,7 +103,7 @@ R1
 IGcOTNj?]0?TGI6RB4ilM_0
 R2
 R0
-w1679901699
+w1679905846
 8control.v
 Fcontrol.v
 L0 2
@@ -319,7 +319,7 @@ R6
 R7
 R8
 vlt1b
-R1
+Z12 !s110 1679958116
 !i10b 1
 !s100 ;oLL;J@h9JATnePEM]c8n2
 I_kCkVbUQCX9_igImnod320
@@ -341,7 +341,7 @@ R6
 R7
 R8
 vmemory
-R1
+R12
 !i10b 1
 !s100 ]ldjNcFh^5=iiVCoTUY?90
 I2e@Vc8G1ZlHnl;CA8_25G1
@@ -363,7 +363,7 @@ R6
 R7
 R8
 vmemory2c
-R1
+R12
 !i10b 1
 !s100 1ITXY4ZWd3SeI8Nl4zmz13
 I5:0bhPSZGSbBD:5kcoEH=2
@@ -385,7 +385,7 @@ R6
 R7
 R8
 vpc
-R1
+Z13 !s110 1679958117
 !i10b 1
 !s100 ^^P55?Ag1?SOmF@7Z1]hG3
 IHW`n;HSHWi@;HYLQ>>HNB1
@@ -407,13 +407,13 @@ R6
 R7
 R8
 vproc
-R1
+R13
 !i10b 1
-!s100 XFcR:Y7;Q5Ljoo=g[gTjf1
-IV9nlz@z0gPVAV8hFXTgMV1
+!s100 hh>coXNj82U1UP697Uh`j3
+IEFfN9mXJfnPeP86;B`b`n3
 R2
 R0
-w1679901303
+w1679958111
 8proc.v
 Fproc.v
 L0 5
@@ -429,7 +429,7 @@ R6
 R7
 R8
 vproc_hier
-R1
+R13
 !i10b 1
 !s100 jGH_<J>T7TGh^mfl9i`Fo2
 I?@=;1a89@`0h;0V<;D4kj0
@@ -451,7 +451,7 @@ R6
 R7
 R8
 vproc_hier_bench
-R1
+R13
 !i10b 1
 !s100 a_@abDnXo881XQjP1AK?d0
 IRf@bJZ0kFD]2z9SB]QN9Z1
@@ -473,7 +473,7 @@ R6
 R7
 R8
 vRegMem
-R1
+R13
 !i10b 1
 !s100 Z_BdfbMoPQX:>d13MX25O0
 I3knnDWM5EK3GP51_ZO:8]1
@@ -496,7 +496,7 @@ R7
 R8
 n@reg@mem
 vrf
-R1
+Z14 !s110 1679958118
 !i10b 1
 !s100 <I]1YUG_W[E[>iOf<dmG[3
 IP>DVT_GQg@@6NVi3D>:eX1
@@ -518,7 +518,7 @@ R6
 R7
 R8
 vrf_bypass
-R1
+R13
 !i10b 1
 !s100 Q0?V[X;TCiRZci;U]_LIZ3
 I?Q8_;]dhL;1bhcN[o5jjR0
@@ -540,7 +540,7 @@ R6
 R7
 R8
 vsign_ext
-R1
+R14
 !i10b 1
 !s100 `=g3jdFmW]FFgX9i;7h8h3
 I_>oz1Qke3zz2mJmAaSCT<1
@@ -562,7 +562,7 @@ R6
 R7
 R8
 vTwosComp
-R1
+R14
 !i10b 1
 !s100 @9?IeQJT1n5HZLhRdTm]_2
 IzXZ<BggfHBH=6ZM0cVPD01
@@ -585,7 +585,7 @@ R7
 R8
 n@twos@comp
 vwb
-R1
+R14
 !i10b 1
 !s100 z5J44C42z0nO5DZCMDIhT1
 INg@gC;mAkjz?Ni0JK8j0o1
