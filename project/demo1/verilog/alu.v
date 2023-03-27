@@ -93,7 +93,10 @@ module alu(out, opcode, funct, Ain, Bin);
                     2'b10: begin    // SLBI 
                         out = (Ain << 8) | Bin;
                     end
-                    2'b11: begin end
+                    2'b11: begin //STU
+                        out = sum;
+                    end
+
                 endcase
             end
             3'b101: begin //Shift Immediate

@@ -9,13 +9,13 @@ z2
 cModel Technology
 Z0 d/home/timo/private/552/project/project/demo1/verilog
 valu
-Z1 !s110 1679901110
+Z1 !s110 1679905776
 !i10b 1
-!s100 b?UGc7[`ehIA0dTWh0i092
-I]2NQCQI23=oQ>n^Z`KR6_0
+!s100 CGmL@0DSIfh7zIl[XF>Y03
+I29=7D;04SK=7in1aa[YS^3
 Z2 VDg1SIo80bB@j0V0VzS_@n1
 R0
-w1679899829
+w1679904011
 8alu.v
 Falu.v
 L0 2
@@ -23,7 +23,7 @@ Z3 OP;L;10.7c;67
 r1
 !s85 0
 31
-Z4 !s108 1679901110.000000
+Z4 !s108 1679905776.000000
 !s107 wb.v|TwosComp.v|sign_ext.v|rf.v|rf_bypass.v|RegMem.v|proc.v|proc_hier.v|proc_hier_bench.v|pc.v|memory.v|memory2c.v|lt1b.v|lt16b.v|InstrMem.v|gt1b.v|fullAdder1b.v|fetch.v|execute.v|dff.v|dff_16b.v|decode.v|control.v|clkrst.v|cla4b.v|cla16b.v|alu.v|
 Z5 !s90 +define+RANDSEED=3|-work|__work|alu.v|cla16b.v|cla4b.v|clkrst.v|control.v|decode.v|dff_16b.v|dff.v|execute.v|fetch.v|fullAdder1b.v|gt1b.v|InstrMem.v|lt16b.v|lt1b.v|memory2c.v|memory.v|pc.v|proc_hier_bench.v|proc_hier.v|proc.v|RegMem.v|rf_bypass.v|rf.v|sign_ext.v|TwosComp.v|wb.v|
 !i113 1
@@ -99,11 +99,11 @@ R8
 vcontrol
 R1
 !i10b 1
-!s100 3H=K;FA5ENh4GEBKMQCjT2
-IQ2@d]6:CjmGJM2@oXc4RY1
+!s100 d[zF;?;Onb`O]eRTJ[9i[3
+IGcOTNj?]0?TGI6RB4ilM_0
 R2
 R0
-w1679900522
+w1679901699
 8control.v
 Fcontrol.v
 L0 2
@@ -387,11 +387,11 @@ R8
 vpc
 R1
 !i10b 1
-!s100 WGPjS@KKaoJf^Ohj[m>XP1
-ImJ1C4T8BGlMnoI=VlDSoO2
+!s100 ^^P55?Ag1?SOmF@7Z1]hG3
+IHW`n;HSHWi@;HYLQ>>HNB1
 R2
 R0
-w1679901029
+w1679901448
 8pc.v
 Fpc.v
 L0 2
@@ -413,7 +413,7 @@ R1
 IV9nlz@z0gPVAV8hFXTgMV1
 R2
 R0
-w1679901065
+w1679901303
 8proc.v
 Fproc.v
 L0 5

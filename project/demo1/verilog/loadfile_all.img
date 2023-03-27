@@ -1,31 +1,6587 @@
-Reading line: // Test provided by Karu 
-Reading line: j .realstart
-Reading line: lbi r0,0
-Reading line: rti
-Reading line: halt
-Reading line: 
-Reading line: .realstart:
-Reading line: lbi r1,0
-Reading line: lbi r0,0
-Reading line: siic r6
-Reading line: lbi r4, 44
-Reading line: halt
+Reading line: // seed 8
+Reading line: lbi r0, 128 // icount 0
+Reading line: slbi r0, 0 // icount 1
+Reading line: lbi r1, 128 // icount 2
+Reading line: slbi r1, 0 // icount 3
+Reading line: lbi r2, 128 // icount 4
+Reading line: slbi r2, 0 // icount 5
+Reading line: lbi r3, 128 // icount 6
+Reading line: slbi r3, 0 // icount 7
+Reading line: lbi r4, 128 // icount 8
+Reading line: slbi r4, 0 // icount 9
+Reading line: lbi r5, 128 // icount 10
+Reading line: slbi r5, 0 // icount 11
+Reading line: lbi r6, 128 // icount 12
+Reading line: slbi r6, 0 // icount 13
+Reading line: lbi r7, 128 // icount 14
+Reading line: nop // to align meminst icount 15
+Reading line: slbi r7, 0 // icount 16
+Reading line: nop // to align meminst icount 17
+Reading line: stu r4, r1, -16 // icount 18
+Reading line: nop // to align meminst icount 19
+Reading line: st r6, r0, 14 // icount 20
+Reading line: nop // to align meminst icount 21
+Reading line: ld r3, r1, 10 // icount 22
+Reading line: nop // to align meminst icount 23
+Reading line: ld r2, r1, 6 // icount 24
+Reading line: nop // to align meminst icount 25
+Reading line: ld r5, r0, -4 // icount 26
+Reading line: nop // to align meminst icount 27
+Reading line: stu r5, r0, -6 // icount 28
+Reading line: nop // to align meminst icount 29
+Reading line: st r3, r0, 14 // icount 30
+Reading line: nop // to align meminst icount 31
+Reading line: st r2, r0, 10 // icount 32
+Reading line: nop // to align meminst icount 33
+Reading line: ld r5, r1, -10 // icount 34
+Reading line: nop // to align meminst icount 35
+Reading line: stu r5, r0, 2 // icount 36
+Reading line: stu r5, r0, -14 // icount 37
+Reading line: lbi r2, 0 // icount 38
+Reading line: lbi r3, 0 // icount 39
+Reading line: nop // to align branch icount 40
+Reading line: bltz r1, 16 // icount 41
+Reading line: xor r3, r1, r6 // icount 42
+Reading line: xor r7, r3, r5 // icount 43
+Reading line: subi r3, r4, 11 // icount 44
+Reading line: andni r5, r3, 0 // icount 45
+Reading line: andn r5, r4, r5 // icount 46
+Reading line: srli r5, r5, 4 // icount 47
+Reading line: andni r0, r0, 1 // icount 48
+Reading line: st r3, r0, 6 // icount 49
+Reading line: xori r6, r7, 7 // icount 50
+Reading line: addi r3, r3, 11 // icount 51
+Reading line: sle r2, r7, r5 // icount 52
+Reading line: sub r5, r7, r0 // icount 53
+Reading line: subi r7, r3, 4 // icount 54
+Reading line: nop // to align meminst icount 55
+Reading line: andni r7, r7, 1 // icount 56
+Reading line: st r6, r7, 12 // icount 57
+Reading line: srli r3, r5, 10 // icount 58
+Reading line: xor r6, r5, r4 // icount 59
+Reading line: xor r2, r5, r3 // icount 60
+Reading line: nop // to align meminst icount 61
+Reading line: ld r2, r1, 6 // icount 62
+Reading line: nop // to align meminst icount 63
+Reading line: ld r2, r1, 6 // icount 64
+Reading line: nop // to align meminst icount 65
+Reading line: ld r6, r0, -12 // icount 66
+Reading line: nop // to align meminst icount 67
+Reading line: stu r5, r1, -2 // icount 68
+Reading line: nop // to align meminst icount 69
+Reading line: ld r4, r0, 8 // icount 70
+Reading line: nop // to align meminst icount 71
+Reading line: ld r6, r0, 10 // icount 72
+Reading line: nop // to align meminst icount 73
+Reading line: ld r5, r1, 6 // icount 74
+Reading line: nop // to align meminst icount 75
+Reading line: stu r2, r1, 8 // icount 76
+Reading line: nop // to align meminst icount 77
+Reading line: ld r2, r0, -12 // icount 78
+Reading line: nop // to align meminst icount 79
+Reading line: stu r3, r1, 6 // icount 80
+Reading line: stu r6, r1, 14 // icount 81
+Reading line: slt r5, r4, r5 // icount 82
+Reading line: nop // to align meminst icount 83
+Reading line: ld r4, r1, -4 // icount 84
+Reading line: nop // to align meminst icount 85
+Reading line: st r3, r1, -12 // icount 86
+Reading line: nop // to align meminst icount 87
+Reading line: ld r5, r0, 8 // icount 88
+Reading line: nop // to align meminst icount 89
+Reading line: st r3, r0, 0 // icount 90
+Reading line: nop // to align meminst icount 91
+Reading line: ld r3, r1, 12 // icount 92
+Reading line: nop // to align meminst icount 93
+Reading line: ld r6, r1, -10 // icount 94
+Reading line: nop // to align meminst icount 95
+Reading line: ld r4, r1, 4 // icount 96
+Reading line: nop // to align meminst icount 97
+Reading line: stu r2, r0, 2 // icount 98
+Reading line: nop // to align meminst icount 99
+Reading line: ld r5, r1, -12 // icount 100
+Reading line: nop // to align meminst icount 101
+Reading line: stu r5, r1, 10 // icount 102
+Reading line: nop // to align meminst icount 103
+Reading line: st r6, r1, 4 // icount 104
+Reading line: nop // to align meminst icount 105
+Reading line: ld r6, r0, 14 // icount 106
+Reading line: nop // to align meminst icount 107
+Reading line: st r5, r1, -2 // icount 108
+Reading line: nop // to align meminst icount 109
+Reading line: ld r4, r0, -4 // icount 110
+Reading line: nop // to align meminst icount 111
+Reading line: ld r6, r0, -8 // icount 112
+Reading line: nop // to align meminst icount 113
+Reading line: ld r5, r1, -6 // icount 114
+Reading line: nop // to align meminst icount 115
+Reading line: st r6, r1, 4 // icount 116
+Reading line: nop // to align meminst icount 117
+Reading line: ld r3, r1, -8 // icount 118
+Reading line: nop // to align meminst icount 119
+Reading line: st r6, r1, 0 // icount 120
+Reading line: nop // to align meminst icount 121
+Reading line: stu r5, r0, 4 // icount 122
+Reading line: nop // to align meminst icount 123
+Reading line: ld r4, r1, 8 // icount 124
+Reading line: nop // to align meminst icount 125
+Reading line: ld r4, r0, -16 // icount 126
+Reading line: nop // to align meminst icount 127
+Reading line: ld r2, r1, 6 // icount 128
+Reading line: nop // to align meminst icount 129
+Reading line: ld r4, r1, -6 // icount 130
+Reading line: nop // to align meminst icount 131
+Reading line: ld r4, r0, -8 // icount 132
+Reading line: stu r3, r0, -6 // icount 133
+Reading line: slt r6, r2, r4 // icount 134
+Reading line: nop // to align meminst icount 135
+Reading line: st r3, r1, 0 // icount 136
+Reading line: nop // to align meminst icount 137
+Reading line: ld r4, r1, -2 // icount 138
+Reading line: nop // to align meminst icount 139
+Reading line: ld r5, r0, -16 // icount 140
+Reading line: nop // to align meminst icount 141
+Reading line: ld r2, r0, -14 // icount 142
+Reading line: nop // to align meminst icount 143
+Reading line: ld r2, r1, 12 // icount 144
+Reading line: nop // to align meminst icount 145
+Reading line: stu r2, r1, 14 // icount 146
+Reading line: nop // to align meminst icount 147
+Reading line: stu r3, r1, -4 // icount 148
+Reading line: nop // to align meminst icount 149
+Reading line: st r4, r1, 12 // icount 150
+Reading line: nop // to align meminst icount 151
+Reading line: stu r6, r1, 0 // icount 152
+Reading line: nop // to align meminst icount 153
+Reading line: ld r3, r0, 12 // icount 154
+Reading line: nop // to align meminst icount 155
+Reading line: stu r3, r1, -10 // icount 156
+Reading line: nop // to align meminst icount 157
+Reading line: ld r5, r0, 4 // icount 158
+Reading line: nop // to align meminst icount 159
+Reading line: ld r5, r0, 4 // icount 160
+Reading line: nop // to align meminst icount 161
+Reading line: st r6, r1, 10 // icount 162
+Reading line: nop // to align meminst icount 163
+Reading line: stu r4, r0, -12 // icount 164
+Reading line: nop // to align meminst icount 165
+Reading line: st r5, r0, 6 // icount 166
+Reading line: nop // to align meminst icount 167
+Reading line: ld r6, r0, -14 // icount 168
+Reading line: nop // to align meminst icount 169
+Reading line: stu r6, r0, -2 // icount 170
+Reading line: nop // to align meminst icount 171
+Reading line: ld r3, r1, -14 // icount 172
+Reading line: nop // to align meminst icount 173
+Reading line: ld r2, r1, 8 // icount 174
+Reading line: nop // to align meminst icount 175
+Reading line: st r6, r1, 8 // icount 176
+Reading line: nop // to align meminst icount 177
+Reading line: ld r3, r1, 4 // icount 178
+Reading line: nop // to align meminst icount 179
+Reading line: ld r4, r1, 14 // icount 180
+Reading line: nop // to align meminst icount 181
+Reading line: ld r4, r1, 4 // icount 182
+Reading line: nop // to align meminst icount 183
+Reading line: ld r2, r0, 10 // icount 184
+Reading line: nop // to align meminst icount 185
+Reading line: st r6, r0, 2 // icount 186
+Reading line: nop // to align meminst icount 187
+Reading line: stu r3, r1, 6 // icount 188
+Reading line: nop // to align meminst icount 189
+Reading line: ld r2, r1, 10 // icount 190
+Reading line: nop // to align meminst icount 191
+Reading line: ld r6, r1, -14 // icount 192
+Reading line: nop // to align meminst icount 193
+Reading line: ld r5, r1, -2 // icount 194
+Reading line: nop // to align meminst icount 195
+Reading line: stu r3, r0, -14 // icount 196
+Reading line: nop // to align meminst icount 197
+Reading line: st r6, r1, 0 // icount 198
+Reading line: nop // to align meminst icount 199
+Reading line: st r2, r1, 0 // icount 200
+Reading line: nop // to align meminst icount 201
+Reading line: ld r5, r0, -14 // icount 202
+Reading line: nop // to align meminst icount 203
+Reading line: ld r3, r1, -14 // icount 204
+Reading line: nop // to align meminst icount 205
+Reading line: ld r4, r1, 14 // icount 206
+Reading line: nop // to align meminst icount 207
+Reading line: st r3, r1, -4 // icount 208
+Reading line: nop // to align meminst icount 209
+Reading line: st r5, r1, -14 // icount 210
+Reading line: nop // to align meminst icount 211
+Reading line: st r3, r0, -14 // icount 212
+Reading line: nop // to align meminst icount 213
+Reading line: ld r6, r1, 14 // icount 214
+Reading line: nop // to align meminst icount 215
+Reading line: ld r2, r1, -12 // icount 216
+Reading line: ld r4, r0, 2 // icount 217
+Reading line: rol r3, r4, r1 // icount 218
+Reading line: nop // to align meminst icount 219
+Reading line: stu r6, r1, -14 // icount 220
+Reading line: nop // to align meminst icount 221
+Reading line: st r4, r1, 8 // icount 222
+Reading line: nop // to align meminst icount 223
+Reading line: st r2, r0, -16 // icount 224
+Reading line: nop // to align meminst icount 225
+Reading line: stu r3, r0, -6 // icount 226
+Reading line: nop // to align meminst icount 227
+Reading line: ld r5, r0, -14 // icount 228
+Reading line: nop // to align meminst icount 229
+Reading line: stu r4, r0, 12 // icount 230
+Reading line: nop // to align meminst icount 231
+Reading line: st r3, r1, 6 // icount 232
+Reading line: nop // to align meminst icount 233
+Reading line: ld r3, r1, -8 // icount 234
+Reading line: nop // to align meminst icount 235
+Reading line: ld r4, r0, 14 // icount 236
+Reading line: nop // to align meminst icount 237
+Reading line: stu r2, r0, -8 // icount 238
+Reading line: nop // to align meminst icount 239
+Reading line: stu r6, r1, 2 // icount 240
+Reading line: nop // to align meminst icount 241
+Reading line: ld r2, r0, -8 // icount 242
+Reading line: st r3, r0, 6 // icount 243
+Reading line: lbi r2, 0 // icount 244
+Reading line: lbi r3, 0 // icount 245
+Reading line: nop // to align branch icount 246
+Reading line: beqz r5, 12 // icount 247
+Reading line: seq r5, r0, r7 // icount 248
+Reading line: nop // to align meminst icount 249
+Reading line: andni r4, r4, 1 // icount 250
+Reading line: st r3, r4, 6 // icount 251
+Reading line: lbi r2, 3 // icount 252
+Reading line: andn r2, r0, r6 // icount 253
+Reading line: rol r7, r7, r4 // icount 254
+Reading line: sle r4, r7, r6 // icount 255
+Reading line: slt r4, r0, r6 // icount 256
+Reading line: addi r6, r1, 15 // icount 257
+Reading line: sle r4, r4, r4 // icount 258
+Reading line: andn r6, r2, r1 // icount 259
+Reading line: sub r3, r3, r4 // icount 260
+Reading line: nop // to align meminst icount 261
+Reading line: andni r6, r6, 1 // icount 262
+Reading line: nop // to align meminst icount 263
+Reading line: ld r2, r6, 0 // icount 264
+Reading line: nop // to align meminst icount 265
+Reading line: st r6, r1, -6 // icount 266
+Reading line: nop // to align meminst icount 267
+Reading line: st r3, r0, 10 // icount 268
+Reading line: nop // to align meminst icount 269
+Reading line: st r2, r1, 2 // icount 270
+Reading line: nop // to align meminst icount 271
+Reading line: st r3, r1, -2 // icount 272
+Reading line: nop // to align meminst icount 273
+Reading line: st r2, r1, -6 // icount 274
+Reading line: nop // to align meminst icount 275
+Reading line: st r5, r0, 8 // icount 276
+Reading line: nop // to align meminst icount 277
+Reading line: st r5, r1, -16 // icount 278
+Reading line: nop // to align meminst icount 279
+Reading line: ld r4, r0, -4 // icount 280
+Reading line: nop // to align meminst icount 281
+Reading line: ld r5, r1, 0 // icount 282
+Reading line: nop // to align meminst icount 283
+Reading line: ld r5, r0, -14 // icount 284
+Reading line: nop // to align meminst icount 285
+Reading line: ld r5, r0, -8 // icount 286
+Reading line: nop // to align meminst icount 287
+Reading line: stu r4, r0, -2 // icount 288
+Reading line: nop // to align meminst icount 289
+Reading line: st r4, r1, -14 // icount 290
+Reading line: nop // to align meminst icount 291
+Reading line: stu r5, r0, -8 // icount 292
+Reading line: nop // to align meminst icount 293
+Reading line: ld r4, r1, 6 // icount 294
+Reading line: nop // to align meminst icount 295
+Reading line: stu r5, r1, -8 // icount 296
+Reading line: nop // to align meminst icount 297
+Reading line: stu r2, r0, -10 // icount 298
+Reading line: nop // to align meminst icount 299
+Reading line: ld r4, r1, 6 // icount 300
+Reading line: nop // to align meminst icount 301
+Reading line: ld r4, r1, -14 // icount 302
+Reading line: nop // to align meminst icount 303
+Reading line: st r6, r1, 2 // icount 304
+Reading line: nop // to align meminst icount 305
+Reading line: ld r2, r0, 2 // icount 306
+Reading line: nop // to align meminst icount 307
+Reading line: stu r5, r1, 2 // icount 308
+Reading line: nop // to align meminst icount 309
+Reading line: stu r4, r0, -16 // icount 310
+Reading line: nop // to align meminst icount 311
+Reading line: ld r6, r0, 2 // icount 312
+Reading line: nop // to align meminst icount 313
+Reading line: ld r3, r0, 10 // icount 314
+Reading line: nop // to align meminst icount 315
+Reading line: ld r4, r1, 10 // icount 316
+Reading line: nop // to align meminst icount 317
+Reading line: ld r4, r0, 14 // icount 318
+Reading line: nop // to align meminst icount 319
+Reading line: stu r6, r1, 4 // icount 320
+Reading line: nop // to align meminst icount 321
+Reading line: stu r3, r1, -16 // icount 322
+Reading line: nop // to align meminst icount 323
+Reading line: stu r3, r1, 12 // icount 324
+Reading line: nop // to align meminst icount 325
+Reading line: ld r4, r1, 8 // icount 326
+Reading line: nop // to align meminst icount 327
+Reading line: stu r5, r1, -6 // icount 328
+Reading line: nop // to align meminst icount 329
+Reading line: stu r2, r1, -12 // icount 330
+Reading line: nop // to align meminst icount 331
+Reading line: st r3, r1, -12 // icount 332
+Reading line: nop // to align meminst icount 333
+Reading line: ld r2, r0, 6 // icount 334
+Reading line: nop // to align meminst icount 335
+Reading line: st r3, r0, -4 // icount 336
+Reading line: nop // to align meminst icount 337
+Reading line: ld r6, r1, -16 // icount 338
+Reading line: nop // to align meminst icount 339
+Reading line: stu r4, r1, -14 // icount 340
+Reading line: nop // to align meminst icount 341
+Reading line: ld r6, r1, -12 // icount 342
+Reading line: nop // to align meminst icount 343
+Reading line: ld r5, r0, -4 // icount 344
+Reading line: nop // to align meminst icount 345
+Reading line: stu r5, r1, 8 // icount 346
+Reading line: nop // to align meminst icount 347
+Reading line: ld r2, r1, -8 // icount 348
+Reading line: nop // to align meminst icount 349
+Reading line: st r3, r1, -6 // icount 350
+Reading line: nop // to align meminst icount 351
+Reading line: ld r6, r0, -16 // icount 352
+Reading line: nop // to align meminst icount 353
+Reading line: ld r2, r0, 14 // icount 354
+Reading line: nop // to align meminst icount 355
+Reading line: ld r6, r0, -6 // icount 356
+Reading line: nop // to align meminst icount 357
+Reading line: stu r4, r0, -12 // icount 358
+Reading line: nop // to align meminst icount 359
+Reading line: ld r3, r1, 4 // icount 360
+Reading line: nop // to align meminst icount 361
+Reading line: ld r4, r0, -6 // icount 362
+Reading line: nop // to align meminst icount 363
+Reading line: st r2, r1, -4 // icount 364
+Reading line: nop // to align meminst icount 365
+Reading line: ld r2, r1, 12 // icount 366
+Reading line: nop // to align meminst icount 367
+Reading line: st r2, r1, -4 // icount 368
+Reading line: nop // to align meminst icount 369
+Reading line: ld r3, r1, -8 // icount 370
+Reading line: nop // to align meminst icount 371
+Reading line: ld r2, r0, 14 // icount 372
+Reading line: nop // to align meminst icount 373
+Reading line: stu r4, r0, -10 // icount 374
+Reading line: nop // to align meminst icount 375
+Reading line: ld r3, r0, -6 // icount 376
+Reading line: nop // to align meminst icount 377
+Reading line: ld r6, r1, 10 // icount 378
+Reading line: nop // to align meminst icount 379
+Reading line: stu r6, r1, 6 // icount 380
+Reading line: nop // to align meminst icount 381
+Reading line: ld r6, r0, -4 // icount 382
+Reading line: stu r5, r1, 10 // icount 383
+Reading line: addi r0, r0, -4   // change base addr // icount 384
+Reading line: nop // to align meminst icount 385
+Reading line: ld r4, r0, 12 // icount 386
+Reading line: nop // to align meminst icount 387
+Reading line: st r4, r1, 6 // icount 388
+Reading line: nop // to align meminst icount 389
+Reading line: st r6, r1, -14 // icount 390
+Reading line: nop // to align meminst icount 391
+Reading line: ld r6, r1, 10 // icount 392
+Reading line: nop // to align meminst icount 393
+Reading line: ld r4, r1, -6 // icount 394
+Reading line: nop // to align meminst icount 395
+Reading line: st r5, r1, 6 // icount 396
+Reading line: nop // to align meminst icount 397
+Reading line: stu r6, r1, 4 // icount 398
+Reading line: nop // to align meminst icount 399
+Reading line: ld r2, r0, -12 // icount 400
+Reading line: nop // to align meminst icount 401
+Reading line: st r2, r1, -14 // icount 402
+Reading line: nop // to align meminst icount 403
+Reading line: ld r5, r0, -8 // icount 404
+Reading line: nop // to align meminst icount 405
+Reading line: st r5, r1, -4 // icount 406
+Reading line: nop // to align meminst icount 407
+Reading line: st r5, r0, -6 // icount 408
+Reading line: nop // to align meminst icount 409
+Reading line: ld r6, r0, -4 // icount 410
+Reading line: nop // to align meminst icount 411
+Reading line: ld r4, r1, -16 // icount 412
+Reading line: nop // to align meminst icount 413
+Reading line: ld r6, r0, 0 // icount 414
+Reading line: nop // to align meminst icount 415
+Reading line: st r3, r0, 10 // icount 416
+Reading line: nop // to align meminst icount 417
+Reading line: ld r5, r0, 0 // icount 418
+Reading line: nop // to align meminst icount 419
+Reading line: stu r5, r1, -16 // icount 420
+Reading line: nop // to align meminst icount 421
+Reading line: ld r2, r1, -14 // icount 422
+Reading line: nop // to align meminst icount 423
+Reading line: st r4, r0, -10 // icount 424
+Reading line: nop // to align meminst icount 425
+Reading line: ld r6, r1, -10 // icount 426
+Reading line: nop // to align meminst icount 427
+Reading line: st r3, r1, -6 // icount 428
+Reading line: nop // to align meminst icount 429
+Reading line: ld r6, r1, 10 // icount 430
+Reading line: nop // to align meminst icount 431
+Reading line: stu r3, r0, -6 // icount 432
+Reading line: nop // to align meminst icount 433
+Reading line: st r2, r0, 14 // icount 434
+Reading line: nop // to align meminst icount 435
+Reading line: st r3, r0, -6 // icount 436
+Reading line: nop // to align meminst icount 437
+Reading line: stu r3, r1, -10 // icount 438
+Reading line: nop // to align meminst icount 439
+Reading line: st r6, r0, -16 // icount 440
+Reading line: nop // to align meminst icount 441
+Reading line: ld r2, r0, -16 // icount 442
+Reading line: nop // to align meminst icount 443
+Reading line: ld r3, r1, 10 // icount 444
+Reading line: nop // to align meminst icount 445
+Reading line: st r3, r0, 6 // icount 446
+Reading line: nop // to align meminst icount 447
+Reading line: stu r4, r1, -6 // icount 448
+Reading line: nop // to align meminst icount 449
+Reading line: stu r4, r1, -6 // icount 450
+Reading line: nop // to align meminst icount 451
+Reading line: stu r3, r1, 8 // icount 452
+Reading line: nop // to align meminst icount 453
+Reading line: stu r4, r1, 0 // icount 454
+Reading line: nop // to align meminst icount 455
+Reading line: ld r6, r0, 0 // icount 456
+Reading line: nop // to align meminst icount 457
+Reading line: stu r4, r0, -4 // icount 458
+Reading line: nop // to align meminst icount 459
+Reading line: st r3, r1, 8 // icount 460
+Reading line: nop // to align meminst icount 461
+Reading line: st r5, r1, 2 // icount 462
+Reading line: nop // to align meminst icount 463
+Reading line: ld r6, r1, -2 // icount 464
+Reading line: nop // to align meminst icount 465
+Reading line: ld r4, r0, 4 // icount 466
+Reading line: nop // to align meminst icount 467
+Reading line: ld r4, r0, -4 // icount 468
+Reading line: nop // to align meminst icount 469
+Reading line: stu r6, r1, -10 // icount 470
+Reading line: nop // to align meminst icount 471
+Reading line: ld r6, r1, 4 // icount 472
+Reading line: nop // to align meminst icount 473
+Reading line: stu r5, r1, -14 // icount 474
+Reading line: nop // to align meminst icount 475
+Reading line: stu r3, r1, 0 // icount 476
+Reading line: nop // to align meminst icount 477
+Reading line: stu r4, r1, -6 // icount 478
+Reading line: nop // to align meminst icount 479
+Reading line: ld r4, r1, -12 // icount 480
+Reading line: nop // to align meminst icount 481
+Reading line: ld r5, r1, 10 // icount 482
+Reading line: nop // to align meminst icount 483
+Reading line: stu r4, r0, -6 // icount 484
+Reading line: nop // to align meminst icount 485
+Reading line: st r5, r0, -2 // icount 486
+Reading line: nop // to align meminst icount 487
+Reading line: st r2, r1, -10 // icount 488
+Reading line: nop // to align meminst icount 489
+Reading line: ld r2, r0, 0 // icount 490
+Reading line: nop // to align meminst icount 491
+Reading line: ld r4, r0, -12 // icount 492
+Reading line: nop // to align meminst icount 493
+Reading line: ld r6, r0, -10 // icount 494
+Reading line: nop // to align meminst icount 495
+Reading line: st r3, r1, -6 // icount 496
+Reading line: nop // to align meminst icount 497
+Reading line: ld r4, r0, 14 // icount 498
+Reading line: nop // to align meminst icount 499
+Reading line: ld r3, r0, -4 // icount 500
+Reading line: nop // to align meminst icount 501
+Reading line: ld r6, r1, -12 // icount 502
+Reading line: nop // to align meminst icount 503
+Reading line: ld r5, r0, -6 // icount 504
+Reading line: nop // to align meminst icount 505
+Reading line: ld r4, r0, -14 // icount 506
+Reading line: nop // to align meminst icount 507
+Reading line: st r3, r0, -8 // icount 508
+Reading line: nop // to align meminst icount 509
+Reading line: st r4, r0, -8 // icount 510
+Reading line: nop // to align meminst icount 511
+Reading line: st r6, r0, -16 // icount 512
+Reading line: nop // to align meminst icount 513
+Reading line: ld r6, r0, 0 // icount 514
+Reading line: nop // to align meminst icount 515
+Reading line: stu r2, r0, -12 // icount 516
+Reading line: nop // to align meminst icount 517
+Reading line: st r5, r1, 6 // icount 518
+Reading line: nop // to align meminst icount 519
+Reading line: stu r5, r0, -2 // icount 520
+Reading line: nop // to align meminst icount 521
+Reading line: stu r6, r0, -10 // icount 522
+Reading line: nop // to align meminst icount 523
+Reading line: stu r5, r0, 0 // icount 524
+Reading line: nop // to align meminst icount 525
+Reading line: ld r4, r0, 10 // icount 526
+Reading line: nop // to align meminst icount 527
+Reading line: ld r2, r1, -16 // icount 528
+Reading line: nop // to align meminst icount 529
+Reading line: ld r3, r0, -12 // icount 530
+Reading line: nop // to align meminst icount 531
+Reading line: stu r4, r0, 14 // icount 532
+Reading line: nop // to align meminst icount 533
+Reading line: ld r5, r0, -6 // icount 534
+Reading line: nop // to align meminst icount 535
+Reading line: stu r2, r1, -6 // icount 536
+Reading line: nop // to align meminst icount 537
+Reading line: st r4, r0, 6 // icount 538
+Reading line: nop // to align meminst icount 539
+Reading line: ld r5, r0, 2 // icount 540
+Reading line: nop // to align meminst icount 541
+Reading line: ld r2, r1, -12 // icount 542
+Reading line: nop // to align meminst icount 543
+Reading line: stu r3, r0, 2 // icount 544
+Reading line: nop // to align meminst icount 545
+Reading line: st r6, r1, 6 // icount 546
+Reading line: nop // to align meminst icount 547
+Reading line: ld r3, r1, -14 // icount 548
+Reading line: nop // to align meminst icount 549
+Reading line: ld r4, r1, 2 // icount 550
+Reading line: nop // to align meminst icount 551
+Reading line: ld r4, r1, 6 // icount 552
+Reading line: nop // to align meminst icount 553
+Reading line: st r2, r0, -14 // icount 554
+Reading line: nop // to align meminst icount 555
+Reading line: stu r2, r1, 6 // icount 556
+Reading line: nop // to align meminst icount 557
+Reading line: stu r5, r1, -6 // icount 558
+Reading line: nop // to align meminst icount 559
+Reading line: st r5, r0, 12 // icount 560
+Reading line: nop // to align meminst icount 561
+Reading line: ld r3, r1, -14 // icount 562
+Reading line: nop // to align meminst icount 563
+Reading line: stu r2, r1, -8 // icount 564
+Reading line: st r5, r1, -10 // icount 565
+Reading line: addi r0, r0, 0   // change base addr // icount 566
+Reading line: nop // to align meminst icount 567
+Reading line: ld r3, r0, 14 // icount 568
+Reading line: nop // to align meminst icount 569
+Reading line: st r2, r0, 10 // icount 570
+Reading line: nop // to align meminst icount 571
+Reading line: ld r5, r0, 6 // icount 572
+Reading line: nop // to align meminst icount 573
+Reading line: stu r4, r1, -16 // icount 574
+Reading line: nop // to align meminst icount 575
+Reading line: ld r2, r1, -2 // icount 576
+Reading line: nop // to align meminst icount 577
+Reading line: stu r4, r1, -6 // icount 578
+Reading line: nop // to align meminst icount 579
+Reading line: stu r5, r0, 10 // icount 580
+Reading line: nop // to align meminst icount 581
+Reading line: ld r4, r0, -6 // icount 582
+Reading line: nop // to align meminst icount 583
+Reading line: st r4, r1, -16 // icount 584
+Reading line: nop // to align meminst icount 585
+Reading line: stu r5, r0, -2 // icount 586
+Reading line: nop // to align meminst icount 587
+Reading line: ld r6, r0, 14 // icount 588
+Reading line: nop // to align meminst icount 589
+Reading line: st r4, r0, 0 // icount 590
+Reading line: nop // to align meminst icount 591
+Reading line: st r5, r1, -12 // icount 592
+Reading line: st r5, r1, -14 // icount 593
+Reading line: addi r0, r0, 8   // change base addr // icount 594
+Reading line: nop // to align meminst icount 595
+Reading line: ld r5, r0, -12 // icount 596
+Reading line: nop // to align meminst icount 597
+Reading line: ld r4, r1, 10 // icount 598
+Reading line: nop // to align meminst icount 599
+Reading line: st r4, r1, -6 // icount 600
+Reading line: nop // to align meminst icount 601
+Reading line: ld r2, r1, 4 // icount 602
+Reading line: nop // to align meminst icount 603
+Reading line: ld r5, r0, 8 // icount 604
+Reading line: nop // to align meminst icount 605
+Reading line: st r3, r1, -16 // icount 606
+Reading line: nop // to align meminst icount 607
+Reading line: ld r3, r0, -4 // icount 608
+Reading line: nop // to align meminst icount 609
+Reading line: st r4, r1, -2 // icount 610
+Reading line: nop // to align meminst icount 611
+Reading line: ld r2, r0, 12 // icount 612
+Reading line: nop // to align meminst icount 613
+Reading line: st r5, r1, 4 // icount 614
+Reading line: nop // to align meminst icount 615
+Reading line: st r3, r1, 2 // icount 616
+Reading line: nop // to align meminst icount 617
+Reading line: st r6, r1, 14 // icount 618
+Reading line: nop // to align meminst icount 619
+Reading line: st r6, r1, -2 // icount 620
+Reading line: nop // to align meminst icount 621
+Reading line: ld r6, r1, -10 // icount 622
+Reading line: nop // to align meminst icount 623
+Reading line: ld r6, r1, 2 // icount 624
+Reading line: nop // to align meminst icount 625
+Reading line: st r2, r1, -16 // icount 626
+Reading line: nop // to align meminst icount 627
+Reading line: ld r3, r1, 8 // icount 628
+Reading line: nop // to align meminst icount 629
+Reading line: stu r2, r0, 12 // icount 630
+Reading line: nop // to align meminst icount 631
+Reading line: stu r4, r1, 8 // icount 632
+Reading line: nop // to align meminst icount 633
+Reading line: ld r2, r0, 0 // icount 634
+Reading line: nop // to align meminst icount 635
+Reading line: st r5, r0, -10 // icount 636
+Reading line: nop // to align meminst icount 637
+Reading line: stu r3, r0, -16 // icount 638
+Reading line: nop // to align meminst icount 639
+Reading line: st r5, r0, -10 // icount 640
+Reading line: nop // to align meminst icount 641
+Reading line: ld r3, r0, 14 // icount 642
+Reading line: nop // to align meminst icount 643
+Reading line: ld r6, r1, 4 // icount 644
+Reading line: nop // to align meminst icount 645
+Reading line: ld r5, r0, 4 // icount 646
+Reading line: nop // to align meminst icount 647
+Reading line: st r4, r0, -8 // icount 648
+Reading line: nop // to align meminst icount 649
+Reading line: ld r2, r1, -14 // icount 650
+Reading line: nop // to align meminst icount 651
+Reading line: ld r3, r0, -6 // icount 652
+Reading line: nop // to align meminst icount 653
+Reading line: st r5, r1, -6 // icount 654
+Reading line: nop // to align meminst icount 655
+Reading line: st r4, r1, 4 // icount 656
+Reading line: nop // to align meminst icount 657
+Reading line: ld r2, r0, -12 // icount 658
+Reading line: nop // to align meminst icount 659
+Reading line: stu r6, r0, 14 // icount 660
+Reading line: nop // to align meminst icount 661
+Reading line: ld r4, r0, -2 // icount 662
+Reading line: nop // to align meminst icount 663
+Reading line: stu r3, r1, -16 // icount 664
+Reading line: nop // to align meminst icount 665
+Reading line: stu r6, r1, 8 // icount 666
+Reading line: nop // to align meminst icount 667
+Reading line: ld r2, r0, -16 // icount 668
+Reading line: nop // to align meminst icount 669
+Reading line: ld r3, r0, -6 // icount 670
+Reading line: nop // to align meminst icount 671
+Reading line: stu r2, r1, 12 // icount 672
+Reading line: st r3, r1, 0 // icount 673
+Reading line: andn r7, r1, r0 // icount 674
+Reading line: nop // to align meminst icount 675
+Reading line: st r5, r0, 6 // icount 676
+Reading line: nop // to align meminst icount 677
+Reading line: ld r3, r0, -16 // icount 678
+Reading line: nop // to align meminst icount 679
+Reading line: ld r4, r0, 12 // icount 680
+Reading line: nop // to align meminst icount 681
+Reading line: ld r4, r1, -14 // icount 682
+Reading line: nop // to align meminst icount 683
+Reading line: ld r3, r0, -10 // icount 684
+Reading line: nop // to align meminst icount 685
+Reading line: stu r4, r1, -16 // icount 686
+Reading line: nop // to align meminst icount 687
+Reading line: stu r6, r0, -6 // icount 688
+Reading line: nop // to align meminst icount 689
+Reading line: ld r6, r1, 14 // icount 690
+Reading line: nop // to align meminst icount 691
+Reading line: ld r6, r0, -14 // icount 692
+Reading line: st r2, r0, -16 // icount 693
+Reading line: addi r1, r1, -4   // change base addr // icount 694
+Reading line: nop // to align meminst icount 695
+Reading line: st r6, r1, -10 // icount 696
+Reading line: nop // to align meminst icount 697
+Reading line: ld r2, r0, -2 // icount 698
+Reading line: nop // to align meminst icount 699
+Reading line: st r3, r0, 6 // icount 700
+Reading line: nop // to align meminst icount 701
+Reading line: ld r2, r0, 10 // icount 702
+Reading line: nop // to align meminst icount 703
+Reading line: st r6, r0, 12 // icount 704
+Reading line: nop // to align meminst icount 705
+Reading line: st r2, r1, 14 // icount 706
+Reading line: nop // to align meminst icount 707
+Reading line: ld r3, r1, -6 // icount 708
+Reading line: nop // to align meminst icount 709
+Reading line: ld r3, r0, 12 // icount 710
+Reading line: nop // to align meminst icount 711
+Reading line: st r3, r0, 10 // icount 712
+Reading line: nop // to align meminst icount 713
+Reading line: ld r6, r1, -6 // icount 714
+Reading line: nop // to align meminst icount 715
+Reading line: stu r4, r1, 8 // icount 716
+Reading line: nop // to align meminst icount 717
+Reading line: stu r5, r0, 8 // icount 718
+Reading line: nop // to align meminst icount 719
+Reading line: ld r5, r1, 2 // icount 720
+Reading line: nop // to align meminst icount 721
+Reading line: ld r6, r0, 4 // icount 722
+Reading line: nop // to align meminst icount 723
+Reading line: stu r5, r1, -10 // icount 724
+Reading line: nop // to align meminst icount 725
+Reading line: ld r4, r1, 6 // icount 726
+Reading line: nop // to align meminst icount 727
+Reading line: st r6, r0, 14 // icount 728
+Reading line: nop // to align meminst icount 729
+Reading line: ld r3, r0, 0 // icount 730
+Reading line: nop // to align meminst icount 731
+Reading line: ld r5, r0, 6 // icount 732
+Reading line: nop // to align meminst icount 733
+Reading line: ld r2, r1, -2 // icount 734
+Reading line: nop // to align meminst icount 735
+Reading line: ld r5, r1, 4 // icount 736
+Reading line: nop // to align meminst icount 737
+Reading line: ld r5, r1, 14 // icount 738
+Reading line: nop // to align meminst icount 739
+Reading line: ld r6, r0, 12 // icount 740
+Reading line: nop // to align meminst icount 741
+Reading line: ld r6, r1, 2 // icount 742
+Reading line: nop // to align meminst icount 743
+Reading line: ld r5, r0, 12 // icount 744
+Reading line: nop // to align meminst icount 745
+Reading line: ld r4, r1, 14 // icount 746
+Reading line: nop // to align meminst icount 747
+Reading line: ld r3, r1, 14 // icount 748
+Reading line: nop // to align meminst icount 749
+Reading line: stu r3, r1, 10 // icount 750
+Reading line: nop // to align meminst icount 751
+Reading line: stu r4, r0, 0 // icount 752
+Reading line: nop // to align meminst icount 753
+Reading line: ld r4, r0, 8 // icount 754
+Reading line: nop // to align meminst icount 755
+Reading line: stu r3, r0, -6 // icount 756
+Reading line: nop // to align meminst icount 757
+Reading line: ld r5, r0, 8 // icount 758
+Reading line: stu r3, r1, 8 // icount 759
+Reading line: lbi r2, 0 // icount 760
+Reading line: lbi r6, 0 // icount 761
+Reading line: nop // to align branch icount 762
+Reading line: bnez r7, 8 // icount 763
+Reading line: xori r5, r1, 13 // icount 764
+Reading line: lbi r5, 12 // icount 765
+Reading line: subi r5, r0, 5 // icount 766
+Reading line: nop // to align meminst icount 767
+Reading line: andni r0, r0, 1 // icount 768
+Reading line: st r4, r0, 0 // icount 769
+Reading line: sll r3, r0, r7 // icount 770
+Reading line: sub r6, r3, r1 // icount 771
+Reading line: subi r6, r5, 3 // icount 772
+Reading line: nop // to align meminst icount 773
+Reading line: andni r1, r1, 1 // icount 774
+Reading line: nop // to align meminst icount 775
+Reading line: stu r3, r1, 14 // icount 776
+Reading line: st r5, r0, 12 // icount 777
+Reading line: addi r0, r0, -2   // change base addr // icount 778
+Reading line: nop // to align meminst icount 779
+Reading line: stu r2, r1, -4 // icount 780
+Reading line: nop // to align meminst icount 781
+Reading line: ld r6, r0, 2 // icount 782
+Reading line: nop // to align meminst icount 783
+Reading line: stu r3, r0, 8 // icount 784
+Reading line: nop // to align meminst icount 785
+Reading line: st r5, r0, 14 // icount 786
+Reading line: nop // to align meminst icount 787
+Reading line: stu r4, r0, 14 // icount 788
+Reading line: nop // to align meminst icount 789
+Reading line: ld r4, r0, 6 // icount 790
+Reading line: nop // to align meminst icount 791
+Reading line: ld r2, r1, -14 // icount 792
+Reading line: nop // to align meminst icount 793
+Reading line: ld r2, r1, 14 // icount 794
+Reading line: nop // to align meminst icount 795
+Reading line: stu r4, r0, -16 // icount 796
+Reading line: nop // to align meminst icount 797
+Reading line: ld r3, r0, -2 // icount 798
+Reading line: nop // to align meminst icount 799
+Reading line: ld r3, r1, 12 // icount 800
+Reading line: nop // to align meminst icount 801
+Reading line: stu r6, r0, -4 // icount 802
+Reading line: nop // to align meminst icount 803
+Reading line: stu r4, r1, -12 // icount 804
+Reading line: nop // to align meminst icount 805
+Reading line: st r3, r0, 10 // icount 806
+Reading line: nop // to align meminst icount 807
+Reading line: ld r3, r1, 6 // icount 808
+Reading line: nop // to align meminst icount 809
+Reading line: ld r4, r1, 12 // icount 810
+Reading line: nop // to align meminst icount 811
+Reading line: ld r2, r1, 6 // icount 812
+Reading line: nop // to align meminst icount 813
+Reading line: stu r5, r1, 8 // icount 814
+Reading line: nop // to align meminst icount 815
+Reading line: ld r2, r0, -10 // icount 816
+Reading line: nop // to align meminst icount 817
+Reading line: st r6, r1, -12 // icount 818
+Reading line: nop // to align meminst icount 819
+Reading line: ld r5, r1, -16 // icount 820
+Reading line: nop // to align meminst icount 821
+Reading line: stu r3, r0, 4 // icount 822
+Reading line: nop // to align meminst icount 823
+Reading line: st r4, r0, -6 // icount 824
+Reading line: nop // to align meminst icount 825
+Reading line: ld r2, r1, -10 // icount 826
+Reading line: nop // to align meminst icount 827
+Reading line: ld r4, r1, -14 // icount 828
+Reading line: nop // to align meminst icount 829
+Reading line: ld r3, r1, -6 // icount 830
+Reading line: nop // to align meminst icount 831
+Reading line: ld r6, r1, 4 // icount 832
+Reading line: nop // to align meminst icount 833
+Reading line: st r5, r1, 6 // icount 834
+Reading line: nop // to align meminst icount 835
+Reading line: ld r2, r1, -14 // icount 836
+Reading line: nop // to align meminst icount 837
+Reading line: ld r3, r0, 6 // icount 838
+Reading line: nop // to align meminst icount 839
+Reading line: stu r4, r0, 12 // icount 840
+Reading line: nop // to align meminst icount 841
+Reading line: ld r6, r1, -16 // icount 842
+Reading line: nop // to align meminst icount 843
+Reading line: ld r3, r1, -8 // icount 844
+Reading line: nop // to align meminst icount 845
+Reading line: st r2, r0, 6 // icount 846
+Reading line: nop // to align meminst icount 847
+Reading line: ld r3, r0, -16 // icount 848
+Reading line: nop // to align meminst icount 849
+Reading line: st r4, r1, 14 // icount 850
+Reading line: nop // to align meminst icount 851
+Reading line: ld r5, r1, 12 // icount 852
+Reading line: nop // to align meminst icount 853
+Reading line: ld r6, r0, 10 // icount 854
+Reading line: nop // to align meminst icount 855
+Reading line: stu r5, r1, 0 // icount 856
+Reading line: nop // to align meminst icount 857
+Reading line: stu r6, r1, -2 // icount 858
+Reading line: ld r4, r0, 8 // icount 859
+Reading line: ror r7, r5, r1 // icount 860
+Reading line: nop // to align meminst icount 861
+Reading line: st r2, r0, 2 // icount 862
+Reading line: nop // to align meminst icount 863
+Reading line: ld r2, r1, 14 // icount 864
+Reading line: nop // to align meminst icount 865
+Reading line: ld r3, r1, -14 // icount 866
+Reading line: nop // to align meminst icount 867
+Reading line: st r6, r0, -10 // icount 868
+Reading line: nop // to align meminst icount 869
+Reading line: ld r4, r0, -16 // icount 870
+Reading line: nop // to align meminst icount 871
+Reading line: ld r6, r1, 8 // icount 872
+Reading line: nop // to align meminst icount 873
+Reading line: ld r5, r0, 12 // icount 874
+Reading line: nop // to align meminst icount 875
+Reading line: ld r5, r0, -16 // icount 876
+Reading line: nop // to align meminst icount 877
+Reading line: stu r6, r0, -2 // icount 878
+Reading line: nop // to align meminst icount 879
+Reading line: ld r4, r1, -4 // icount 880
+Reading line: nop // to align meminst icount 881
+Reading line: st r5, r1, 4 // icount 882
+Reading line: nop // to align meminst icount 883
+Reading line: stu r4, r0, 0 // icount 884
+Reading line: nop // to align meminst icount 885
+Reading line: ld r4, r1, 6 // icount 886
+Reading line: nop // to align meminst icount 887
+Reading line: stu r4, r0, 4 // icount 888
+Reading line: nop // to align meminst icount 889
+Reading line: stu r5, r1, -10 // icount 890
+Reading line: nop // to align meminst icount 891
+Reading line: ld r5, r1, 6 // icount 892
+Reading line: nop // to align meminst icount 893
+Reading line: stu r3, r0, 2 // icount 894
+Reading line: nop // to align meminst icount 895
+Reading line: st r3, r0, -12 // icount 896
+Reading line: nop // to align meminst icount 897
+Reading line: st r2, r0, -2 // icount 898
+Reading line: nop // to align meminst icount 899
+Reading line: st r2, r0, 10 // icount 900
+Reading line: stu r4, r0, 14 // icount 901
+Reading line: roli r4, r5, 6 // icount 902
+Reading line: nop // to align meminst icount 903
+Reading line: st r6, r0, 0 // icount 904
+Reading line: nop // to align meminst icount 905
+Reading line: st r5, r0, -6 // icount 906
+Reading line: st r4, r0, -12 // icount 907
+Reading line: xori r2, r6, 7 // icount 908
+Reading line: lbi r3, 0 // icount 909
+Reading line: lbi r2, 0 // icount 910
+Reading line: beqz r0, 16 // icount 911
+Reading line: slli r7, r4, 12 // icount 912
+Reading line: sub r6, r0, r7 // icount 913
+Reading line: srli r3, r7, 9 // icount 914
+Reading line: add r5, r7, r1 // icount 915
+Reading line: seq r2, r1, r1 // icount 916
+Reading line: andni r3, r1, 13 // icount 917
+Reading line: xor r3, r1, r0 // icount 918
+Reading line: seq r6, r5, r3 // icount 919
+Reading line: ror r7, r0, r0 // icount 920
+Reading line: roli r4, r5, 12 // icount 921
+Reading line: rori r7, r2, 9 // icount 922
+Reading line: addi r3, r5, 2 // icount 923
+Reading line: rori r2, r7, 14 // icount 924
+Reading line: nop // to align meminst icount 925
+Reading line: andni r1, r1, 1 // icount 926
+Reading line: st r5, r1, 10 // icount 927
+Reading line: seq r2, r3, r5 // icount 928
+Reading line: nop // to align meminst icount 929
+Reading line: slt r4, r0, r4 // icount 930
+Reading line: nop // to align meminst icount 931
+Reading line: st r6, r0, 14 // icount 932
+Reading line: nop // to align meminst icount 933
+Reading line: st r3, r1, -8 // icount 934
+Reading line: nop // to align meminst icount 935
+Reading line: st r4, r1, -16 // icount 936
+Reading line: nop // to align meminst icount 937
+Reading line: ld r2, r1, 6 // icount 938
+Reading line: nop // to align meminst icount 939
+Reading line: stu r2, r1, 0 // icount 940
+Reading line: nop // to align meminst icount 941
+Reading line: ld r4, r0, -4 // icount 942
+Reading line: nop // to align meminst icount 943
+Reading line: st r4, r0, -8 // icount 944
+Reading line: nop // to align meminst icount 945
+Reading line: stu r5, r1, 4 // icount 946
+Reading line: nop // to align meminst icount 947
+Reading line: ld r3, r0, 0 // icount 948
+Reading line: nop // to align meminst icount 949
+Reading line: stu r6, r1, -2 // icount 950
+Reading line: nop // to align meminst icount 951
+Reading line: ld r4, r0, 6 // icount 952
+Reading line: nop // to align meminst icount 953
+Reading line: ld r2, r0, 10 // icount 954
+Reading line: nop // to align meminst icount 955
+Reading line: stu r2, r0, 0 // icount 956
+Reading line: nop // to align meminst icount 957
+Reading line: st r2, r1, 6 // icount 958
+Reading line: nop // to align meminst icount 959
+Reading line: st r6, r0, -16 // icount 960
+Reading line: nop // to align meminst icount 961
+Reading line: stu r3, r1, -10 // icount 962
+Reading line: nop // to align meminst icount 963
+Reading line: st r5, r1, 10 // icount 964
+Reading line: nop // to align meminst icount 965
+Reading line: ld r3, r1, 10 // icount 966
+Reading line: nop // to align meminst icount 967
+Reading line: st r2, r1, 4 // icount 968
+Reading line: nop // to align meminst icount 969
+Reading line: stu r6, r0, 0 // icount 970
+Reading line: nop // to align meminst icount 971
+Reading line: stu r5, r1, -6 // icount 972
+Reading line: stu r4, r1, -12 // icount 973
+Reading line: ror r3, r4, r5 // icount 974
+Reading line: nop // to align meminst icount 975
+Reading line: ld r6, r1, -16 // icount 976
+Reading line: nop // to align meminst icount 977
+Reading line: st r3, r0, -12 // icount 978
+Reading line: nop // to align meminst icount 979
+Reading line: st r5, r0, -10 // icount 980
+Reading line: nop // to align meminst icount 981
+Reading line: ld r4, r1, 14 // icount 982
+Reading line: nop // to align meminst icount 983
+Reading line: ld r3, r0, 0 // icount 984
+Reading line: nop // to align meminst icount 985
+Reading line: st r5, r1, -12 // icount 986
+Reading line: nop // to align meminst icount 987
+Reading line: st r5, r0, 4 // icount 988
+Reading line: nop // to align meminst icount 989
+Reading line: ld r6, r1, 2 // icount 990
+Reading line: nop // to align meminst icount 991
+Reading line: ld r3, r0, 0 // icount 992
+Reading line: nop // to align meminst icount 993
+Reading line: ld r2, r0, -12 // icount 994
+Reading line: nop // to align meminst icount 995
+Reading line: ld r4, r0, 0 // icount 996
+Reading line: nop // to align meminst icount 997
+Reading line: ld r2, r1, 14 // icount 998
+Reading line: st r2, r1, -2 // icount 999
+Reading line: addi r1, r1, 8   // change base addr // icount 1000
+Reading line: nop // to align meminst icount 1001
+Reading line: ld r2, r1, 4 // icount 1002
+Reading line: nop // to align meminst icount 1003
+Reading line: ld r6, r1, 2 // icount 1004
+Reading line: nop // to align meminst icount 1005
+Reading line: ld r5, r1, 0 // icount 1006
+Reading line: nop // to align meminst icount 1007
+Reading line: stu r4, r1, -8 // icount 1008
+Reading line: nop // to align meminst icount 1009
+Reading line: stu r5, r1, -4 // icount 1010
+Reading line: nop // to align meminst icount 1011
+Reading line: ld r6, r1, 10 // icount 1012
+Reading line: nop // to align meminst icount 1013
+Reading line: st r4, r0, 12 // icount 1014
+Reading line: nop // to align meminst icount 1015
+Reading line: ld r4, r0, -8 // icount 1016
+Reading line: nop // to align meminst icount 1017
+Reading line: ld r6, r1, 10 // icount 1018
+Reading line: st r3, r1, 6 // icount 1019
+Reading line: lbi r6, 0 // icount 1020
+Reading line: lbi r2, 0 // icount 1021
+Reading line: nop // to align branch icount 1022
+Reading line: bnez r4, 32 // icount 1023
+Reading line: andni r0, r0, 1 // icount 1024
+Reading line: ld r6, r0, 10 // icount 1025
+Reading line: addi r5, r3, 11 // icount 1026
+Reading line: addi r2, r6, 5 // icount 1027
+Reading line: addi r2, r7, 0 // icount 1028
+Reading line: add r3, r7, r1 // icount 1029
+Reading line: andni r6, r6, 1 // icount 1030
+Reading line: stu r5, r6, 2 // icount 1031
+Reading line: xor r4, r2, r4 // icount 1032
+Reading line: slbi r3, 15 // icount 1033
+Reading line: slli r4, r3, 7 // icount 1034
+Reading line: sub r7, r7, r3 // icount 1035
+Reading line: xori r5, r2, 11 // icount 1036
+Reading line: slli r7, r3, 6 // icount 1037
+Reading line: add r4, r0, r0 // icount 1038
+Reading line: srl r3, r1, r0 // icount 1039
+Reading line: andni r2, r1, 1 // icount 1040
+Reading line: andni r4, r1, 9 // icount 1041
+Reading line: addi r3, r5, 12 // icount 1042
+Reading line: andn r2, r7, r2 // icount 1043
+Reading line: roli r3, r5, 3 // icount 1044
+Reading line: nop // to align meminst icount 1045
+Reading line: andni r4, r4, 1 // icount 1046
+Reading line: stu r5, r4, 0 // icount 1047
+Reading line: slli r4, r2, 1 // icount 1048
+Reading line: slt r3, r0, r5 // icount 1049
+Reading line: andni r5, r5, 1 // icount 1050
+Reading line: ld r6, r5, 0 // icount 1051
+Reading line: slbi r2, 10 // icount 1052
+Reading line: srl r5, r0, r2 // icount 1053
+Reading line: subi r6, r7, 14 // icount 1054
+Reading line: slbi r3, 13 // icount 1055
+Reading line: slbi r7, 8 // icount 1056
+Reading line: srl r7, r7, r7 // icount 1057
+Reading line: rol r7, r0, r6 // icount 1058
+Reading line: sub r4, r5, r1 // icount 1059
+Reading line: andni r3, r3, 1 // icount 1060
+Reading line: nop // to align meminst icount 1061
+Reading line: st r3, r3, 10 // icount 1062
+Reading line: nop // to align meminst icount 1063
+Reading line: st r5, r1, 10 // icount 1064
+Reading line: nop // to align meminst icount 1065
+Reading line: stu r2, r0, 8 // icount 1066
+Reading line: nop // to align meminst icount 1067
+Reading line: st r5, r1, 0 // icount 1068
+Reading line: nop // to align meminst icount 1069
+Reading line: ld r3, r0, -6 // icount 1070
+Reading line: nop // to align meminst icount 1071
+Reading line: ld r6, r0, 8 // icount 1072
+Reading line: nop // to align meminst icount 1073
+Reading line: ld r3, r1, -14 // icount 1074
+Reading line: nop // to align meminst icount 1075
+Reading line: stu r2, r0, 10 // icount 1076
+Reading line: nop // to align meminst icount 1077
+Reading line: st r2, r0, 4 // icount 1078
+Reading line: nop // to align meminst icount 1079
+Reading line: stu r4, r0, 4 // icount 1080
+Reading line: nop // to align meminst icount 1081
+Reading line: ld r3, r0, -10 // icount 1082
+Reading line: nop // to align meminst icount 1083
+Reading line: st r3, r0, 12 // icount 1084
+Reading line: nop // to align meminst icount 1085
+Reading line: ld r6, r1, -4 // icount 1086
+Reading line: nop // to align meminst icount 1087
+Reading line: st r4, r0, -4 // icount 1088
+Reading line: nop // to align meminst icount 1089
+Reading line: ld r6, r1, -8 // icount 1090
+Reading line: nop // to align meminst icount 1091
+Reading line: st r6, r1, 12 // icount 1092
+Reading line: nop // to align meminst icount 1093
+Reading line: st r5, r0, 6 // icount 1094
+Reading line: nop // to align meminst icount 1095
+Reading line: ld r6, r0, 0 // icount 1096
+Reading line: nop // to align meminst icount 1097
+Reading line: ld r5, r0, -4 // icount 1098
+Reading line: nop // to align meminst icount 1099
+Reading line: ld r2, r0, 0 // icount 1100
+Reading line: nop // to align meminst icount 1101
+Reading line: st r5, r0, 2 // icount 1102
+Reading line: nop // to align meminst icount 1103
+Reading line: st r2, r1, 6 // icount 1104
+Reading line: nop // to align meminst icount 1105
+Reading line: ld r3, r0, 8 // icount 1106
+Reading line: nop // to align meminst icount 1107
+Reading line: stu r6, r0, -12 // icount 1108
+Reading line: nop // to align meminst icount 1109
+Reading line: ld r5, r0, -2 // icount 1110
+Reading line: nop // to align meminst icount 1111
+Reading line: stu r5, r1, 14 // icount 1112
+Reading line: nop // to align meminst icount 1113
+Reading line: stu r4, r0, 0 // icount 1114
+Reading line: nop // to align meminst icount 1115
+Reading line: st r6, r0, 14 // icount 1116
+Reading line: nop // to align meminst icount 1117
+Reading line: ld r3, r1, -2 // icount 1118
+Reading line: nop // to align meminst icount 1119
+Reading line: ld r3, r0, -14 // icount 1120
+Reading line: st r5, r0, -14 // icount 1121
+Reading line: roli r2, r3, 11 // icount 1122
+Reading line: nop // to align meminst icount 1123
+Reading line: ld r2, r1, 10 // icount 1124
+Reading line: nop // to align meminst icount 1125
+Reading line: st r3, r1, 6 // icount 1126
+Reading line: nop // to align meminst icount 1127
+Reading line: stu r6, r1, 6 // icount 1128
+Reading line: nop // to align meminst icount 1129
+Reading line: ld r5, r0, -6 // icount 1130
+Reading line: nop // to align meminst icount 1131
+Reading line: st r3, r1, -8 // icount 1132
+Reading line: nop // to align meminst icount 1133
+Reading line: ld r2, r0, 14 // icount 1134
+Reading line: nop // to align meminst icount 1135
+Reading line: ld r4, r0, -10 // icount 1136
+Reading line: nop // to align meminst icount 1137
+Reading line: st r2, r1, -2 // icount 1138
+Reading line: nop // to align meminst icount 1139
+Reading line: ld r2, r0, 14 // icount 1140
+Reading line: nop // to align meminst icount 1141
+Reading line: st r6, r0, -2 // icount 1142
+Reading line: nop // to align meminst icount 1143
+Reading line: stu r3, r1, 0 // icount 1144
+Reading line: nop // to align meminst icount 1145
+Reading line: ld r3, r1, -12 // icount 1146
+Reading line: nop // to align meminst icount 1147
+Reading line: ld r4, r0, -6 // icount 1148
+Reading line: nop // to align meminst icount 1149
+Reading line: ld r3, r0, -6 // icount 1150
+Reading line: nop // to align meminst icount 1151
+Reading line: st r3, r1, -6 // icount 1152
+Reading line: nop // to align meminst icount 1153
+Reading line: stu r5, r0, 14 // icount 1154
+Reading line: nop // to align meminst icount 1155
+Reading line: ld r3, r1, -8 // icount 1156
+Reading line: nop // to align meminst icount 1157
+Reading line: ld r6, r0, 6 // icount 1158
+Reading line: nop // to align meminst icount 1159
+Reading line: stu r5, r0, 12 // icount 1160
+Reading line: nop // to align meminst icount 1161
+Reading line: ld r5, r0, -8 // icount 1162
+Reading line: nop // to align meminst icount 1163
+Reading line: st r2, r0, -10 // icount 1164
+Reading line: nop // to align meminst icount 1165
+Reading line: ld r5, r0, -2 // icount 1166
+Reading line: nop // to align meminst icount 1167
+Reading line: st r4, r1, -12 // icount 1168
+Reading line: nop // to align meminst icount 1169
+Reading line: ld r5, r0, -8 // icount 1170
+Reading line: nop // to align meminst icount 1171
+Reading line: ld r5, r1, -12 // icount 1172
+Reading line: nop // to align meminst icount 1173
+Reading line: st r2, r0, 10 // icount 1174
+Reading line: nop // to align meminst icount 1175
+Reading line: ld r3, r0, -8 // icount 1176
+Reading line: nop // to align meminst icount 1177
+Reading line: ld r5, r0, -16 // icount 1178
+Reading line: nop // to align meminst icount 1179
+Reading line: st r2, r0, -2 // icount 1180
+Reading line: nop // to align meminst icount 1181
+Reading line: stu r3, r0, 6 // icount 1182
+Reading line: nop // to align meminst icount 1183
+Reading line: stu r4, r1, -14 // icount 1184
+Reading line: nop // to align meminst icount 1185
+Reading line: st r6, r0, 14 // icount 1186
+Reading line: nop // to align meminst icount 1187
+Reading line: st r2, r0, 0 // icount 1188
+Reading line: nop // to align meminst icount 1189
+Reading line: st r4, r0, 10 // icount 1190
+Reading line: nop // to align meminst icount 1191
+Reading line: st r6, r1, -10 // icount 1192
+Reading line: nop // to align meminst icount 1193
+Reading line: stu r5, r0, -16 // icount 1194
+Reading line: nop // to align meminst icount 1195
+Reading line: st r5, r1, -2 // icount 1196
+Reading line: nop // to align meminst icount 1197
+Reading line: ld r2, r0, -12 // icount 1198
+Reading line: nop // to align meminst icount 1199
+Reading line: stu r4, r1, 0 // icount 1200
+Reading line: nop // to align meminst icount 1201
+Reading line: st r5, r1, -8 // icount 1202
+Reading line: nop // to align meminst icount 1203
+Reading line: ld r4, r0, 2 // icount 1204
+Reading line: nop // to align meminst icount 1205
+Reading line: st r2, r0, -12 // icount 1206
+Reading line: nop // to align meminst icount 1207
+Reading line: stu r3, r0, 12 // icount 1208
+Reading line: nop // to align meminst icount 1209
+Reading line: ld r2, r0, 14 // icount 1210
+Reading line: nop // to align meminst icount 1211
+Reading line: stu r4, r1, -10 // icount 1212
+Reading line: nop // to align meminst icount 1213
+Reading line: st r6, r0, 6 // icount 1214
+Reading line: nop // to align meminst icount 1215
+Reading line: ld r3, r0, -6 // icount 1216
+Reading line: nop // to align meminst icount 1217
+Reading line: ld r6, r1, 12 // icount 1218
+Reading line: nop // to align meminst icount 1219
+Reading line: ld r4, r1, 10 // icount 1220
+Reading line: nop // to align meminst icount 1221
+Reading line: ld r5, r0, 12 // icount 1222
+Reading line: nop // to align meminst icount 1223
+Reading line: ld r4, r1, -10 // icount 1224
+Reading line: nop // to align meminst icount 1225
+Reading line: st r4, r1, -12 // icount 1226
+Reading line: nop // to align meminst icount 1227
+Reading line: ld r4, r1, -10 // icount 1228
+Reading line: nop // to align meminst icount 1229
+Reading line: stu r2, r0, -14 // icount 1230
+Reading line: nop // to align meminst icount 1231
+Reading line: ld r3, r0, 8 // icount 1232
+Reading line: nop // to align meminst icount 1233
+Reading line: ld r4, r0, 0 // icount 1234
+Reading line: nop // to align meminst icount 1235
+Reading line: stu r5, r0, -16 // icount 1236
+Reading line: nop // to align meminst icount 1237
+Reading line: st r3, r1, -8 // icount 1238
+Reading line: nop // to align meminst icount 1239
+Reading line: st r2, r0, 0 // icount 1240
+Reading line: nop // to align meminst icount 1241
+Reading line: stu r6, r0, 10 // icount 1242
+Reading line: nop // to align meminst icount 1243
+Reading line: ld r2, r1, 4 // icount 1244
+Reading line: nop // to align meminst icount 1245
+Reading line: ld r4, r0, 4 // icount 1246
+Reading line: nop // to align meminst icount 1247
+Reading line: st r3, r1, 8 // icount 1248
+Reading line: st r4, r0, 0 // icount 1249
+Reading line: roli r5, r1, 2 // icount 1250
+Reading line: nop // to align meminst icount 1251
+Reading line: stu r3, r0, -8 // icount 1252
+Reading line: nop // to align meminst icount 1253
+Reading line: ld r4, r1, -2 // icount 1254
+Reading line: nop // to align meminst icount 1255
+Reading line: stu r2, r0, -10 // icount 1256
+Reading line: nop // to align meminst icount 1257
+Reading line: stu r6, r1, -6 // icount 1258
+Reading line: nop // to align meminst icount 1259
+Reading line: stu r5, r1, -16 // icount 1260
+Reading line: nop // to align meminst icount 1261
+Reading line: ld r2, r0, 4 // icount 1262
+Reading line: nop // to align meminst icount 1263
+Reading line: stu r4, r0, 8 // icount 1264
+Reading line: nop // to align meminst icount 1265
+Reading line: st r4, r0, -6 // icount 1266
+Reading line: nop // to align meminst icount 1267
+Reading line: ld r6, r1, -16 // icount 1268
+Reading line: ld r4, r1, -4 // icount 1269
+Reading line: slbi r3, 11 // icount 1270
+Reading line: nop // to align meminst icount 1271
+Reading line: st r4, r0, 2 // icount 1272
+Reading line: nop // to align meminst icount 1273
+Reading line: st r2, r0, -14 // icount 1274
+Reading line: nop // to align meminst icount 1275
+Reading line: stu r5, r0, 8 // icount 1276
+Reading line: nop // to align meminst icount 1277
+Reading line: ld r6, r0, 4 // icount 1278
+Reading line: nop // to align meminst icount 1279
+Reading line: ld r5, r0, 12 // icount 1280
+Reading line: nop // to align meminst icount 1281
+Reading line: st r3, r0, 14 // icount 1282
+Reading line: nop // to align meminst icount 1283
+Reading line: ld r3, r0, -8 // icount 1284
+Reading line: nop // to align meminst icount 1285
+Reading line: ld r6, r1, 6 // icount 1286
+Reading line: nop // to align meminst icount 1287
+Reading line: stu r2, r1, -4 // icount 1288
+Reading line: nop // to align meminst icount 1289
+Reading line: stu r3, r0, -4 // icount 1290
+Reading line: nop // to align meminst icount 1291
+Reading line: ld r4, r0, -12 // icount 1292
+Reading line: nop // to align meminst icount 1293
+Reading line: ld r4, r1, -16 // icount 1294
+Reading line: nop // to align meminst icount 1295
+Reading line: ld r5, r0, 4 // icount 1296
+Reading line: nop // to align meminst icount 1297
+Reading line: ld r5, r1, 4 // icount 1298
+Reading line: nop // to align meminst icount 1299
+Reading line: stu r5, r0, 0 // icount 1300
+Reading line: nop // to align meminst icount 1301
+Reading line: ld r6, r0, 4 // icount 1302
+Reading line: nop // to align meminst icount 1303
+Reading line: st r3, r0, 14 // icount 1304
+Reading line: nop // to align meminst icount 1305
+Reading line: ld r3, r1, -10 // icount 1306
+Reading line: nop // to align meminst icount 1307
+Reading line: ld r5, r0, 6 // icount 1308
+Reading line: nop // to align meminst icount 1309
+Reading line: ld r2, r0, 6 // icount 1310
+Reading line: nop // to align meminst icount 1311
+Reading line: ld r4, r0, 0 // icount 1312
+Reading line: nop // to align meminst icount 1313
+Reading line: st r5, r1, 8 // icount 1314
+Reading line: nop // to align meminst icount 1315
+Reading line: ld r6, r0, 4 // icount 1316
+Reading line: nop // to align meminst icount 1317
+Reading line: st r3, r0, -4 // icount 1318
+Reading line: nop // to align meminst icount 1319
+Reading line: ld r4, r0, -2 // icount 1320
+Reading line: nop // to align meminst icount 1321
+Reading line: st r5, r1, -8 // icount 1322
+Reading line: nop // to align meminst icount 1323
+Reading line: ld r6, r0, -10 // icount 1324
+Reading line: nop // to align meminst icount 1325
+Reading line: st r3, r1, -16 // icount 1326
+Reading line: nop // to align meminst icount 1327
+Reading line: ld r4, r1, -2 // icount 1328
+Reading line: nop // to align meminst icount 1329
+Reading line: ld r4, r1, 2 // icount 1330
+Reading line: nop // to align meminst icount 1331
+Reading line: stu r4, r0, -2 // icount 1332
+Reading line: nop // to align meminst icount 1333
+Reading line: st r2, r1, -16 // icount 1334
+Reading line: nop // to align meminst icount 1335
+Reading line: ld r3, r1, 8 // icount 1336
+Reading line: nop // to align meminst icount 1337
+Reading line: ld r4, r1, 14 // icount 1338
+Reading line: nop // to align meminst icount 1339
+Reading line: st r5, r1, -8 // icount 1340
+Reading line: nop // to align meminst icount 1341
+Reading line: ld r3, r1, -8 // icount 1342
+Reading line: nop // to align meminst icount 1343
+Reading line: ld r4, r1, -8 // icount 1344
+Reading line: nop // to align meminst icount 1345
+Reading line: stu r2, r1, -14 // icount 1346
+Reading line: nop // to align meminst icount 1347
+Reading line: stu r6, r1, 2 // icount 1348
+Reading line: nop // to align meminst icount 1349
+Reading line: ld r4, r1, 10 // icount 1350
+Reading line: nop // to align meminst icount 1351
+Reading line: stu r3, r1, -12 // icount 1352
+Reading line: nop // to align meminst icount 1353
+Reading line: stu r6, r0, 12 // icount 1354
+Reading line: nop // to align meminst icount 1355
+Reading line: st r3, r1, -8 // icount 1356
+Reading line: ld r3, r1, -12 // icount 1357
+Reading line: lbi r2, 0 // icount 1358
+Reading line: lbi r2, 0 // icount 1359
+Reading line: nop // to align branch icount 1360
+Reading line: bnez r4, 16 // icount 1361
+Reading line: sll r6, r0, r1 // icount 1362
+Reading line: xor r6, r0, r5 // icount 1363
+Reading line: andni r6, r6, 1 // icount 1364
+Reading line: st r3, r6, 8 // icount 1365
+Reading line: slli r3, r0, 14 // icount 1366
+Reading line: srli r4, r2, 0 // icount 1367
+Reading line: andni r6, r0, 3 // icount 1368
+Reading line: xori r2, r7, 6 // icount 1369
+Reading line: slli r5, r6, 5 // icount 1370
+Reading line: xori r6, r6, 5 // icount 1371
+Reading line: rol r6, r2, r2 // icount 1372
+Reading line: addi r3, r4, 8 // icount 1373
+Reading line: rol r5, r0, r2 // icount 1374
+Reading line: xori r4, r1, 8 // icount 1375
+Reading line: roli r7, r5, 7 // icount 1376
+Reading line: andn r5, r1, r0 // icount 1377
+Reading line: rori r6, r5, 4 // icount 1378
+Reading line: nop // to align meminst icount 1379
+Reading line: st r4, r0, 8 // icount 1380
+Reading line: nop // to align meminst icount 1381
+Reading line: ld r6, r1, 14 // icount 1382
+Reading line: nop // to align meminst icount 1383
+Reading line: ld r5, r0, 12 // icount 1384
+Reading line: nop // to align meminst icount 1385
+Reading line: ld r6, r1, -4 // icount 1386
+Reading line: nop // to align meminst icount 1387
+Reading line: ld r3, r1, 12 // icount 1388
+Reading line: nop // to align meminst icount 1389
+Reading line: st r2, r1, 12 // icount 1390
+Reading line: nop // to align meminst icount 1391
+Reading line: st r5, r1, 8 // icount 1392
+Reading line: stu r6, r0, 6 // icount 1393
+Reading line: andni r4, r4, 1 // icount 1394
+Reading line: nop // to align meminst icount 1395
+Reading line: st r4, r4, 14 // icount 1396
+Reading line: nop // to align meminst icount 1397
+Reading line: stu r2, r1, 2 // icount 1398
+Reading line: nop // to align meminst icount 1399
+Reading line: st r2, r0, 6 // icount 1400
+Reading line: nop // to align meminst icount 1401
+Reading line: ld r3, r1, -16 // icount 1402
+Reading line: nop // to align meminst icount 1403
+Reading line: stu r6, r0, -14 // icount 1404
+Reading line: nop // to align meminst icount 1405
+Reading line: ld r5, r0, 2 // icount 1406
+Reading line: nop // to align meminst icount 1407
+Reading line: ld r5, r0, 0 // icount 1408
+Reading line: nop // to align meminst icount 1409
+Reading line: ld r3, r0, -4 // icount 1410
+Reading line: nop // to align meminst icount 1411
+Reading line: st r3, r0, 12 // icount 1412
+Reading line: nop // to align meminst icount 1413
+Reading line: st r5, r1, 10 // icount 1414
+Reading line: nop // to align meminst icount 1415
+Reading line: stu r5, r1, 0 // icount 1416
+Reading line: nop // to align meminst icount 1417
+Reading line: ld r6, r0, 8 // icount 1418
+Reading line: nop // to align meminst icount 1419
+Reading line: st r5, r0, 12 // icount 1420
+Reading line: nop // to align meminst icount 1421
+Reading line: st r4, r1, -12 // icount 1422
+Reading line: nop // to align meminst icount 1423
+Reading line: ld r2, r0, -2 // icount 1424
+Reading line: nop // to align meminst icount 1425
+Reading line: ld r5, r1, -2 // icount 1426
+Reading line: nop // to align meminst icount 1427
+Reading line: ld r6, r0, 8 // icount 1428
+Reading line: nop // to align meminst icount 1429
+Reading line: ld r2, r0, 12 // icount 1430
+Reading line: nop // to align meminst icount 1431
+Reading line: stu r2, r1, -12 // icount 1432
+Reading line: nop // to align meminst icount 1433
+Reading line: ld r6, r1, 2 // icount 1434
+Reading line: nop // to align meminst icount 1435
+Reading line: st r2, r0, -8 // icount 1436
+Reading line: nop // to align meminst icount 1437
+Reading line: ld r4, r1, 12 // icount 1438
+Reading line: nop // to align meminst icount 1439
+Reading line: st r5, r1, 2 // icount 1440
+Reading line: nop // to align meminst icount 1441
+Reading line: ld r4, r0, -2 // icount 1442
+Reading line: nop // to align meminst icount 1443
+Reading line: st r4, r1, -6 // icount 1444
+Reading line: nop // to align meminst icount 1445
+Reading line: st r6, r1, 14 // icount 1446
+Reading line: nop // to align meminst icount 1447
+Reading line: stu r2, r1, 6 // icount 1448
+Reading line: nop // to align meminst icount 1449
+Reading line: st r2, r1, 12 // icount 1450
+Reading line: nop // to align meminst icount 1451
+Reading line: st r2, r0, -10 // icount 1452
+Reading line: nop // to align meminst icount 1453
+Reading line: ld r3, r0, 8 // icount 1454
+Reading line: nop // to align meminst icount 1455
+Reading line: ld r4, r1, 14 // icount 1456
+Reading line: nop // to align meminst icount 1457
+Reading line: stu r5, r0, 4 // icount 1458
+Reading line: nop // to align meminst icount 1459
+Reading line: st r5, r1, -10 // icount 1460
+Reading line: nop // to align meminst icount 1461
+Reading line: st r2, r0, -4 // icount 1462
+Reading line: nop // to align meminst icount 1463
+Reading line: ld r5, r1, -4 // icount 1464
+Reading line: nop // to align meminst icount 1465
+Reading line: stu r5, r0, 0 // icount 1466
+Reading line: nop // to align meminst icount 1467
+Reading line: st r5, r1, 6 // icount 1468
+Reading line: nop // to align meminst icount 1469
+Reading line: ld r4, r0, 14 // icount 1470
+Reading line: nop // to align meminst icount 1471
+Reading line: ld r6, r0, 6 // icount 1472
+Reading line: nop // to align meminst icount 1473
+Reading line: stu r3, r0, 14 // icount 1474
+Reading line: nop // to align meminst icount 1475
+Reading line: stu r3, r1, -14 // icount 1476
+Reading line: nop // to align meminst icount 1477
+Reading line: ld r6, r0, 2 // icount 1478
+Reading line: nop // to align meminst icount 1479
+Reading line: st r3, r0, 0 // icount 1480
+Reading line: nop // to align meminst icount 1481
+Reading line: ld r6, r1, 0 // icount 1482
+Reading line: nop // to align meminst icount 1483
+Reading line: stu r3, r0, 6 // icount 1484
+Reading line: nop // to align meminst icount 1485
+Reading line: st r4, r1, -14 // icount 1486
+Reading line: nop // to align meminst icount 1487
+Reading line: ld r3, r1, -4 // icount 1488
+Reading line: nop // to align meminst icount 1489
+Reading line: stu r3, r0, 14 // icount 1490
+Reading line: nop // to align meminst icount 1491
+Reading line: stu r5, r0, 2 // icount 1492
+Reading line: nop // to align meminst icount 1493
+Reading line: st r3, r1, 4 // icount 1494
+Reading line: nop // to align meminst icount 1495
+Reading line: ld r3, r0, -4 // icount 1496
+Reading line: nop // to align meminst icount 1497
+Reading line: ld r6, r1, -10 // icount 1498
+Reading line: nop // to align meminst icount 1499
+Reading line: ld r6, r1, 0 // icount 1500
+Reading line: nop // to align meminst icount 1501
+Reading line: ld r4, r0, 14 // icount 1502
+Reading line: nop // to align meminst icount 1503
+Reading line: ld r2, r0, -4 // icount 1504
+Reading line: nop // to align meminst icount 1505
+Reading line: stu r4, r1, -12 // icount 1506
+Reading line: nop // to align meminst icount 1507
+Reading line: ld r5, r0, -14 // icount 1508
+Reading line: nop // to align meminst icount 1509
+Reading line: ld r4, r1, -4 // icount 1510
+Reading line: nop // to align meminst icount 1511
+Reading line: st r5, r1, -16 // icount 1512
+Reading line: nop // to align meminst icount 1513
+Reading line: ld r5, r1, 6 // icount 1514
+Reading line: nop // to align meminst icount 1515
+Reading line: ld r2, r1, -10 // icount 1516
+Reading line: nop // to align meminst icount 1517
+Reading line: ld r3, r0, 0 // icount 1518
+Reading line: nop // to align meminst icount 1519
+Reading line: stu r4, r0, 0 // icount 1520
+Reading line: nop // to align meminst icount 1521
+Reading line: stu r4, r1, -8 // icount 1522
+Reading line: nop // to align meminst icount 1523
+Reading line: ld r5, r1, -12 // icount 1524
+Reading line: nop // to align meminst icount 1525
+Reading line: ld r5, r0, -8 // icount 1526
+Reading line: nop // to align meminst icount 1527
+Reading line: st r4, r0, -6 // icount 1528
+Reading line: nop // to align meminst icount 1529
+Reading line: ld r5, r0, 12 // icount 1530
+Reading line: stu r3, r0, -12 // icount 1531
+Reading line: lbi r6, 0 // icount 1532
+Reading line: lbi r3, 0 // icount 1533
+Reading line: nop // to align branch icount 1534
+Reading line: beqz r3, 8 // icount 1535
+Reading line: srl r2, r3, r3 // icount 1536
+Reading line: xori r2, r6, 5 // icount 1537
+Reading line: seq r5, r0, r4 // icount 1538
+Reading line: xor r2, r2, r0 // icount 1539
+Reading line: sub r6, r3, r7 // icount 1540
+Reading line: seq r7, r3, r2 // icount 1541
+Reading line: add r7, r0, r7 // icount 1542
+Reading line: nop // to align meminst icount 1543
+Reading line: rori r7, r5, 6 // icount 1544
+Reading line: nop // to align meminst icount 1545
+Reading line: ld r5, r0, -6 // icount 1546
+Reading line: nop // to align meminst icount 1547
+Reading line: stu r2, r0, -16 // icount 1548
+Reading line: nop // to align meminst icount 1549
+Reading line: ld r2, r1, 8 // icount 1550
+Reading line: nop // to align meminst icount 1551
+Reading line: ld r5, r0, -16 // icount 1552
+Reading line: nop // to align meminst icount 1553
+Reading line: st r2, r1, 0 // icount 1554
+Reading line: nop // to align meminst icount 1555
+Reading line: st r5, r0, -14 // icount 1556
+Reading line: nop // to align meminst icount 1557
+Reading line: ld r4, r1, 0 // icount 1558
+Reading line: nop // to align meminst icount 1559
+Reading line: ld r6, r0, -10 // icount 1560
+Reading line: nop // to align meminst icount 1561
+Reading line: st r5, r0, -14 // icount 1562
+Reading line: nop // to align meminst icount 1563
+Reading line: ld r6, r0, 4 // icount 1564
+Reading line: nop // to align meminst icount 1565
+Reading line: ld r2, r1, 12 // icount 1566
+Reading line: nop // to align meminst icount 1567
+Reading line: stu r3, r0, 4 // icount 1568
+Reading line: nop // to align meminst icount 1569
+Reading line: ld r3, r1, -2 // icount 1570
+Reading line: nop // to align meminst icount 1571
+Reading line: ld r5, r0, 14 // icount 1572
+Reading line: nop // to align meminst icount 1573
+Reading line: stu r3, r0, 10 // icount 1574
+Reading line: nop // to align meminst icount 1575
+Reading line: ld r6, r0, 0 // icount 1576
+Reading line: nop // to align meminst icount 1577
+Reading line: ld r6, r1, 6 // icount 1578
+Reading line: nop // to align meminst icount 1579
+Reading line: stu r5, r0, 8 // icount 1580
+Reading line: nop // to align meminst icount 1581
+Reading line: st r2, r1, -10 // icount 1582
+Reading line: ld r6, r1, -8 // icount 1583
+Reading line: addi r0, r0, 12   // change base addr // icount 1584
+Reading line: nop // to align meminst icount 1585
+Reading line: ld r6, r0, -10 // icount 1586
+Reading line: nop // to align meminst icount 1587
+Reading line: ld r4, r1, 2 // icount 1588
+Reading line: nop // to align meminst icount 1589
+Reading line: ld r5, r1, 8 // icount 1590
+Reading line: nop // to align meminst icount 1591
+Reading line: ld r5, r1, 0 // icount 1592
+Reading line: nop // to align meminst icount 1593
+Reading line: st r6, r1, -8 // icount 1594
+Reading line: nop // to align meminst icount 1595
+Reading line: ld r2, r1, 12 // icount 1596
+Reading line: nop // to align meminst icount 1597
+Reading line: ld r3, r1, -6 // icount 1598
+Reading line: nop // to align meminst icount 1599
+Reading line: stu r6, r1, 0 // icount 1600
+Reading line: nop // to align meminst icount 1601
+Reading line: st r6, r0, -12 // icount 1602
+Reading line: nop // to align meminst icount 1603
+Reading line: stu r3, r0, 14 // icount 1604
+Reading line: nop // to align meminst icount 1605
+Reading line: stu r6, r0, 14 // icount 1606
+Reading line: nop // to align meminst icount 1607
+Reading line: ld r3, r1, -14 // icount 1608
+Reading line: nop // to align meminst icount 1609
+Reading line: stu r4, r1, 2 // icount 1610
+Reading line: nop // to align meminst icount 1611
+Reading line: ld r5, r1, -12 // icount 1612
+Reading line: nop // to align meminst icount 1613
+Reading line: st r4, r1, 4 // icount 1614
+Reading line: nop // to align meminst icount 1615
+Reading line: st r2, r0, -10 // icount 1616
+Reading line: nop // to align meminst icount 1617
+Reading line: st r2, r0, -8 // icount 1618
+Reading line: nop // to align meminst icount 1619
+Reading line: ld r2, r0, 6 // icount 1620
+Reading line: ld r6, r1, -4 // icount 1621
+Reading line: lbi r7, 0 // icount 1622
+Reading line: lbi r6, 0 // icount 1623
+Reading line: nop // to align branch icount 1624
+Reading line: bnez r4, 8 // icount 1625
+Reading line: slbi r5, 5 // icount 1626
+Reading line: sle r5, r6, r7 // icount 1627
+Reading line: rori r7, r1, 10 // icount 1628
+Reading line: nop // to align meminst icount 1629
+Reading line: andni r3, r3, 1 // icount 1630
+Reading line: st r2, r3, 8 // icount 1631
+Reading line: addi r3, r5, 6 // icount 1632
+Reading line: rol r7, r0, r1 // icount 1633
+Reading line: andni r5, r5, 1 // icount 1634
+Reading line: stu r4, r5, 10 // icount 1635
+Reading line: srli r5, r2, 10 // icount 1636
+Reading line: nop // to align meminst icount 1637
+Reading line: st r6, r0, -8 // icount 1638
+Reading line: nop // to align meminst icount 1639
+Reading line: ld r3, r0, 14 // icount 1640
+Reading line: nop // to align meminst icount 1641
+Reading line: ld r4, r1, -4 // icount 1642
+Reading line: nop // to align meminst icount 1643
+Reading line: stu r5, r0, -14 // icount 1644
+Reading line: nop // to align meminst icount 1645
+Reading line: ld r6, r0, -8 // icount 1646
+Reading line: nop // to align meminst icount 1647
+Reading line: ld r3, r0, 14 // icount 1648
+Reading line: nop // to align meminst icount 1649
+Reading line: st r2, r0, -2 // icount 1650
+Reading line: nop // to align meminst icount 1651
+Reading line: ld r4, r1, -16 // icount 1652
+Reading line: nop // to align meminst icount 1653
+Reading line: st r4, r0, 2 // icount 1654
+Reading line: nop // to align meminst icount 1655
+Reading line: st r2, r0, -16 // icount 1656
+Reading line: nop // to align meminst icount 1657
+Reading line: stu r2, r0, -2 // icount 1658
+Reading line: nop // to align meminst icount 1659
+Reading line: stu r4, r0, 8 // icount 1660
+Reading line: nop // to align meminst icount 1661
+Reading line: ld r4, r0, 4 // icount 1662
+Reading line: nop // to align meminst icount 1663
+Reading line: stu r6, r1, -4 // icount 1664
+Reading line: nop // to align meminst icount 1665
+Reading line: ld r4, r1, 10 // icount 1666
+Reading line: nop // to align meminst icount 1667
+Reading line: st r2, r1, 2 // icount 1668
+Reading line: nop // to align meminst icount 1669
+Reading line: stu r3, r0, -16 // icount 1670
+Reading line: nop // to align meminst icount 1671
+Reading line: st r2, r1, 0 // icount 1672
+Reading line: nop // to align meminst icount 1673
+Reading line: ld r5, r0, -14 // icount 1674
+Reading line: nop // to align meminst icount 1675
+Reading line: st r2, r1, 10 // icount 1676
+Reading line: nop // to align meminst icount 1677
+Reading line: ld r6, r1, 10 // icount 1678
+Reading line: nop // to align meminst icount 1679
+Reading line: ld r3, r1, -2 // icount 1680
+Reading line: nop // to align meminst icount 1681
+Reading line: ld r5, r1, 12 // icount 1682
+Reading line: nop // to align meminst icount 1683
+Reading line: stu r5, r0, -16 // icount 1684
+Reading line: nop // to align meminst icount 1685
+Reading line: ld r4, r0, 6 // icount 1686
+Reading line: nop // to align meminst icount 1687
+Reading line: ld r3, r0, -4 // icount 1688
+Reading line: nop // to align meminst icount 1689
+Reading line: st r6, r0, 4 // icount 1690
+Reading line: nop // to align meminst icount 1691
+Reading line: ld r6, r1, -16 // icount 1692
+Reading line: nop // to align meminst icount 1693
+Reading line: stu r3, r0, 10 // icount 1694
+Reading line: nop // to align meminst icount 1695
+Reading line: ld r3, r0, -12 // icount 1696
+Reading line: nop // to align meminst icount 1697
+Reading line: stu r3, r1, 12 // icount 1698
+Reading line: nop // to align meminst icount 1699
+Reading line: stu r3, r0, -16 // icount 1700
+Reading line: nop // to align meminst icount 1701
+Reading line: st r2, r0, -10 // icount 1702
+Reading line: nop // to align meminst icount 1703
+Reading line: stu r4, r1, 4 // icount 1704
+Reading line: nop // to align meminst icount 1705
+Reading line: ld r2, r0, 0 // icount 1706
+Reading line: nop // to align meminst icount 1707
+Reading line: stu r6, r0, 12 // icount 1708
+Reading line: nop // to align meminst icount 1709
+Reading line: stu r3, r1, -4 // icount 1710
+Reading line: nop // to align meminst icount 1711
+Reading line: ld r2, r1, -14 // icount 1712
+Reading line: nop // to align meminst icount 1713
+Reading line: ld r4, r0, -8 // icount 1714
+Reading line: nop // to align meminst icount 1715
+Reading line: stu r6, r0, -4 // icount 1716
+Reading line: nop // to align meminst icount 1717
+Reading line: ld r5, r0, 2 // icount 1718
+Reading line: nop // to align meminst icount 1719
+Reading line: ld r5, r0, 10 // icount 1720
+Reading line: nop // to align meminst icount 1721
+Reading line: ld r2, r1, -8 // icount 1722
+Reading line: nop // to align meminst icount 1723
+Reading line: ld r4, r0, -6 // icount 1724
+Reading line: st r2, r0, -12 // icount 1725
+Reading line: slbi r4, 12 // icount 1726
+Reading line: nop // to align meminst icount 1727
+Reading line: ld r4, r0, -8 // icount 1728
+Reading line: nop // to align meminst icount 1729
+Reading line: st r2, r0, 0 // icount 1730
+Reading line: nop // to align meminst icount 1731
+Reading line: st r6, r1, 0 // icount 1732
+Reading line: nop // to align meminst icount 1733
+Reading line: ld r3, r1, -16 // icount 1734
+Reading line: nop // to align meminst icount 1735
+Reading line: st r3, r1, -4 // icount 1736
+Reading line: nop // to align meminst icount 1737
+Reading line: stu r2, r1, 14 // icount 1738
+Reading line: nop // to align meminst icount 1739
+Reading line: stu r6, r0, 12 // icount 1740
+Reading line: nop // to align meminst icount 1741
+Reading line: st r4, r1, 0 // icount 1742
+Reading line: nop // to align meminst icount 1743
+Reading line: st r4, r0, 0 // icount 1744
+Reading line: nop // to align meminst icount 1745
+Reading line: ld r4, r0, -12 // icount 1746
+Reading line: nop // to align meminst icount 1747
+Reading line: ld r4, r1, -12 // icount 1748
+Reading line: nop // to align meminst icount 1749
+Reading line: stu r5, r1, 6 // icount 1750
+Reading line: nop // to align meminst icount 1751
+Reading line: st r4, r0, 0 // icount 1752
+Reading line: nop // to align meminst icount 1753
+Reading line: ld r2, r1, -2 // icount 1754
+Reading line: nop // to align meminst icount 1755
+Reading line: ld r4, r1, 10 // icount 1756
+Reading line: ld r5, r0, 6 // icount 1757
+Reading line: addi r0, r0, -6   // change base addr // icount 1758
+Reading line: nop // to align meminst icount 1759
+Reading line: ld r5, r0, 0 // icount 1760
+Reading line: nop // to align meminst icount 1761
+Reading line: ld r3, r1, -4 // icount 1762
+Reading line: nop // to align meminst icount 1763
+Reading line: ld r3, r1, -6 // icount 1764
+Reading line: nop // to align meminst icount 1765
+Reading line: stu r3, r1, -16 // icount 1766
+Reading line: nop // to align meminst icount 1767
+Reading line: st r5, r1, -10 // icount 1768
+Reading line: nop // to align meminst icount 1769
+Reading line: ld r6, r1, -10 // icount 1770
+Reading line: nop // to align meminst icount 1771
+Reading line: ld r6, r1, -12 // icount 1772
+Reading line: nop // to align meminst icount 1773
+Reading line: ld r2, r1, -6 // icount 1774
+Reading line: nop // to align meminst icount 1775
+Reading line: st r3, r0, 8 // icount 1776
+Reading line: nop // to align meminst icount 1777
+Reading line: stu r6, r1, -12 // icount 1778
+Reading line: nop // to align meminst icount 1779
+Reading line: stu r3, r0, 6 // icount 1780
+Reading line: nop // to align meminst icount 1781
+Reading line: ld r3, r0, 14 // icount 1782
+Reading line: nop // to align meminst icount 1783
+Reading line: stu r5, r0, 10 // icount 1784
+Reading line: nop // to align meminst icount 1785
+Reading line: st r3, r1, 10 // icount 1786
+Reading line: nop // to align meminst icount 1787
+Reading line: st r6, r0, -4 // icount 1788
+Reading line: nop // to align meminst icount 1789
+Reading line: ld r4, r0, 10 // icount 1790
+Reading line: nop // to align meminst icount 1791
+Reading line: st r3, r1, -16 // icount 1792
+Reading line: nop // to align meminst icount 1793
+Reading line: ld r3, r1, 12 // icount 1794
+Reading line: nop // to align meminst icount 1795
+Reading line: stu r6, r0, -16 // icount 1796
+Reading line: nop // to align meminst icount 1797
+Reading line: stu r3, r1, -14 // icount 1798
+Reading line: nop // to align meminst icount 1799
+Reading line: st r6, r1, 6 // icount 1800
+Reading line: nop // to align meminst icount 1801
+Reading line: ld r5, r0, -8 // icount 1802
+Reading line: nop // to align meminst icount 1803
+Reading line: stu r6, r1, -12 // icount 1804
+Reading line: nop // to align meminst icount 1805
+Reading line: stu r2, r1, -4 // icount 1806
+Reading line: nop // to align meminst icount 1807
+Reading line: ld r2, r0, -12 // icount 1808
+Reading line: nop // to align meminst icount 1809
+Reading line: st r2, r0, 8 // icount 1810
+Reading line: nop // to align meminst icount 1811
+Reading line: ld r4, r1, 10 // icount 1812
+Reading line: nop // to align meminst icount 1813
+Reading line: ld r5, r1, 6 // icount 1814
+Reading line: nop // to align meminst icount 1815
+Reading line: ld r6, r1, 8 // icount 1816
+Reading line: nop // to align meminst icount 1817
+Reading line: stu r6, r1, 12 // icount 1818
+Reading line: nop // to align meminst icount 1819
+Reading line: ld r5, r1, 12 // icount 1820
+Reading line: nop // to align meminst icount 1821
+Reading line: ld r3, r0, -6 // icount 1822
+Reading line: nop // to align meminst icount 1823
+Reading line: st r6, r1, 14 // icount 1824
+Reading line: nop // to align meminst icount 1825
+Reading line: ld r3, r0, 4 // icount 1826
+Reading line: st r6, r1, 4 // icount 1827
+Reading line: lbi r6, 0 // icount 1828
+Reading line: lbi r4, 0 // icount 1829
+Reading line: nop // to align branch icount 1830
+Reading line: bgez r1, 24 // icount 1831
+Reading line: andni r2, r6, 7 // icount 1832
+Reading line: lbi r2, 8 // icount 1833
+Reading line: sub r2, r6, r7 // icount 1834
+Reading line: andn r3, r2, r3 // icount 1835
+Reading line: andni r5, r5, 1 // icount 1836
+Reading line: ld r3, r5, 12 // icount 1837
+Reading line: seq r4, r0, r1 // icount 1838
+Reading line: nop // to align meminst icount 1839
+Reading line: andni r5, r5, 1 // icount 1840
+Reading line: ld r5, r5, 10 // icount 1841
+Reading line: srli r6, r7, 7 // icount 1842
+Reading line: subi r2, r5, 3 // icount 1843
+Reading line: srl r3, r6, r3 // icount 1844
+Reading line: sle r4, r0, r7 // icount 1845
+Reading line: srl r7, r4, r0 // icount 1846
+Reading line: xori r6, r2, 11 // icount 1847
+Reading line: ror r4, r7, r6 // icount 1848
+Reading line: seq r6, r7, r5 // icount 1849
+Reading line: andni r2, r7, 10 // icount 1850
+Reading line: rori r2, r1, 7 // icount 1851
+Reading line: srl r3, r5, r1 // icount 1852
+Reading line: roli r7, r0, 13 // icount 1853
+Reading line: ror r2, r7, r6 // icount 1854
+Reading line: srl r5, r3, r3 // icount 1855
+Reading line: sco r6, r3, r4 // icount 1856
+Reading line: sub r4, r6, r2 // icount 1857
+Reading line: subi r3, r5, 4 // icount 1858
+Reading line: nop // to align meminst icount 1859
+Reading line: st r3, r0, 2 // icount 1860
+Reading line: nop // to align meminst icount 1861
+Reading line: st r3, r1, -16 // icount 1862
+Reading line: nop // to align meminst icount 1863
+Reading line: st r2, r0, 14 // icount 1864
+Reading line: nop // to align meminst icount 1865
+Reading line: st r5, r0, -2 // icount 1866
+Reading line: nop // to align meminst icount 1867
+Reading line: stu r4, r0, 0 // icount 1868
+Reading line: nop // to align meminst icount 1869
+Reading line: stu r3, r1, -10 // icount 1870
+Reading line: nop // to align meminst icount 1871
+Reading line: stu r2, r0, 6 // icount 1872
+Reading line: nop // to align meminst icount 1873
+Reading line: stu r6, r1, -4 // icount 1874
+Reading line: nop // to align meminst icount 1875
+Reading line: ld r3, r0, 14 // icount 1876
+Reading line: nop // to align meminst icount 1877
+Reading line: ld r5, r1, 2 // icount 1878
+Reading line: nop // to align meminst icount 1879
+Reading line: ld r4, r1, 6 // icount 1880
+Reading line: nop // to align meminst icount 1881
+Reading line: stu r2, r1, 4 // icount 1882
+Reading line: nop // to align meminst icount 1883
+Reading line: stu r3, r1, -2 // icount 1884
+Reading line: nop // to align meminst icount 1885
+Reading line: stu r2, r1, -4 // icount 1886
+Reading line: stu r2, r1, 2 // icount 1887
+Reading line: rol r3, r2, r4 // icount 1888
+Reading line: nop // to align meminst icount 1889
+Reading line: ld r5, r0, 12 // icount 1890
+Reading line: nop // to align meminst icount 1891
+Reading line: stu r3, r1, 4 // icount 1892
+Reading line: nop // to align meminst icount 1893
+Reading line: ld r2, r0, 8 // icount 1894
+Reading line: nop // to align meminst icount 1895
+Reading line: ld r4, r1, -14 // icount 1896
+Reading line: nop // to align meminst icount 1897
+Reading line: st r5, r1, 0 // icount 1898
+Reading line: nop // to align meminst icount 1899
+Reading line: stu r5, r1, -8 // icount 1900
+Reading line: nop // to align meminst icount 1901
+Reading line: ld r2, r1, 14 // icount 1902
+Reading line: nop // to align meminst icount 1903
+Reading line: ld r3, r1, -4 // icount 1904
+Reading line: nop // to align meminst icount 1905
+Reading line: st r5, r1, 2 // icount 1906
+Reading line: nop // to align meminst icount 1907
+Reading line: stu r6, r0, -12 // icount 1908
+Reading line: nop // to align meminst icount 1909
+Reading line: ld r4, r0, 10 // icount 1910
+Reading line: nop // to align meminst icount 1911
+Reading line: ld r3, r1, -8 // icount 1912
+Reading line: nop // to align meminst icount 1913
+Reading line: st r4, r0, 0 // icount 1914
+Reading line: ld r3, r0, 12 // icount 1915
+Reading line: sle r7, r3, r1 // icount 1916
+Reading line: nop // to align meminst icount 1917
+Reading line: st r4, r1, -2 // icount 1918
+Reading line: nop // to align meminst icount 1919
+Reading line: st r6, r0, -4 // icount 1920
+Reading line: nop // to align meminst icount 1921
+Reading line: ld r4, r1, 2 // icount 1922
+Reading line: nop // to align meminst icount 1923
+Reading line: stu r4, r1, 0 // icount 1924
+Reading line: nop // to align meminst icount 1925
+Reading line: ld r4, r1, 12 // icount 1926
+Reading line: nop // to align meminst icount 1927
+Reading line: stu r2, r1, 4 // icount 1928
+Reading line: nop // to align meminst icount 1929
+Reading line: stu r4, r0, -8 // icount 1930
+Reading line: nop // to align meminst icount 1931
+Reading line: st r2, r0, -16 // icount 1932
+Reading line: nop // to align meminst icount 1933
+Reading line: st r4, r1, 12 // icount 1934
+Reading line: nop // to align meminst icount 1935
+Reading line: st r4, r1, -2 // icount 1936
+Reading line: nop // to align meminst icount 1937
+Reading line: ld r2, r0, 4 // icount 1938
+Reading line: nop // to align meminst icount 1939
+Reading line: st r4, r1, 4 // icount 1940
+Reading line: nop // to align meminst icount 1941
+Reading line: ld r5, r1, 10 // icount 1942
+Reading line: nop // to align meminst icount 1943
+Reading line: ld r6, r1, -16 // icount 1944
+Reading line: nop // to align meminst icount 1945
+Reading line: ld r6, r0, 12 // icount 1946
+Reading line: nop // to align meminst icount 1947
+Reading line: stu r4, r0, 14 // icount 1948
+Reading line: nop // to align meminst icount 1949
+Reading line: ld r6, r0, 2 // icount 1950
+Reading line: nop // to align meminst icount 1951
+Reading line: st r2, r0, 6 // icount 1952
+Reading line: nop // to align meminst icount 1953
+Reading line: st r5, r0, -4 // icount 1954
+Reading line: nop // to align meminst icount 1955
+Reading line: ld r3, r1, 14 // icount 1956
+Reading line: nop // to align meminst icount 1957
+Reading line: st r2, r1, -4 // icount 1958
+Reading line: nop // to align meminst icount 1959
+Reading line: ld r2, r1, 6 // icount 1960
+Reading line: nop // to align meminst icount 1961
+Reading line: ld r2, r1, 0 // icount 1962
+Reading line: nop // to align meminst icount 1963
+Reading line: stu r3, r0, 10 // icount 1964
+Reading line: nop // to align meminst icount 1965
+Reading line: stu r3, r0, 0 // icount 1966
+Reading line: nop // to align meminst icount 1967
+Reading line: ld r5, r1, -14 // icount 1968
+Reading line: nop // to align meminst icount 1969
+Reading line: ld r2, r0, 0 // icount 1970
+Reading line: nop // to align meminst icount 1971
+Reading line: ld r5, r1, -6 // icount 1972
+Reading line: nop // to align meminst icount 1973
+Reading line: ld r3, r1, 2 // icount 1974
+Reading line: nop // to align meminst icount 1975
+Reading line: st r5, r1, -16 // icount 1976
+Reading line: ld r5, r0, -4 // icount 1977
+Reading line: addi r0, r0, -6   // change base addr // icount 1978
+Reading line: nop // to align meminst icount 1979
+Reading line: ld r2, r1, 10 // icount 1980
+Reading line: nop // to align meminst icount 1981
+Reading line: stu r5, r1, -12 // icount 1982
+Reading line: nop // to align meminst icount 1983
+Reading line: stu r3, r1, -2 // icount 1984
+Reading line: nop // to align meminst icount 1985
+Reading line: stu r5, r0, -6 // icount 1986
+Reading line: nop // to align meminst icount 1987
+Reading line: ld r4, r0, 8 // icount 1988
+Reading line: nop // to align meminst icount 1989
+Reading line: stu r2, r0, -2 // icount 1990
+Reading line: nop // to align meminst icount 1991
+Reading line: stu r4, r0, -4 // icount 1992
+Reading line: nop // to align meminst icount 1993
+Reading line: ld r4, r1, -12 // icount 1994
+Reading line: nop // to align meminst icount 1995
+Reading line: st r2, r0, 14 // icount 1996
+Reading line: nop // to align meminst icount 1997
+Reading line: st r6, r1, 12 // icount 1998
+Reading line: nop // to align meminst icount 1999
+Reading line: ld r5, r0, -2 // icount 2000
+Reading line: nop // to align meminst icount 2001
+Reading line: ld r3, r0, 4 // icount 2002
+Reading line: nop // to align meminst icount 2003
+Reading line: ld r2, r1, -8 // icount 2004
+Reading line: nop // to align meminst icount 2005
+Reading line: ld r2, r0, -16 // icount 2006
+Reading line: nop // to align meminst icount 2007
+Reading line: ld r5, r0, 12 // icount 2008
+Reading line: stu r4, r0, 2 // icount 2009
+Reading line: addi r0, r0, -14   // change base addr // icount 2010
+Reading line: nop // to align meminst icount 2011
+Reading line: ld r2, r0, -10 // icount 2012
+Reading line: nop // to align meminst icount 2013
+Reading line: st r5, r0, -14 // icount 2014
+Reading line: stu r4, r1, -6 // icount 2015
+Reading line: addi r1, r1, 10   // change base addr // icount 2016
+Reading line: nop // to align meminst icount 2017
+Reading line: st r2, r0, -8 // icount 2018
+Reading line: nop // to align meminst icount 2019
+Reading line: ld r5, r0, -2 // icount 2020
+Reading line: nop // to align meminst icount 2021
+Reading line: st r4, r0, 6 // icount 2022
+Reading line: nop // to align meminst icount 2023
+Reading line: st r2, r0, 2 // icount 2024
+Reading line: nop // to align meminst icount 2025
+Reading line: ld r3, r0, 14 // icount 2026
+Reading line: nop // to align meminst icount 2027
+Reading line: ld r2, r1, -16 // icount 2028
+Reading line: ld r6, r1, -2 // icount 2029
+Reading line: addi r0, r0, -2   // change base addr // icount 2030
+Reading line: st r6, r1, -6 // icount 2031
+Reading line: roli r7, r0, 13 // icount 2032
+Reading line: nop // to align meminst icount 2033
+Reading line: ld r4, r0, 10 // icount 2034
+Reading line: nop // to align meminst icount 2035
+Reading line: stu r4, r0, 0 // icount 2036
+Reading line: nop // to align meminst icount 2037
+Reading line: ld r4, r0, -2 // icount 2038
+Reading line: nop // to align meminst icount 2039
+Reading line: ld r2, r1, 0 // icount 2040
+Reading line: nop // to align meminst icount 2041
+Reading line: ld r5, r1, 10 // icount 2042
+Reading line: ld r2, r0, 6 // icount 2043
+Reading line: ror r4, r6, r7 // icount 2044
+Reading line: nop // to align meminst icount 2045
+Reading line: ld r3, r1, -12 // icount 2046
+Reading line: nop // to align meminst icount 2047
+Reading line: stu r6, r0, 0 // icount 2048
+Reading line: nop // to align meminst icount 2049
+Reading line: stu r4, r1, -16 // icount 2050
+Reading line: nop // to align meminst icount 2051
+Reading line: ld r5, r1, 6 // icount 2052
+Reading line: nop // to align meminst icount 2053
+Reading line: ld r4, r1, 4 // icount 2054
+Reading line: nop // to align meminst icount 2055
+Reading line: st r6, r1, 0 // icount 2056
+Reading line: nop // to align meminst icount 2057
+Reading line: ld r4, r0, 2 // icount 2058
+Reading line: nop // to align meminst icount 2059
+Reading line: stu r2, r0, 6 // icount 2060
+Reading line: nop // to align meminst icount 2061
+Reading line: ld r3, r1, -2 // icount 2062
+Reading line: nop // to align meminst icount 2063
+Reading line: ld r3, r0, -8 // icount 2064
+Reading line: nop // to align meminst icount 2065
+Reading line: ld r2, r1, 0 // icount 2066
+Reading line: nop // to align meminst icount 2067
+Reading line: ld r6, r0, -6 // icount 2068
+Reading line: nop // to align meminst icount 2069
+Reading line: st r4, r1, -4 // icount 2070
+Reading line: nop // to align meminst icount 2071
+Reading line: ld r2, r0, -2 // icount 2072
+Reading line: nop // to align meminst icount 2073
+Reading line: st r6, r1, -10 // icount 2074
+Reading line: nop // to align meminst icount 2075
+Reading line: ld r4, r0, 8 // icount 2076
+Reading line: nop // to align meminst icount 2077
+Reading line: ld r2, r1, -14 // icount 2078
+Reading line: nop // to align meminst icount 2079
+Reading line: ld r3, r1, 12 // icount 2080
+Reading line: nop // to align meminst icount 2081
+Reading line: ld r2, r1, -4 // icount 2082
+Reading line: nop // to align meminst icount 2083
+Reading line: stu r4, r1, 2 // icount 2084
+Reading line: nop // to align meminst icount 2085
+Reading line: st r2, r1, 8 // icount 2086
+Reading line: nop // to align meminst icount 2087
+Reading line: ld r6, r0, -8 // icount 2088
+Reading line: nop // to align meminst icount 2089
+Reading line: ld r5, r1, 10 // icount 2090
+Reading line: stu r6, r1, 8 // icount 2091
+Reading line: andni r5, r5, 1 // icount 2092
+Reading line: nop // to align meminst icount 2093
+Reading line: ld r4, r5, 8 // icount 2094
+Reading line: nop // to align meminst icount 2095
+Reading line: ld r6, r1, 2 // icount 2096
+Reading line: nop // to align meminst icount 2097
+Reading line: ld r2, r1, -16 // icount 2098
+Reading line: nop // to align meminst icount 2099
+Reading line: ld r4, r0, 8 // icount 2100
+Reading line: nop // to align meminst icount 2101
+Reading line: stu r4, r0, -12 // icount 2102
+Reading line: nop // to align meminst icount 2103
+Reading line: ld r5, r0, 14 // icount 2104
+Reading line: nop // to align meminst icount 2105
+Reading line: stu r6, r1, -6 // icount 2106
+Reading line: nop // to align meminst icount 2107
+Reading line: st r2, r1, 10 // icount 2108
+Reading line: nop // to align meminst icount 2109
+Reading line: stu r2, r0, 8 // icount 2110
+Reading line: nop // to align meminst icount 2111
+Reading line: st r5, r1, 8 // icount 2112
+Reading line: nop // to align meminst icount 2113
+Reading line: ld r6, r1, 2 // icount 2114
+Reading line: nop // to align meminst icount 2115
+Reading line: st r4, r0, -16 // icount 2116
+Reading line: nop // to align meminst icount 2117
+Reading line: ld r2, r0, -6 // icount 2118
+Reading line: nop // to align meminst icount 2119
+Reading line: st r4, r0, -4 // icount 2120
+Reading line: nop // to align meminst icount 2121
+Reading line: ld r4, r0, -2 // icount 2122
+Reading line: nop // to align meminst icount 2123
+Reading line: ld r5, r1, 0 // icount 2124
+Reading line: nop // to align meminst icount 2125
+Reading line: st r5, r0, -16 // icount 2126
+Reading line: nop // to align meminst icount 2127
+Reading line: stu r3, r0, 8 // icount 2128
+Reading line: stu r5, r0, 8 // icount 2129
+Reading line: lbi r5, 0 // icount 2130
+Reading line: lbi r7, 0 // icount 2131
+Reading line: nop // to align branch icount 2132
+Reading line: bnez r5, 4 // icount 2133
+Reading line: andni r2, r2, 1 // icount 2134
+Reading line: st r6, r2, 4 // icount 2135
+Reading line: addi r5, r6, 13 // icount 2136
+Reading line: sco r2, r0, r3 // icount 2137
+Reading line: seq r4, r6, r6 // icount 2138
+Reading line: nop // to align meminst icount 2139
+Reading line: ld r6, r1, -16 // icount 2140
+Reading line: nop // to align meminst icount 2141
+Reading line: ld r3, r0, 8 // icount 2142
+Reading line: nop // to align meminst icount 2143
+Reading line: st r5, r1, -4 // icount 2144
+Reading line: nop // to align meminst icount 2145
+Reading line: stu r6, r0, -12 // icount 2146
+Reading line: nop // to align meminst icount 2147
+Reading line: stu r2, r0, -10 // icount 2148
+Reading line: nop // to align meminst icount 2149
+Reading line: st r2, r1, 14 // icount 2150
+Reading line: nop // to align meminst icount 2151
+Reading line: st r2, r0, 8 // icount 2152
+Reading line: nop // to align meminst icount 2153
+Reading line: ld r4, r0, 0 // icount 2154
+Reading line: nop // to align meminst icount 2155
+Reading line: ld r2, r1, 12 // icount 2156
+Reading line: nop // to align meminst icount 2157
+Reading line: ld r5, r1, 2 // icount 2158
+Reading line: nop // to align meminst icount 2159
+Reading line: ld r4, r1, 10 // icount 2160
+Reading line: nop // to align meminst icount 2161
+Reading line: st r4, r0, 4 // icount 2162
+Reading line: nop // to align meminst icount 2163
+Reading line: st r6, r1, 2 // icount 2164
+Reading line: nop // to align meminst icount 2165
+Reading line: stu r5, r0, -8 // icount 2166
+Reading line: nop // to align meminst icount 2167
+Reading line: ld r6, r0, -14 // icount 2168
+Reading line: nop // to align meminst icount 2169
+Reading line: ld r6, r0, 4 // icount 2170
+Reading line: nop // to align meminst icount 2171
+Reading line: stu r3, r1, -16 // icount 2172
+Reading line: nop // to align meminst icount 2173
+Reading line: stu r4, r0, 14 // icount 2174
+Reading line: nop // to align meminst icount 2175
+Reading line: stu r5, r0, -16 // icount 2176
+Reading line: nop // to align meminst icount 2177
+Reading line: st r6, r1, -2 // icount 2178
+Reading line: nop // to align meminst icount 2179
+Reading line: ld r4, r0, 2 // icount 2180
+Reading line: nop // to align meminst icount 2181
+Reading line: ld r2, r1, 2 // icount 2182
+Reading line: nop // to align meminst icount 2183
+Reading line: ld r6, r1, -14 // icount 2184
+Reading line: nop // to align meminst icount 2185
+Reading line: ld r2, r0, 4 // icount 2186
+Reading line: nop // to align meminst icount 2187
+Reading line: stu r2, r0, -16 // icount 2188
+Reading line: nop // to align meminst icount 2189
+Reading line: st r5, r0, -16 // icount 2190
+Reading line: nop // to align meminst icount 2191
+Reading line: ld r6, r1, -6 // icount 2192
+Reading line: st r5, r0, -6 // icount 2193
+Reading line: halt // icount 2194
 @0
-20
-06
 c0
-00
-18
-00
-00
+80
+90
 00
 c1
+80
+91
 00
-c0
+c2
+80
+92
 00
-16
+c3
+80
+93
 00
 c4
+80
+94
+00
+c5
+80
+95
+00
+c6
+80
+96
+00
+c7
+80
+08
+00
+97
+00
+08
+00
+99
+90
+08
+00
+80
+ce
+08
+00
+89
+6a
+08
+00
+89
+46
+08
+00
+88
+bc
+08
+00
+98
+ba
+08
+00
+80
+6e
+08
+00
+80
+4a
+08
+00
+89
+b6
+08
+00
+98
+a2
+98
+b2
+c2
+00
+c3
+00
+08
+00
+71
+10
+d9
+ce
+db
+be
+4c
+6b
+5b
+a0
+dc
+b7
+bd
+a4
+58
+01
+80
+66
+57
+c7
+43
+6b
+f7
+a8
+df
+15
+4b
+e4
+08
+00
+5f
+e1
+87
+cc
+bd
+6a
+dd
+9a
+dd
+6a
+08
+00
+89
+46
+08
+00
+89
+46
+08
+00
+88
+d4
+08
+00
+99
+be
+08
+00
+88
+88
+08
+00
+88
+ca
+08
+00
+89
+a6
+08
+00
+99
+48
+08
+00
+88
+54
+08
+00
+99
+66
+99
+ce
+ec
+b4
+08
+00
+89
+9c
+08
+00
+81
+74
+08
+00
+88
+a8
+08
+00
+80
+60
+08
+00
+89
+6c
+08
+00
+89
+d6
+08
+00
+89
+84
+08
+00
+98
+42
+08
+00
+89
+b4
+08
+00
+99
+aa
+08
+00
+81
+c4
+08
+00
+88
+ce
+08
+00
+81
+be
+08
+00
+88
+9c
+08
+00
+88
+d8
+08
+00
+89
+ba
+08
+00
+81
+c4
+08
+00
+89
+78
+08
+00
+81
+c0
+08
+00
+98
+a4
+08
+00
+89
+88
+08
+00
+88
+90
+08
+00
+89
+46
+08
+00
+89
+9a
+08
+00
+88
+98
+98
+7a
+ea
+98
+08
+00
+81
+60
+08
+00
+89
+9e
+08
+00
+88
+b0
+08
+00
+88
+52
+08
+00
+89
+4c
+08
+00
+99
+4e
+08
+00
+99
+7c
+08
+00
+81
+8c
+08
+00
+99
+c0
+08
+00
+88
+6c
+08
+00
+99
+76
+08
+00
+88
+a4
+08
+00
+88
+a4
+08
+00
+81
+ca
+08
+00
+98
+94
+08
+00
+80
+a6
+08
+00
+88
+d2
+08
+00
+98
+de
+08
+00
+89
+72
+08
+00
+89
+48
+08
+00
+81
+c8
+08
+00
+89
+64
+08
+00
+89
+8e
+08
+00
+89
+84
+08
+00
+88
+4a
+08
+00
+80
+c2
+08
+00
+99
+66
+08
+00
+89
+4a
+08
+00
+89
+d2
+08
+00
+89
+be
+08
+00
+98
+72
+08
+00
+81
+c0
+08
+00
+81
+40
+08
+00
+88
+b2
+08
+00
+89
+72
+08
+00
+89
+8e
+08
+00
+81
+7c
+08
+00
+81
+b2
+08
+00
+80
+72
+08
+00
+89
+ce
+08
+00
+89
+54
+88
+82
+d4
+2e
+08
+00
+99
+d2
+08
+00
+81
+88
+08
+00
+80
+50
+08
+00
+98
+7a
+08
+00
+88
+b2
+08
+00
+98
+8c
+08
+00
+81
+66
+08
+00
+89
+78
+08
+00
+88
+8e
+08
+00
+98
+58
+08
+00
+99
+c2
+08
+00
+88
+58
+80
+66
+c2
+00
+c3
+00
+08
+00
+65
+0c
+e0
+f4
+08
+00
+5c
+81
+84
+66
+c2
+03
+d8
+cb
+d7
+9e
+f7
+d0
+e8
+d0
+41
+cf
+f4
+90
+da
+3b
+db
+8d
+08
+00
+5e
+c1
+08
+00
+8e
+40
+08
+00
+81
+da
+08
+00
+80
+6a
+08
+00
+81
+42
+08
+00
+81
+7e
+08
+00
+81
+5a
+08
+00
+80
+a8
+08
+00
+81
+b0
+08
+00
+88
+9c
+08
+00
+89
+a0
+08
+00
+88
+b2
+08
+00
+88
+b8
+08
+00
+98
+9e
+08
+00
+81
+92
+08
+00
+98
+b8
+08
+00
+89
+86
+08
+00
+99
+b8
+08
+00
+98
+56
+08
+00
+89
+86
+08
+00
+89
+92
+08
+00
+81
+c2
+08
+00
+88
+42
+08
+00
+99
+a2
+08
+00
+98
+90
+08
+00
+88
+c2
+08
+00
+88
+6a
+08
+00
+89
+8a
+08
+00
+88
+8e
+08
+00
+99
+c4
+08
+00
+99
+70
+08
+00
+99
+6c
+08
+00
+89
+88
+08
+00
+99
+ba
+08
+00
+99
+54
+08
+00
+81
+74
+08
+00
+88
+46
+08
+00
+80
+7c
+08
+00
+89
+d0
+08
+00
+99
+92
+08
+00
+89
+d4
+08
+00
+88
+bc
+08
+00
+99
+a8
+08
+00
+89
+58
+08
+00
+81
+7a
+08
+00
+88
+d0
+08
+00
+88
+4e
+08
+00
+88
+da
+08
+00
+98
+94
+08
+00
+89
+64
+08
+00
+88
+9a
+08
+00
+81
+5c
+08
+00
+89
+4c
+08
+00
+81
+5c
+08
+00
+89
+78
+08
+00
+88
+4e
+08
+00
+98
+96
+08
+00
+88
+7a
+08
+00
+89
+ca
+08
+00
+99
+c6
+08
+00
+88
+dc
+99
+aa
+40
+1c
+08
+00
+88
+8c
+08
+00
+81
+86
+08
+00
+81
+d2
+08
+00
+89
+ca
+08
+00
+89
+9a
+08
+00
+81
+a6
+08
+00
+99
+c4
+08
+00
+88
+54
+08
+00
+81
+52
+08
+00
+88
+b8
+08
+00
+81
+bc
+08
+00
+80
+ba
+08
+00
+88
+dc
+08
+00
+89
+90
+08
+00
+88
+c0
+08
+00
+80
+6a
+08
+00
+88
+a0
+08
+00
+99
+b0
+08
+00
+89
+52
+08
+00
+80
+96
+08
+00
+89
+d6
+08
+00
+81
+7a
+08
+00
+89
+ca
+08
+00
+98
+7a
+08
+00
+80
+4e
+08
+00
+80
+7a
+08
+00
+99
+76
+08
+00
+80
+d0
+08
+00
+88
+50
+08
+00
+89
+6a
+08
+00
+80
+66
+08
+00
+99
+9a
+08
+00
+99
+9a
+08
+00
+99
+68
+08
+00
+99
+80
+08
+00
+88
+c0
+08
+00
+98
+9c
+08
+00
+81
+68
+08
+00
+81
+a2
+08
+00
+89
+de
+08
+00
+88
+84
+08
+00
+88
+9c
+08
+00
+99
+d6
+08
+00
+89
+c4
+08
+00
+99
+b2
+08
+00
+99
+60
+08
+00
+99
+9a
+08
+00
+89
+94
+08
+00
+89
+aa
+08
+00
+98
+9a
+08
+00
+80
+be
+08
+00
+81
+56
+08
+00
+88
+40
+08
+00
+88
+94
+08
+00
+88
+d6
+08
+00
+81
+7a
+08
+00
+88
+8e
+08
+00
+88
+7c
+08
+00
+89
+d4
+08
+00
+88
+ba
+08
+00
+88
+92
+08
+00
+80
+78
+08
+00
+80
+98
+08
+00
+80
+d0
+08
+00
+88
+c0
+08
+00
+98
+54
+08
+00
+81
+a6
+08
+00
+98
+be
+08
+00
+98
+d6
+08
+00
+98
+a0
+08
+00
+88
+8a
+08
+00
+89
+50
+08
+00
+88
+74
+08
+00
+98
+8e
+08
+00
+88
+ba
+08
+00
+99
+5a
+08
+00
+80
+86
+08
+00
+88
+a2
+08
+00
+89
+54
+08
+00
+98
+62
+08
+00
+81
+c6
+08
+00
+89
+72
+08
+00
+89
+82
+08
+00
+89
+86
+08
+00
+80
+52
+08
+00
+99
+46
+08
+00
+99
+ba
+08
+00
+80
+ac
+08
+00
+89
+72
+08
+00
+99
+58
+81
+b6
+40
+00
+08
+00
+88
+6e
+08
+00
+80
+4a
+08
+00
+88
+a6
+08
+00
+99
+90
+08
+00
+89
+5e
+08
+00
+99
+9a
+08
+00
+98
+aa
+08
+00
+88
+9a
+08
+00
+81
+90
+08
+00
+98
+be
+08
+00
+88
+ce
+08
+00
+80
+80
+08
+00
+81
+b4
+81
+b2
+40
+08
+08
+00
+88
+b4
+08
+00
+89
+8a
+08
+00
+81
+9a
+08
+00
+89
+44
+08
+00
+88
+a8
+08
+00
+81
+70
+08
+00
+88
+7c
+08
+00
+81
+9e
+08
+00
+88
+4c
+08
+00
+81
+a4
+08
+00
+81
+62
+08
+00
+81
+ce
+08
+00
+81
+de
+08
+00
+89
+d6
+08
+00
+89
+c2
+08
+00
+81
+50
+08
+00
+89
+68
+08
+00
+98
+4c
+08
+00
+99
+88
+08
+00
+88
+40
+08
+00
+80
+b6
+08
+00
+98
+70
+08
+00
+80
+b6
+08
+00
+88
+6e
+08
+00
+89
+c4
+08
+00
+88
+a4
+08
+00
+80
+98
+08
+00
+89
+52
+08
+00
+88
+7a
+08
+00
+81
+ba
+08
+00
+81
+84
+08
+00
+88
+54
+08
+00
+98
+ce
+08
+00
+88
+9e
+08
+00
+99
+70
+08
+00
+99
+c8
+08
+00
+88
+50
+08
+00
+88
+7a
+08
+00
+99
+4c
+81
+60
+d9
+1f
+08
+00
+80
+a6
+08
+00
+88
+70
+08
+00
+88
+8c
+08
+00
+89
+92
+08
+00
+88
+76
+08
+00
+99
+90
+08
+00
+98
+da
+08
+00
+89
+ce
+08
+00
+88
+d2
+80
+50
+41
+3c
+08
+00
+81
+d6
+08
+00
+88
+5e
+08
+00
+80
+66
+08
+00
+88
+4a
+08
+00
+80
+cc
+08
+00
+81
+4e
+08
+00
+89
+7a
+08
+00
+88
+6c
+08
+00
+80
+6a
+08
+00
+89
+da
+08
+00
+99
+88
+08
+00
+98
+a8
+08
+00
+89
+a2
+08
+00
+88
+c4
+08
+00
+99
+b6
+08
+00
+89
+86
+08
+00
+80
+ce
+08
+00
+88
+60
+08
+00
+88
+a6
+08
+00
+89
+5e
+08
+00
+89
+a4
+08
+00
+89
+ae
+08
+00
+88
+cc
+08
+00
+89
+c2
+08
+00
+88
+ac
+08
+00
+89
+8e
+08
+00
+89
+6e
+08
+00
+99
+6a
+08
+00
+98
+80
+08
+00
+88
+88
+08
+00
+98
+7a
+08
+00
+88
+a8
+99
+68
+c2
+00
+c6
+00
+08
+00
+6f
+08
+51
+ad
+c5
+0c
+48
+a5
+08
+00
+58
+01
+80
+80
+d0
+ec
+db
+39
+4d
+c3
+08
+00
+59
+21
+08
+00
+99
+6e
+80
+ac
+40
+1e
+08
+00
+99
+5c
+08
+00
+88
+c2
+08
+00
+98
+68
+08
+00
+80
+ae
+08
+00
+98
+8e
+08
+00
+88
+86
+08
+00
+89
+52
+08
+00
+89
+4e
+08
+00
+98
+90
+08
+00
+88
+7e
+08
+00
+89
+6c
+08
+00
+98
+dc
+08
+00
+99
+94
+08
+00
+80
+6a
+08
+00
+89
+66
+08
+00
+89
+8c
+08
+00
+89
+46
+08
+00
+99
+a8
+08
+00
+88
+56
+08
+00
+81
+d4
+08
+00
+89
+b0
+08
+00
+98
+64
+08
+00
+80
+9a
+08
+00
+89
+56
+08
+00
+89
+92
+08
+00
+89
+7a
+08
+00
+89
+c4
+08
+00
+81
+a6
+08
+00
+89
+52
+08
+00
+88
+66
+08
+00
+98
+8c
+08
+00
+89
+d0
+08
+00
+89
+78
+08
+00
+80
+46
+08
+00
+88
+70
+08
+00
+81
+8e
+08
+00
+89
+ac
+08
+00
+88
+ca
+08
+00
+99
+a0
+08
+00
+99
+de
+88
+88
+d5
+3f
+08
+00
+80
+42
+08
+00
+89
+4e
+08
+00
+89
+72
+08
+00
+80
+d6
+08
+00
+88
+90
+08
+00
+89
+c8
+08
+00
+88
+ac
+08
+00
+88
+b0
+08
+00
+98
+de
+08
+00
+89
+9c
+08
+00
+81
+a4
+08
+00
+98
+80
+08
+00
+89
+86
+08
+00
+98
+84
+08
+00
+99
+b6
+08
+00
+89
+a6
+08
+00
+98
+62
+08
+00
+80
+74
+08
+00
+80
+5e
+08
+00
+80
+4a
+98
+8e
+a5
+86
+08
+00
+80
+c0
+08
+00
+80
+ba
+80
+94
+56
+47
+c3
+00
+c2
+00
+60
+10
+ac
+ec
+d8
+f9
+bf
+69
+df
+34
+e1
+28
+59
+6d
+d9
+0e
+e5
+78
+d0
+1f
+a5
+8c
+b2
+e9
+45
+62
+b7
+4e
+08
+00
+59
+21
+81
+aa
+e3
+a8
+08
+00
+e8
+90
+08
+00
+80
+ce
+08
+00
+81
+78
+08
+00
+81
+90
+08
+00
+89
+46
+08
+00
+99
+40
+08
+00
+88
+9c
+08
+00
+80
+98
+08
+00
+99
+a4
+08
+00
+88
+60
+08
+00
+99
+de
+08
+00
+88
+86
+08
+00
+88
+4a
+08
+00
+98
+40
+08
+00
+81
+46
+08
+00
+80
+d0
+08
+00
+99
+76
+08
+00
+81
+aa
+08
+00
+89
+6a
+08
+00
+81
+44
+08
+00
+98
+c0
+08
+00
+99
+ba
+99
+94
+d4
+af
+08
+00
+89
+d0
+08
+00
+80
+74
+08
+00
+80
+b6
+08
+00
+89
+8e
+08
+00
+88
+60
+08
+00
+81
+b4
+08
+00
+80
+a4
+08
+00
+89
+c2
+08
+00
+88
+60
+08
+00
+88
+54
+08
+00
+88
+80
+08
+00
+89
+4e
+81
+5e
+41
+28
+08
+00
+89
+44
+08
+00
+89
+c2
+08
+00
+89
+a0
+08
+00
+99
+98
+08
+00
+99
+bc
+08
+00
+89
+ca
+08
+00
+80
+8c
+08
+00
+88
+98
+08
+00
+89
+ca
+81
+66
+c6
+00
+c2
+00
+08
+00
+6c
+20
+58
+01
+88
+ca
+43
+ab
+46
+45
+47
+40
+df
 2c
+5e
+c1
+9e
+a2
+da
+92
+93
+0f
+ab
+87
+df
+7d
+52
+ab
+ab
+e6
+d8
+10
+d1
+0d
+59
+41
+59
+89
+45
+6c
+df
+4b
+a5
+63
+08
+00
+5c
+81
+9c
+a0
+aa
+81
+e8
+ac
+5d
+a1
+8d
+c0
+92
+0a
+d0
+55
+4f
+ce
+93
+0d
+97
+08
+d7
+fd
+d0
+de
+dd
+31
+5b
+61
+08
+00
+83
+6a
+08
+00
+81
+aa
+08
+00
+98
+48
+08
+00
+81
+a0
+08
+00
+88
+7a
+08
+00
+88
+c8
+08
+00
+89
+72
+08
+00
+98
+4a
+08
+00
+80
+44
+08
+00
+98
+84
+08
+00
+88
+76
+08
+00
+80
+6c
+08
+00
+89
+dc
+08
+00
+80
+9c
+08
+00
+89
+d8
+08
+00
+81
+cc
+08
+00
+80
+a6
+08
+00
+88
+c0
+08
+00
+88
+bc
+08
+00
+88
+40
+08
+00
+80
+a2
+08
+00
+81
+46
+08
+00
+88
+68
+08
+00
+98
+d4
+08
+00
+88
+be
+08
+00
+99
+ae
+08
+00
+98
+80
+08
+00
+80
+ce
+08
+00
+89
+7e
+08
+00
+88
+72
+80
+b2
+a3
+4b
+08
+00
+89
+4a
+08
+00
+81
+66
+08
+00
+99
+c6
+08
+00
+88
+ba
+08
+00
+81
+78
+08
+00
+88
+4e
+08
+00
+88
+96
+08
+00
+81
+5e
+08
+00
+88
+4e
+08
+00
+80
+de
+08
+00
+99
+60
+08
+00
+89
+74
+08
+00
+88
+9a
+08
+00
+88
+7a
+08
+00
+81
+7a
+08
+00
+98
+ae
+08
+00
+89
+78
+08
+00
+88
+c6
+08
+00
+98
+ac
+08
+00
+88
+b8
+08
+00
+80
+56
+08
+00
+88
+be
+08
+00
+81
+94
+08
+00
+88
+b8
+08
+00
+89
+b4
+08
+00
+80
+4a
+08
+00
+88
+78
+08
+00
+88
+b0
+08
+00
+80
+5e
+08
+00
+98
+66
+08
+00
+99
+92
+08
+00
+80
+ce
+08
+00
+80
+40
+08
+00
+80
+8a
+08
+00
+81
+d6
+08
+00
+98
+b0
+08
+00
+81
+be
+08
+00
+88
+54
+08
+00
+99
+80
+08
+00
+81
+b8
+08
+00
+88
+82
+08
+00
+80
+54
+08
+00
+98
+6c
+08
+00
+88
+4e
+08
+00
+99
+96
+08
+00
+80
+c6
+08
+00
+88
+7a
+08
+00
+89
+cc
+08
+00
+89
+8a
+08
+00
+88
+ac
+08
+00
+89
+96
+08
+00
+81
+94
+08
+00
+89
+96
+08
+00
+98
+52
+08
+00
+88
+68
+08
+00
+88
+80
+08
+00
+98
+b0
+08
+00
+81
+78
+08
+00
+80
+40
+08
+00
+98
+ca
+08
+00
+89
+44
+08
+00
+88
+84
+08
+00
+81
+68
+80
+80
+a1
+a2
+08
+00
+98
+78
+08
+00
+89
+9e
+08
+00
+98
+56
+08
+00
+99
+da
+08
+00
+99
+b0
+08
+00
+88
+44
+08
+00
+98
+88
+08
+00
+80
+9a
+08
+00
+89
+d0
+89
+9c
+93
+0b
+08
+00
+80
+82
+08
+00
+80
+52
+08
+00
+98
+a8
+08
+00
+88
+c4
+08
+00
+88
+ac
+08
+00
+80
+6e
+08
+00
+88
+78
+08
+00
+89
+c6
+08
+00
+99
+5c
+08
+00
+98
+7c
+08
+00
+88
+94
+08
+00
+89
+90
+08
+00
+88
+a4
+08
+00
+89
+a4
+08
+00
+98
+a0
+08
+00
+88
+c4
+08
+00
+80
+6e
+08
+00
+89
+76
+08
+00
+88
+a6
+08
+00
+88
+46
+08
+00
+88
+80
+08
+00
+81
+a8
+08
+00
+88
+c4
+08
+00
+80
+7c
+08
+00
+88
+9e
+08
+00
+81
+b8
+08
+00
+88
+d6
+08
+00
+81
+70
+08
+00
+89
+9e
+08
+00
+89
+82
+08
+00
+98
+9e
+08
+00
+81
+50
+08
+00
+89
+68
+08
+00
+89
+8e
+08
+00
+81
+b8
+08
+00
+89
+78
+08
+00
+89
+98
+08
+00
+99
+52
+08
+00
+99
+c2
+08
+00
+89
+8a
+08
+00
+99
+74
+08
+00
+98
+cc
+08
+00
+81
+78
+89
+74
+c2
+00
+c2
+00
+08
+00
+6c
+10
+d0
+38
+d8
+ba
+5e
+c1
+86
+68
+a8
+6e
+ba
+80
+58
+c3
+57
+46
+ae
+a5
+56
+c5
+d2
+5a
+44
+68
+d0
+56
+51
+88
+a5
+e7
+d9
+17
+b5
+c4
+08
+00
+80
+88
+08
+00
+89
+ce
+08
+00
+88
+ac
+08
+00
+89
+dc
+08
+00
+89
+6c
+08
+00
+81
+4c
+08
+00
+81
+a8
+98
+c6
+5c
+81
+08
+00
+84
+8e
+08
+00
+99
+42
+08
+00
+80
+46
+08
+00
+89
+70
+08
+00
+98
+d2
+08
+00
+88
+a2
+08
+00
+88
+a0
+08
+00
+88
+7c
+08
+00
+80
+6c
+08
+00
+81
+aa
+08
+00
+99
+a0
+08
+00
+88
+c8
+08
+00
+80
+ac
+08
+00
+81
+94
+08
+00
+88
+5e
+08
+00
+89
+be
+08
+00
+88
+c8
+08
+00
+88
+4c
+08
+00
+99
+54
+08
+00
+89
+c2
+08
+00
+80
+58
+08
+00
+89
+8c
+08
+00
+81
+a2
+08
+00
+88
+9e
+08
+00
+81
+9a
+08
+00
+81
+ce
+08
+00
+99
+46
+08
+00
+81
+4c
+08
+00
+80
+56
+08
+00
+88
+68
+08
+00
+89
+8e
+08
+00
+98
+a4
+08
+00
+81
+b6
+08
+00
+80
+5c
+08
+00
+89
+bc
+08
+00
+98
+a0
+08
+00
+81
+a6
+08
+00
+88
+8e
+08
+00
+88
+c6
+08
+00
+98
+6e
+08
+00
+99
+72
+08
+00
+88
+c2
+08
+00
+80
+60
+08
+00
+89
+c0
+08
+00
+98
+66
+08
+00
+81
+92
+08
+00
+89
+7c
+08
+00
+98
+6e
+08
+00
+98
+a2
+08
+00
+81
+64
+08
+00
+88
+7c
+08
+00
+89
+d6
+08
+00
+89
+c0
+08
+00
+88
+8e
+08
+00
+88
+5c
+08
+00
+99
+94
+08
+00
+88
+b2
+08
+00
+89
+9c
+08
+00
+81
+b0
+08
+00
+89
+a6
+08
+00
+89
+56
+08
+00
+88
+60
+08
+00
+98
+80
+08
+00
+99
+98
+08
+00
+89
+b4
+08
+00
+88
+b8
+08
+00
+80
+9a
+08
+00
+88
+ac
+98
+74
+c6
+00
+c3
+00
+08
+00
+63
+08
+d3
+69
+56
+45
+e0
+94
+da
+0a
+db
+f9
+e3
+5c
+d8
+fc
+08
+00
+b5
+e6
+08
+00
+88
+ba
+08
+00
+98
+50
+08
+00
+89
+48
+08
+00
+88
+b0
+08
+00
+81
+40
+08
+00
+80
+b2
+08
+00
+89
+80
+08
+00
+88
+d6
+08
+00
+80
+b2
+08
+00
+88
+c4
+08
+00
+89
+4c
+08
+00
+98
+64
+08
+00
+89
+7e
+08
+00
+88
+ae
+08
+00
+98
+6a
+08
+00
+88
+c0
+08
+00
+89
+c6
+08
+00
+98
+a8
+08
+00
+81
+56
+89
+d8
+40
+0c
+08
+00
+88
+d6
+08
+00
+89
+82
+08
+00
+89
+a8
+08
+00
+89
+a0
+08
+00
+81
+d8
+08
+00
+89
+4c
+08
+00
+89
+7a
+08
+00
+99
+c0
+08
+00
+80
+d4
+08
+00
+98
+6e
+08
+00
+98
+ce
+08
+00
+89
+72
+08
+00
+99
+82
+08
+00
+89
+b4
+08
+00
+81
+84
+08
+00
+80
+56
+08
+00
+80
+58
+08
+00
+88
+46
+89
+dc
+c7
+00
+c6
+00
+08
+00
+6c
+08
+95
+05
+f6
+f4
+b1
+ea
+08
+00
+5b
+61
+83
+48
+45
+66
+d0
+3e
+5d
+a1
+9d
+8a
+ba
+aa
+08
+00
+80
+d8
+08
+00
+88
+6e
+08
+00
+89
+9c
+08
+00
+98
+b2
+08
+00
+88
+d8
+08
+00
+88
+6e
+08
+00
+80
+5e
+08
+00
+89
+90
+08
+00
+80
+82
+08
+00
+80
+50
+08
+00
+98
+5e
+08
+00
+98
+88
+08
+00
+88
+84
+08
+00
+99
+dc
+08
+00
+89
+8a
+08
+00
+81
+42
+08
+00
+98
+70
+08
+00
+81
+40
+08
+00
+88
+b2
+08
+00
+81
+4a
+08
+00
+89
+ca
+08
+00
+89
+7e
+08
+00
+89
+ac
+08
+00
+98
+b0
+08
+00
+88
+86
+08
+00
+88
+7c
+08
+00
+80
+c4
+08
+00
+89
+d0
+08
+00
+98
+6a
+08
+00
+88
+74
+08
+00
+99
+6c
+08
+00
+98
+70
+08
+00
+80
+56
+08
+00
+99
+84
+08
+00
+88
+40
+08
+00
+98
+cc
+08
+00
+99
+7c
+08
+00
+89
+52
+08
+00
+88
+98
+08
+00
+98
+dc
+08
+00
+88
+a2
+08
+00
+88
+aa
+08
+00
+89
+58
+08
+00
+88
+9a
+80
+54
+94
+0c
+08
+00
+88
+98
+08
+00
+80
+40
+08
+00
+81
+c0
+08
+00
+89
+70
+08
+00
+81
+7c
+08
+00
+99
+4e
+08
+00
+98
+cc
+08
+00
+81
+80
+08
+00
+80
+80
+08
+00
+88
+94
+08
+00
+89
+94
+08
+00
+99
+a6
+08
+00
+80
+80
+08
+00
+89
+5e
+08
+00
+89
+8a
+88
+a6
+40
+1a
+08
+00
+88
+a0
+08
+00
+89
+7c
+08
+00
+89
+7a
+08
+00
+99
+70
+08
+00
+81
+b6
+08
+00
+89
+d6
+08
+00
+89
+d4
+08
+00
+89
+5a
+08
+00
+80
+68
+08
+00
+99
+d4
+08
+00
+98
+66
+08
+00
+88
+6e
+08
+00
+98
+aa
+08
+00
+81
+6a
+08
+00
+80
+dc
+08
+00
+88
+8a
+08
+00
+81
+70
+08
+00
+89
+6c
+08
+00
+98
+d0
+08
+00
+99
+72
+08
+00
+81
+c6
+08
+00
+88
+b8
+08
+00
+99
+d4
+08
+00
+99
+5c
+08
+00
+88
+54
+08
+00
+80
+48
+08
+00
+89
+8a
+08
+00
+89
+a6
+08
+00
+89
+c8
+08
+00
+99
+cc
+08
+00
+89
+ac
+08
+00
+88
+7a
+08
+00
+81
+ce
+08
+00
+88
+64
+81
+c4
+c6
+00
+c4
+00
+08
+00
+79
+18
+5e
+47
+c2
+08
+de
+e9
+da
+6f
+5d
+a1
+8d
+6c
+e0
+30
+08
+00
+5d
+a1
+8d
+aa
+bf
+c7
+4d
+43
+d6
+6d
+f0
+f0
+d4
+1d
+52
+cb
+d7
+d3
+e7
+b8
+5f
+4a
+b1
+47
+d5
+2d
+a0
+ed
+d7
+cb
+d3
+75
+fb
+98
+de
+51
+4d
+64
+08
+00
+80
+62
+08
+00
+81
+70
+08
+00
+80
+4e
+08
+00
+80
+be
+08
+00
+98
+80
+08
+00
+99
+76
+08
+00
+98
+46
+08
+00
+99
+dc
+08
+00
+88
+6e
+08
+00
+89
+a2
+08
+00
+89
+86
+08
+00
+99
+44
+08
+00
+99
+7e
+08
+00
+99
+5c
+99
+42
+d2
+8e
+08
+00
+88
+ac
+08
+00
+99
+64
+08
+00
+88
+48
+08
+00
+89
+92
+08
+00
+81
+a0
+08
+00
+99
+b8
+08
+00
+89
+4e
+08
+00
+89
+7c
+08
+00
+81
+a2
+08
+00
+98
+d4
+08
+00
+88
+8a
+08
+00
+89
+78
+08
+00
+80
+80
+88
+6c
+f3
+3c
+08
+00
+81
+9e
+08
+00
+80
+dc
+08
+00
+89
+82
+08
+00
+99
+80
+08
+00
+89
+8c
+08
+00
+99
+44
+08
+00
+98
+98
+08
+00
+80
+50
+08
+00
+81
+8c
+08
+00
+81
+9e
+08
+00
+88
+44
+08
+00
+81
+84
+08
+00
+89
+aa
+08
+00
+89
+d0
+08
+00
+88
+cc
+08
+00
+98
+8e
+08
+00
+88
+c2
+08
+00
+80
+46
+08
+00
+80
+bc
+08
+00
+89
+6e
+08
+00
+81
+5c
+08
+00
+89
+46
+08
+00
+89
+40
+08
+00
+98
+6a
+08
+00
+98
+60
+08
+00
+89
+b2
+08
+00
+88
+40
+08
+00
+89
+ba
+08
+00
+89
+62
+08
+00
+81
+b0
+88
+bc
+40
+1a
+08
+00
+89
+4a
+08
+00
+99
+b4
+08
+00
+99
+7e
+08
+00
+98
+ba
+08
+00
+88
+88
+08
+00
+98
+5e
+08
+00
+98
+9c
+08
+00
+89
+94
+08
+00
+80
+4e
+08
+00
+81
+cc
+08
+00
+88
+be
+08
+00
+88
+64
+08
+00
+89
+58
+08
+00
+88
+50
+08
+00
+88
+ac
+98
+82
+40
+12
+08
+00
+88
+56
+08
+00
+80
+b2
+99
+9a
+41
+2a
+08
+00
+80
+58
+08
+00
+88
+be
+08
+00
+80
+86
+08
+00
+80
+42
+08
+00
+88
+6e
+08
+00
+89
+50
+89
+de
+40
+1e
+81
+da
+a0
+ed
+08
+00
+88
+8a
+08
+00
+98
+80
+08
+00
+88
+9e
+08
+00
+89
+40
+08
+00
+89
+aa
+88
+46
+d6
+f3
+08
+00
+89
+74
+08
+00
+98
+c0
+08
+00
+99
+90
+08
+00
+89
+a6
+08
+00
+89
+84
+08
+00
+81
+c0
+08
+00
+88
+82
+08
+00
+98
+46
+08
+00
+89
+7e
+08
+00
+88
+78
+08
+00
+89
+40
+08
+00
+88
+da
+08
+00
+81
+9c
+08
+00
+88
+5e
+08
+00
+81
+d6
+08
+00
+88
+88
+08
+00
+89
+52
+08
+00
+89
+6c
+08
+00
+89
+5c
+08
+00
+99
+82
+08
+00
+81
+48
+08
+00
+88
+d8
+08
+00
+89
+aa
+99
+c8
+5d
+a1
+08
+00
+8d
+88
+08
+00
+89
+c2
+08
+00
+89
+50
+08
+00
+88
+88
+08
+00
+98
+94
+08
+00
+88
+ae
+08
+00
+99
+da
+08
+00
+81
+4a
+08
+00
+98
+48
+08
+00
+81
+a8
+08
+00
+89
+c2
+08
+00
+80
+90
+08
+00
+88
+5a
+08
+00
+80
+9c
+08
+00
+88
+9e
+08
+00
+89
+a0
+08
+00
+80
+b0
+08
+00
+98
+68
+98
+a8
+c5
+00
+c7
+00
+08
+00
+6d
+04
+5a
+41
+82
+c4
+46
+ad
+f8
+68
+e6
+d0
+08
+00
+89
+d0
+08
+00
+88
+68
+08
+00
+81
+bc
+08
+00
+98
+d4
+08
+00
+98
+56
+08
+00
+81
+4e
+08
+00
+80
+48
+08
+00
+88
+80
+08
+00
+89
+4c
+08
+00
+89
+a2
+08
+00
+89
+8a
+08
+00
+80
+84
+08
+00
+81
+c2
+08
+00
+98
+b8
+08
+00
+88
+d2
+08
+00
+88
+c4
+08
+00
+99
+70
+08
+00
+98
+8e
+08
+00
+98
+b0
+08
+00
+81
+de
+08
+00
+88
+82
+08
+00
+89
+42
+08
+00
+89
+d2
+08
+00
+88
+44
+08
+00
+98
+50
+08
+00
+80
+b0
+08
+00
+89
+da
+80
+ba
 00
 00

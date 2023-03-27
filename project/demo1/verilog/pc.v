@@ -34,10 +34,11 @@ module pc(
 
 
     always @* begin 
-        casex({PcSel, RegJmp, Halt})
-            3'b000: PcAddr = Inc2;
-            3'b?10: PcAddr = RsImm;        
-            3'b100: PcAddr = PcImm;
+        casex({PcSel, RegJmp, Halt, SIIC})
+            4'b0000: PcAddr = Inc2;
+            4'b?100: PcAddr = RsImm;        
+            4'b1000: PcAddr = PcImm;
+            4'b???1: PcAddr = 2;
             default: PcAddr = PcQ;
         endcase
     end
