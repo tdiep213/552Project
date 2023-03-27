@@ -1,12 +1,17 @@
-          // Original test: ./nfischer/hw4/problem6/ld_1.asm
+          // Original test: ./nfischer/hw4/problem6/ld_3.asm
           // Author: nfischer
           // Test source code follows
           
           
-          //load at offset
-0000 c132 lbi  r1, 50     //mem location
-0002 c208 lbi  r2, 8      //value to store
-0004 c300 lbi  r3, 0      //clear r3
-0006 814a st   r2, r1, 10  //store at mem location +10
-0008 896a ld   r3, r1, 10  //load from mem location +10
-000a 0000 halt
+          //test multiple loads
+0000 c132 lbi  r1, 50     //base address
+0002 c202 lbi  r2, 2      //values to ld/st
+0004 c304 lbi  r3, 4
+0006 c406 lbi  r4, 6
+0008 8140 st   r2, r1, 0  //store values
+000a 816a st   r3, r1, 10
+000c 8194 st   r4, r1, 20
+000e 894a ld   r2, r1, 10 //load values
+0010 8974 ld   r3, r1, 20
+0012 8980 ld   r4, r1, 0
+0014 0000 halt

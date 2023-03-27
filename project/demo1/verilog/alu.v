@@ -86,7 +86,9 @@ module alu(out, opcode, funct, Ain, Bin);
                     2'b00: begin //ST
                         out = sum;
                     end 
-                    2'b01: begin end //LD
+                    2'b01: begin //LD
+                        out = sum; 
+                    end 
                     2'b10: begin    // SLBI 
                         out = (Ain << 8) | Bin;
                     end
