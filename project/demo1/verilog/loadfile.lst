@@ -1,16 +1,17 @@
-          // Original test: ./hartung/hw4/problem6/andn_0.asm
-          // Author: hartung
+          // Original test: ./ziliang/hw4/problem6/add_0.asm
+          // Author: ziliang
           // Test source code follows
           
           
-          //This tests the operation of ANDN
-          //and dependency of Rt on the result
-          //of the previous operation.
+          //This mainly tests the forwarding problems that can happen
+          //if people messed up passing values between their pipelines.
           
-0000 c1ff lbi  r1, 0xff   //expected r1=0xffff
-0002 c2f0 lbi  r2, 0xf0   //expected r2=0xfff0
-0004 d94f andn r3, r1, r2 //expected r3=0x000f
-0006 db53 andn r4, r3, r2 //expected r4=0x000f
-0008 dc77 andn r5, r4, r3 //expected r5=0x0000
-000a 0000 halt
-          
+0000 c164 lbi r1, 100	//load 100 into r1
+0002 c263 lbi r2, 99	//load 99 into r2
+0004 d94c add r3, r1, r2	//expected r3 = 199 or x00c7
+0006 db28 add r2, r3, r1	//expected r2 = 299 or x012b
+0008 d950 add r4, r1, r2	//expected r4 = 399 or x018f
+000a da38 add r6, r2, r1	//expected r6 = 399 or x018f
+000c d994 add r5, r1, r4	//expected r5 = 499 or x01f3
+000e dd30 add r4, r5, r1	//expected r4 = 599 or x0257
+0010 0000 halt

@@ -68,7 +68,7 @@ module memory2c (data_out, data_in, addr, enable, wr, createdump, clk, rst);
       if (rst) begin
          // first init to 0, then load loadfile_all.img
          if (!loaded) begin
-            $readmemh("loadfile_all.img", mem);
+            $readmemh("/home/kiffel/cs552/project-repo/552Project/project/demo1/verilog/loadfile_all.img", mem);
             loaded = 1;
          end
       end
