@@ -37,13 +37,13 @@ module proc (/*AUTOARG*/
    wire zero, sign;
 
    //Control signals
-   
+   wire[4:0] ALUcntrl;
    wire RegJmp, Halt, PcSel;  //FETCH
    wire LBI, Link, Iformat, RegWrite;   //DECODE
    wire ALUSel;               //EXECUTE
    wire MemEnable, MemWr;     //MEMORY
    wire Val2Reg;              //WRITEBACK
-   wire ctrlErr, ext_err;     //ERRORs
+   // wire ctrlErr, ext_err;     //ERRORs
 
    /*-----FETCH-----*/
 
@@ -60,26 +60,26 @@ module proc (/*AUTOARG*/
 
    /*-----MEMORY-----*/
    
-   memory M (.data_out(MEMout), .data_in(Rt), .addr(ALUout), .enable(MemEnable), .wr(MemWr), .createdump(), .clk(clk), .rst(rst));
+   memory M (.data_out(MEMout), .data_in(Rt), .addr(ALUout), .enable(MemEnable), .wr(MemWr), .createdump(), .Halt(Halt), .clk(clk), .rst(rst));
 
    /*-----WRITEBACK-----*/
    wb W(.Writeback(Writeback), .ALUout(ALUout), .MEMout(MEMout), .Val2Reg(Val2Reg));
 
 
    /*-----CONTROL-----*/
-   sign_ext EXT(.out(ImmExt), .err(ext_err), .in(Instr), .zero_ext(ImmSel));
+   sign_ext EXT(.out(ImmExt), .err(err), .in(Instr), .zero_ext(ImmSel));
 
-    assign sign = ALUout[15];
-    assign zero = (ALUTout == 0);
+   assign sign = ALUout[15];
+   assign zero = (ALUout == 0);
 
    control CNTRL(
     //Output(s)
     .RegWrite(RegWrite), .Iformat(Iformat), .PcSel(PcSel), .RegJmp(RegJmp), .MemEnable(MemEnable), .MemWr(MemWr),
-    .ALUcntrl(ALUcntrl), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(Link), .ctrlErr(ctrlErr),   
+    .ALUcntrl(ALUcntrl), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(Link), .ctrlErr(err),   
     //Input(s)
     .Instr(Instr[15:11]), .Zflag(zero), .Sflag(sign));
 
-    assign err = ctrlErr | ext_err;
+   
 
 endmodule // proc
 `default_nettype wire

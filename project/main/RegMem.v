@@ -11,10 +11,10 @@ module RegMem(
     Imm, 
     clk,
     rst,
-    LBI, Link, en,   //Control Signals  // clarify or rename 
+    PcAddr,
+    LBI, Link, en   //Control Signals  // clarify or rename 
                     //LBI-load byte immediate (True: use Rs, False: Else)
                     //Link - Jal/Jalr (True: use R7)
-    PC
 );
     parameter REG_WIDTH = 16;
     parameter REG_DEPTH = 8;
@@ -47,7 +47,7 @@ module RegMem(
     
     // cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));   
     assign ImmSel = LBI ? Imm : WriteData;
-    assign data = Link ? PC : ImmSel ;      
+    assign data = Link ? PcAddr : ImmSel ;      
 
     wire[15:0] out1, out2;
     rf RegFile(.read1OutData(out1), .read2OutData(out2), .err(),

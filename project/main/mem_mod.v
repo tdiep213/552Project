@@ -11,9 +11,9 @@ module mem_mod(
     rst,
     createdump
 );
-    parameter MEM_DEPTH 65536;
-    parameter MEM_WIDTH 8;
-    parameter DATA_WIDTH 16;
+    parameter MEM_DEPTH = 65536;
+    parameter MEM_WIDTH = 8;
+    parameter DATA_WIDTH = 16;
 
     input wire[DATA_WIDTH - 1:0] data_in, addr;
     input wire enable, wr, clk, rst, createdump;

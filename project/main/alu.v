@@ -1,8 +1,8 @@
 //Arithmetic module
-module alu(out, Ofl, opcode, funct, Ain, Bin);
+module alu(out, opcode, funct, Ain, Bin);
     parameter OPERAND_WIDTH = 16;
     output reg[15:0] out;
-    output wire Ofl;
+    //output wire Ofl;
     input wire[15:0] Ain, Bin;
     input wire[4:0]opcode;  // Instr[15:11]
     input wire[1:0]funct;   // Instr[1:0]
@@ -25,7 +25,7 @@ module alu(out, Ofl, opcode, funct, Ain, Bin);
 
 
     /* Conditional logic */
-    wire[15:0] slt16, sle16, sCoSum;
+    wire slt16, sle16, sCoSum;
     lt16b lt(.out(slt16), .Ain(Ain), .Bin(Bin));
 
     lt16b le(.out(ltcomp), .Ain(Ain), .Bin(Bin));
