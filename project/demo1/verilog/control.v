@@ -12,7 +12,7 @@ module control(
     ALUSel,     // AKA ALUSel possibly. Controls whether or not to use Immediate as ALU input.
     ImmSel,     // Choose which extension to perform on which immediate size. (sign?, ImmSize[1:0]) (00: 5, 01: 8, 10: 11)
     Halt,       // Stop current and future instructions from executing
-    LinkReg,    // (Link, LBI) Choose which Register to write to in RegMem (00: Rd, 01: Rs, 10: R7, 11: XX) // TODO Remap!
+    LinkReg,    // (Link, LBI) 
     ctrlErr,    // temporary err flag for phase 1.
     SIIC,
     //Input(s)
