@@ -113,7 +113,7 @@ module control(
             5'b10011: begin // STU Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd and //  Rs <- Rs + I(sign ext.)
                 PcSel           = 1'b0;    // Do Not add Imm to PC + 2
                 RegJmp          = 1'b0;    // Do Not Jmp from Rs
-                Val2Reg         = 1'b0;    // Do transmit ALU output // 1'bX 
+                Val2Reg         = 1'b0;    // Do transmit ALU output
                 ALUSel          = 1'b1;    // Do use the Immediate value in ALU
                 Halt            = 1'b0;    // Do Not halt
                 LinkReg[1:0]    = 2'b00;   // Do Not Link, Do Not LBI
