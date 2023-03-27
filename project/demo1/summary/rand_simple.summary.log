@@ -2,10 +2,10 @@
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_addi.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_andn.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_andni.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_beqz.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_bgez.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_bltz.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_bnez.asm FAILED
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_beqz.asm SUCCESS CPI:1.0 CYCLES:300 ICOUNT:297 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_bgez.asm SUCCESS CPI:1.0 CYCLES:206 ICOUNT:203 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_bltz.asm SUCCESS CPI:1.0 CYCLES:284 ICOUNT:281 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_bnez.asm SUCCESS CPI:1.0 CYCLES:226 ICOUNT:223 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_btr.asm SUCCESS CPI:1.1 CYCLES:52 ICOUNT:49 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_j.asm SUCCESS CPI:1.2 CYCLES:20 ICOUNT:17 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_1_jal.asm SUCCESS CPI:1.2 CYCLES:20 ICOUNT:17 IHITRATE: 0 DHITRATE: 0
@@ -36,10 +36,10 @@
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_addi.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_andn.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_andni.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_beqz.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_bgez.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_bltz.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_bnez.asm FAILED
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_beqz.asm SUCCESS CPI:1.0 CYCLES:284 ICOUNT:281 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_bgez.asm SUCCESS CPI:1.0 CYCLES:220 ICOUNT:217 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_bltz.asm SUCCESS CPI:1.0 CYCLES:234 ICOUNT:231 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_bnez.asm SUCCESS CPI:1.0 CYCLES:226 ICOUNT:223 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_btr.asm SUCCESS CPI:1.1 CYCLES:52 ICOUNT:49 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_j.asm SUCCESS CPI:1.2 CYCLES:20 ICOUNT:17 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_2_jal.asm SUCCESS CPI:1.2 CYCLES:20 ICOUNT:17 IHITRATE: 0 DHITRATE: 0
@@ -70,10 +70,10 @@
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_addi.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_andn.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_andni.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_beqz.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_bgez.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_bltz.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_bnez.asm FAILED
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_beqz.asm SUCCESS CPI:1.0 CYCLES:304 ICOUNT:301 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_bgez.asm SUCCESS CPI:1.0 CYCLES:188 ICOUNT:185 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_bltz.asm SUCCESS CPI:1.0 CYCLES:162 ICOUNT:159 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_bnez.asm SUCCESS CPI:1.0 CYCLES:196 ICOUNT:193 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_btr.asm SUCCESS CPI:1.1 CYCLES:52 ICOUNT:49 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_j.asm SUCCESS CPI:1.2 CYCLES:20 ICOUNT:17 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_3_jal.asm SUCCESS CPI:1.2 CYCLES:20 ICOUNT:17 IHITRATE: 0 DHITRATE: 0
@@ -104,10 +104,10 @@
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_addi.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_andn.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_andni.asm SUCCESS CPI:1.1 CYCLES:36 ICOUNT:33 IHITRATE: 0 DHITRATE: 0
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_beqz.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_bgez.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_bltz.asm FAILED
-/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_bnez.asm FAILED
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_beqz.asm SUCCESS CPI:1.0 CYCLES:286 ICOUNT:283 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_bgez.asm SUCCESS CPI:1.0 CYCLES:230 ICOUNT:227 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_bltz.asm SUCCESS CPI:1.0 CYCLES:264 ICOUNT:261 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_bnez.asm SUCCESS CPI:1.0 CYCLES:228 ICOUNT:225 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_btr.asm SUCCESS CPI:1.1 CYCLES:52 ICOUNT:49 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_j.asm SUCCESS CPI:1.2 CYCLES:20 ICOUNT:17 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/rand_simple/t_4_jal.asm SUCCESS CPI:1.2 CYCLES:20 ICOUNT:17 IHITRATE: 0 DHITRATE: 0
