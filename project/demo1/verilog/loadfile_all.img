@@ -1,13 +1,20 @@
+Reading line: // Original test: ./ziliang/hw4/problem6/add_1.asm
+Reading line: // Author: ziliang
+Reading line: // Test source code follows
+Reading line: 
+Reading line: 
+Reading line: //This tests the 0 output value check in the ALU
+Reading line: 
+Reading line: lbi r1, 0
+Reading line: lbi r2, 0
+Reading line: add r3, r1, r2
+Reading line: halt
 @0
 c1
-ff
+00
 c2
-f0
+00
 d9
-4f
-db
-53
-dc
-77
+4c
 00
 00
