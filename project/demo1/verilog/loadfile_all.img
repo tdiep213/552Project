@@ -1,25 +1,50 @@
-Reading line: // addiTest
-Reading line: //
-Reading line: // test program for WISC-SP08 architecture
-Reading line: // for the addi instruction.
-Reading line: //
-Reading line: // CS/ECE 552, Spring 2008
-Reading line: // Abhishek Sinkar  15 March 2008
-Reading line: //
+Reading line: // Test provided by Karu, comments updated by Matt S.
+Reading line: // beqz test.
 Reading line: 
-Reading line: //Test of checking overflow logic
-Reading line: //first store largest possible negative number in r1 and then add -1 to it
-Reading line: //this should cause the hardware to produce overflow
-Reading line: lbi r1, 0x80
-Reading line: slbi r1, 0x0
-Reading line: addi r2, r1, 0xff
+Reading line: lbi r1, 1            //set r1 to a constant 1
+Reading line: lbi r2, 2	         //set r2 to a constant 2
+Reading line: lbi r4, 1            //set r4 to a constant 1, r4 will be used to indicate our program can be execate currectly or not
+Reading line: slt r3, r1, r2       //set the r3 if r1 is less than r2, it will be set here
+Reading line: beqz r3, .label1     //if r3 is zero, program will branch to label1, but since r3 == 1 from the previous line, the branch should not be taken
+Reading line: addi r4, r4, 1       //if the beqz above didn't branch, r4 will be added 1
+Reading line: 
+Reading line: .label1:
+Reading line: lbi r1, 2            //set r1 to a constant 2
+Reading line: lbi r2, 1	         //set r2 to a constant 1
+Reading line: slt r3, r1,r2        //set the r3 if r1 is less than r2, it won't be set here
+Reading line: beqz r3, .label2     //if r3 is zero, program will branch to label2 -- since r3 == 0 from the previous line, the branch will be taken
+Reading line: addi r4, r4, 4	     //if the beqz above didn't branch, r4 will be added 4
+Reading line: halt
+Reading line: 
+Reading line: .label2:
+Reading line: addi r4, r4, 2       //if the beqz above brance, r4 will be added 2
 Reading line: halt
 @0
 c1
-80
-91
+01
+c2
+02
+c4
+01
+e9
+4c
+63
+02
+44
+81
+c1
+02
+c2
+01
+e9
+4c
+63
+04
+44
+84
 00
-41
-5f
+00
+44
+82
 00
 00

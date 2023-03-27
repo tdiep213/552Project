@@ -39,7 +39,7 @@ module proc (/*AUTOARG*/
    //Control signals
    wire[4:0] ALUcntrl;
    wire RegJmp, Halt, PcSel;  //FETCH
-   wire LBI, Iformat, RegWrite;   //DECODE
+   wire Iformat, RegWrite;   //DECODE
    wire[1:0] Link;
    wire ALUSel;               //EXECUTE
    wire MemEnable, MemWr;     //MEMORY
