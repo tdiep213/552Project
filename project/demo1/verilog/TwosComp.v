@@ -9,7 +9,7 @@ module TwosComp(out, in);
     assign zero = 0;
     assign inv = ~in;
 
-    cla16b inc(.sum(out), .cOut(), .inA(inv), .inB(1), .cIn(zero));
+    cla16b inc(.sum(out), .cOut(), .inA(inv), .inB(16'h0001), .cIn(zero));
 
 endmodule
 `default_nettype wire

@@ -42,7 +42,7 @@ module RegMem(
     assign zero = 0; 
 
     /*Made recomended changes*/ // I was wrong about this, b/c we only ever write PC + 2 to R7, no other PCAddrs go to registers.
-    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(2), .cIn(zero));
+    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(16'h0002), .cIn(zero));
     assign ImmSel = LBI ? Imm : WriteData;
     assign data = Link ? PcSum2 : ImmSel ;      
 
