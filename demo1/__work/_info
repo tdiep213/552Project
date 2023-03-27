@@ -1,0 +1,164 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/timo/private/552/project/demo1
+valu
+Z1 !s110 1679878847
+!i10b 1
+!s100 cZ]TLf?I1WE6k5ocOHQe_3
+I7V_GU_zS;H79i:[G[?lfJ3
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1679673950
+8alu.v
+Falu.v
+L0 2
+Z3 OP;L;10.7c;67
+r1
+!s85 0
+31
+Z4 !s108 1679878843.000000
+!s107 wb.v|TwosComp.v|sign_ext.v|rf.v|rf_bypass.v|RegMem.v|proc.v|proc_hier.v|proc_hier_bench.v|pc.v|memory.v|memory2c.v|lt1b.v|lt16b.v|InstrMem.v|gt1b.v|fullAdder1b.v|fetch.v|execute.v|dff.v|copy.v|dff|dff_16b.v|decode.v|control.v|clkrst.v|cla4b.v|cla16b.v|alu.v|
+Z5 !s90 +define+RANDSEED=3|-work|__work|alu.v|cla16b.v|cla4b.v|clkrst.v|control.v|decode.v|dff_16b.v|dff|copy.v|dff.v|execute.v|fetch.v|fullAdder1b.v|gt1b.v|InstrMem.v|lt16b.v|lt1b.v|memory2c.v|memory.v|pc.v|proc_hier_bench.v|proc_hier.v|proc.v|RegMem.v|rf_bypass.v|rf.v|sign_ext.v|TwosComp.v|wb.v|
+!i113 1
+Z6 o-work __work
+Z7 !s92 +define+RANDSEED=3 -work __work
+Z8 tCvgOpt 0
+vcla16b
+R1
+!i10b 1
+!s100 QFSHPhV`>U>Jio:LmO30S2
+Il?EF_ToEe`ldRHoIhO<Rb2
+R2
+R0
+w1679673992
+8cla16b.v
+Fcla16b.v
+L0 8
+R3
+r1
+!s85 0
+31
+R4
+Z9 !s107 wb.v|TwosComp.v|sign_ext.v|rf.v|rf_bypass.v|RegMem.v|proc.v|proc_hier.v|proc_hier_bench.v|pc.v|memory.v|memory2c.v|lt1b.v|lt16b.v|InstrMem.v|gt1b.v|fullAdder1b.v|fetch.v|execute.v|dff.v|copy.v|dff|dff_16b.v|decode.v|control.v|clkrst.v|cla4b.v|cla16b.v|alu.v|
+R5
+!i113 1
+R6
+R7
+R8
+vcla4b
+R1
+!i10b 1
+!s100 ohEQ1OmTS:lUNOnZ<?>>U1
+IfAWhf[B^gW=W_j`;P^QhF0
+R2
+R0
+w1679673989
+8cla4b.v
+Fcla4b.v
+L0 8
+R3
+r1
+!s85 0
+31
+R4
+R9
+R5
+!i113 1
+R6
+R7
+R8
+vclkrst
+R1
+!i10b 1
+!s100 17R8;?7`BJD8F]2OJne>o0
+IcU3NbIBf6S_9FV@GH4;Og1
+R2
+R0
+Z10 w1679673953
+8clkrst.v
+Fclkrst.v
+L0 13
+R3
+r1
+!s85 0
+31
+R4
+R9
+R5
+!i113 1
+R6
+R7
+R8
+vcontrol
+Z11 !s110 1679878848
+!i10b 1
+!s100 l<Em;YoV=YfCTPX]3M0af0
+I88V@>aXgIYT[;>;B^1R^=0
+R2
+R0
+R10
+8control.v
+Fcontrol.v
+L0 2
+R3
+r1
+!s85 0
+31
+R4
+R9
+R5
+!i113 1
+R6
+R7
+R8
+vdecode
+R11
+!i10b 1
+!s100 DCbZGDE2ZQ=6cj_o9]hJJ3
+IoSn@imFoL_Dzm9<:i53mb1
+R2
+R0
+w1679673956
+8decode.v
+Fdecode.v
+L0 8
+R3
+r1
+!s85 0
+31
+R4
+R9
+R5
+!i113 1
+R6
+R7
+R8
+vdff_16
+R11
+!i10b 1
+!s100 EccOQg_4U=g]8lHM9SDSz2
+Ifcn@RH4G?:g5z>Sh7PLI70
+R2
+R0
+w1679674043
+8dff_16b.v
+Fdff_16b.v
+L0 9
+R3
+r1
+!s85 0
+31
+R4
+R9
+R5
+!i113 1
+R6
+R7
+R8
