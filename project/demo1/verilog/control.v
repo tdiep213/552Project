@@ -115,7 +115,7 @@ module control(
                 ALUSel          = 1'b1;    // Do use the Immediate value in ALU
                 Halt            = 1'b0;    // Do Not halt
                 LinkReg[1:0]    = 2'b00;   // Do Not Link, Do Not LBI
-                DestRegSel[1:0] = 2'b11;   // Do use Rd-I
+                DestRegSel[1:0] = 2'b00;   // Do use Rs
                 ALUcntrl[4:0]   = 5'b01000;// Do act like performing ADDI
                 ImmSel[2:0]     = 3'b100;  // Do sign extend 5 bits.
                 RegWrite        = 1'b1;    // Do write to register
