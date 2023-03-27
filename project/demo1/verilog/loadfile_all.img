@@ -1,15 +1,40 @@
-Reading line: // Original test: ./shojaei/hw4/problem6/xori_2.asm
-Reading line: // Author: shojaei
+Reading line: // Original test: ./nfischer/hw4/problem6/ld_3.asm
+Reading line: // Author: nfischer
 Reading line: // Test source code follows
 Reading line: 
 Reading line: 
-Reading line: lbi r1, 24
-Reading line: xori r2, r1, 7
+Reading line: //test multiple loads
+Reading line: lbi  r1, 50     //base address
+Reading line: lbi  r2, 2      //values to ld/st
+Reading line: lbi  r3, 4
+Reading line: lbi  r4, 6
+Reading line: st   r2, r1, 0  //store values
+Reading line: st   r3, r1, 10
+Reading line: st   r4, r1, 20
+Reading line: ld   r2, r1, 10 //load values
+Reading line: ld   r3, r1, 20
+Reading line: ld   r4, r1, 0
 Reading line: halt
 @0
 c1
-18
-51
-47
+32
+c2
+02
+c3
+04
+c4
+06
+81
+40
+81
+6a
+81
+94
+89
+4a
+89
+74
+89
+80
 00
 00
