@@ -1,40 +1,31 @@
-Reading line: // Original test: ./nfischer/hw4/problem6/ld_3.asm
-Reading line: // Author: nfischer
-Reading line: // Test source code follows
+Reading line: // Test provided by Karu 
+Reading line: j .realstart
+Reading line: lbi r0,0
+Reading line: rti
+Reading line: halt
 Reading line: 
-Reading line: 
-Reading line: //test multiple loads
-Reading line: lbi  r1, 50     //base address
-Reading line: lbi  r2, 2      //values to ld/st
-Reading line: lbi  r3, 4
-Reading line: lbi  r4, 6
-Reading line: st   r2, r1, 0  //store values
-Reading line: st   r3, r1, 10
-Reading line: st   r4, r1, 20
-Reading line: ld   r2, r1, 10 //load values
-Reading line: ld   r3, r1, 20
-Reading line: ld   r4, r1, 0
+Reading line: .realstart:
+Reading line: lbi r1,0
+Reading line: lbi r0,0
+Reading line: siic r6
+Reading line: lbi r4, 44
 Reading line: halt
 @0
-c1
-32
-c2
-02
-c3
-04
-c4
+20
 06
-81
-40
-81
-6a
-81
-94
-89
-4a
-89
-74
-89
-80
+c0
+00
+18
+00
+00
+00
+c1
+00
+c0
+00
+16
+00
+c4
+2c
 00
 00

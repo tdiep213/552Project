@@ -14,7 +14,7 @@ module alu(out, opcode, funct, Ain, Bin);
 
     wire[15:0] inv;
     reg[15:0] s0, s1, s2;
-    wire ltcomp;
+    
 
     /* Arithmetic logic */
     wire[15:0] sum, diff;
@@ -28,8 +28,9 @@ module alu(out, opcode, funct, Ain, Bin);
     wire slt16, sle16, sCoSum;
     lt16b lt(.out(slt16), .Ain(Ain), .Bin(Bin));
 
-    lt16b le(.out(ltcomp), .Ain(Ain), .Bin(Bin));
-    assign sle16 = ltcomp | (&(Ain==Bin));    
+    // wire ltcomp;
+    // lt16b le(.out(ltcomp), .Ain(Ain), .Bin(Bin));
+    assign sle16 = slt16 | (&(Ain==Bin));    
 
     cla16b COSum(.sum(), .cOut(sCoSum), .inA(Ain), .inB(Bin), .cIn(1'b0));
 

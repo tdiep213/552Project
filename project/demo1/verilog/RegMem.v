@@ -8,6 +8,7 @@ module RegMem(
     ReadReg2, //Rt
     WriteReg, // DestRegister
     WriteData,
+    PC,
     clk,
     rst,
     en   //Control Signals  // clarify or rename 
@@ -28,4 +29,6 @@ module RegMem(
     rf RegFile(.read1OutData(Reg1Data), .read2OutData(Reg2Data), .err(),
                   .clk(clk), .rst(rst), .read1RegSel(ReadReg1), .read2RegSel(ReadReg2),
                   .writeRegSel(WriteReg), .writeInData(WriteData), .writeEn(en));
+    
+    dff_16b EPC(.q(EPC), .err(), .d(PC), .clk(clk), .rst(rst));
 endmodule

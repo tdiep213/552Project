@@ -43,7 +43,7 @@ module decode (Reg1Data, Reg2Data, Instr, Imm, Writeback, PC, LBI, Link, DestReg
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
                      .ReadReg1(Rs), .ReadReg2(Rt),.WriteReg(WriteRegAddr), .WriteData(WriteData), 
    //                 //Rs                    //Rd                 //Rt
-                     .en(en), .clk(clk), .rst(rst));
+                     .PC(PC),.en(en), .clk(clk), .rst(rst));
     
 
 
