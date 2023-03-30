@@ -32,6 +32,6 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
     dff_16 MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}), .err(), .d({MemEnableIn, MemWrIn, HaltIns}), .clk(clk), .rst(rst));
     dff_16 WB_cntrl(.q(Val2RegOut), .err(), .d(Val2RegIn), .clk(clk), .rst(rst))
 
-    (.q(), .err(), .d(), .clk(clk), .rst(rst));
+    // (.q(), .err(), .d(), .clk(clk), .rst(rst));
 
 endmodule

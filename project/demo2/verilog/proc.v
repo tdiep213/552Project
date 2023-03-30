@@ -66,9 +66,9 @@ module proc (/*AUTOARG*/
         .InstrOut(ID_Instr), .ImmExtOut(ID_ImmExt), .PcOut(ID_PC),              //Data out
         .LinkRegOut(ID_LinkReg), .DestRegSelOut(ID_DestRegSel),                 //Control out (Decode)
                 .RegWriteOut(ID_RegWrite),                        
-        .ALUSelOut(EX_ALUSel),                                                  //Control out (Execute)
-        .MemEnableOut(MEM_MemEnable), .MemWrOut(MEM_MemWr), .HaltOut(MEM_Halt), //Control out (Memory)
-        .Val2RegOut(WB_Val2Reg),                                                //Control out (Writeback)
+        .ALUSelOut(ID_ALUSel),                                                  //Control out (Execute)
+        .MemEnableOut(ID_MemEnable), .MemWrOut(ID_MemWr), .HaltOut(ID_Halt), //Control out (Memory)
+        .Val2RegOut(ID_Val2Reg),                                                //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
         .InstrIn(IF_Instr), .ImmExtIn(IF_ImmExt), .PcIn(IF_PC),                 //Data in 
@@ -90,7 +90,22 @@ module proc (/*AUTOARG*/
 
     /*-----ID/EX-----*/
 
+    id_ex id_ed_PIPE(
+    /*-----PIPELINE OUT-----*/
+    .InstrOut(EX_Instr), .ImmExtOut(EX_ImmExt), .PcOut(EX_PC),          //Data out
+        .RsOut(EX_Rs), .RtOut(EX_Rt)               
+    .ALUSelOut(EX_ALUSel),                                              //Control out (Execute)
+    .MemEnableOut(EX_MemEnable), .MemWrOut(EX_MemWr), .HaltOut(EX_Halt),//Control out (Memory)
+    .Val2RegOut(EX_Val2Reg),                                            //Control out (Writeback)
 
+    /*-----PIPELINE IN-----*/
+    .InstrIn(ID_Instr), .ImmExtIn(ID_ImmExt), .PcIn(ID_PC),             //Data in
+        .RsIn(ID_Rs), .RtIn(ID_Rt),     
+    .ALUSelIn(ID_ALUSel),                                               //Control out (Execute)
+    .MemEnableIn(ID_MemEnable), .MemWrIn(ID_MemWr), .HaltIn(ID_Halt),   //Control out (Memory)
+    .Val2RegIn(ID_Val2Reg),                                             //Control out (Writeback)
+
+    .clk(clk), .rst(rst));
     /*---------------*/
 
     /*-----EXECUTE-----*/
