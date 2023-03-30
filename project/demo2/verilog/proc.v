@@ -50,6 +50,25 @@ module proc (/*AUTOARG*/
     wire Val2Reg;              //WRITEBACK
     wire ctrlErr, ext_err;     //ERRORs
 
+    /*-----ID WIRES-----*/
+    wire[15:0] ID_Instr, ID_PC, ID_ImmExt, ID_Rs, ID_Rt;
+    wire ID_LinkReg, ID_DestRegSel, ID_RegWrite;
+    wire ID_ALUSel, ID_MemEnable, ID_MemWr, ID_Halt, ID_Val2Reg;     
+
+    /*-----EX WIRES-----*/
+    wire[15:0] EX_Instr, EX_ImmExt, EX_PC, EX_Rs, EX_Rt, EX_ALUSel;
+    wire EX_MemEnable, EX_MemWr, EX_Halt, EX_Val2Reg,EX_ALUout;
+
+    /*-----MEM WIRES-----*/
+
+    wire[15:0] MEM_Rt, MEM_ALUout, MEM_MemOut; 
+    wire MEM_MemEnable, MEM_MemWr, MEM_Halt, MEM_Val2Reg;        
+
+    /*-----WB WIRES-----*/
+    wire[15:0] WB_MemOut, WB_ALUout;
+    wire WB_Val2Reg;
+
+
     /*-----FETCH-----*/
     wire[15:0] IF_Instr, IF_PC, IF_ImmExt; 
     fetch F(.Instr(IF_Instr), .PC(IF_PC), .Imm(ImmExt), .Rs(Rs), .RegJmp(RegJmp), .Halt(Halt), .PcSel(PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
@@ -58,8 +77,7 @@ module proc (/*AUTOARG*/
     /*---------------*/
 
     /*-----IF/ID-----*/
-    wire[15:0] ID_Instr, ID_PC, ID_ImmExt;
-    wire ID_LinkReg, ID_DestRegSel, ID_RegWrite;
+
 
     if_id IF_ID_PIPE(
         /*-----PIPELINE OUT-----*/
@@ -94,7 +112,7 @@ module proc (/*AUTOARG*/
     id_ex ID_EX_PIPE(
         /*-----PIPELINE OUT-----*/
         .InstrOut(EX_Instr), .ImmExtOut(EX_ImmExt), .PcOut(EX_PC),          //Data out
-            .RsOut(EX_Rs), .RtOut(EX_Rt)               
+            .RsOut(EX_Rs), .RtOut(EX_Rt),               
         .ALUSelOut(EX_ALUSel),                                              //Control out (Execute)
         .MemEnableOut(EX_MemEnable), .MemWrOut(EX_MemWr), .HaltOut(EX_Halt),//Control out (Memory)
         .Val2RegOut(EX_Val2Reg),                                            //Control out (Writeback)
@@ -118,7 +136,7 @@ module proc (/*AUTOARG*/
     /*-----EX/MEM-----*/
     ex_mem EX_MEM_PIPE(
         /*-----PIPELINE OUT-----*/
-        .RtOut(MEM_RtOut), .ALUoutOut(MEM_ALUout),                              //Data out
+        .RtOut(MEM_Rt), .ALUoutOut(MEM_ALUout),                              //Data out
         .MemEnableOut(MEM_MemEnable), .MemWrOut(MEM_MemWr), .HaltOut(MEM_Halt), //Control out (Memory)
         .Val2RegOut(MEM_Val2Reg),                                               //Control out (Writeback)
 
