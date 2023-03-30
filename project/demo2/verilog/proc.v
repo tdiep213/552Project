@@ -136,7 +136,17 @@ module proc (/*AUTOARG*/
     /*---------------*/
 
     /*-----MEM/WB-----*/
+        mem_wb MEM_WB_PIPE(
+        /*-----PIPELINE OUT-----*/
+        .MemOutOut(WB_MemOut), .ALUoutOut(WB_ALUout),                              //Data out
+        .Val2RegOut(WB_Val2Reg),                                               //Control out (Writeback)
 
+        /*-----PIPELINE IN-----*/
+        .MemOutIn(MEM_MemOut), .ALUoutIn(MEM_ALUout),                                     //Data in
+        .Val2RegIn(MEM_Val2Reg),                                                 //Control in (Writeback)
+
+        .clk(clk), .rst(rst)
+    );
     /*---------------*/
 
     /*-----WRITEBACK-----*/
