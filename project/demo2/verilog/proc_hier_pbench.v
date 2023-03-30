@@ -128,33 +128,34 @@ module proc_hier_pbench();
    // Edit the example below. You must change the signal
    // names on the right hand side
     
-   assign PC = DUT.PC_Out;
-   assign Inst = DUT.Instruction_f;
+   assign PC = DUT.p0.F.PC;
+   assign Inst = DUT.p0.F.Instr;
    
-   assign RegWrite = DUT.p0.regWrite;
-   // Is register file being written to, one bit signal (1 means yes, 0 means no)
-   //    
-   assign WriteRegister = DUT.p0.DstwithJmout;
+   assign RegWrite = DUT.p0.D.RegisterMem.en;
+   // Is register being written, one bit signal (1 means yes, 0 means no)
+   
+   assign WriteRegister = DUT.p0.D.RegisterMem.WriteReg;
    // The name of the register being written to. (3 bit signal)
-   
-   assign WriteData = DUT.p0.wData;
+
+   assign WriteData = DUT.p0.D.RegisterMem.WriteData;
    // Data being written to the register. (16 bits)
    
-   assign MemRead =  (DUT.p0.memRxout & ~DUT.p0.notdonem);
+   assign MemRead =  (DUT.p0.M.en & ~DUT.p0.M.wr);
    // Is memory being read, one bit signal (1 means yes, 0 means no)
    
-   assign MemWrite = (DUT.p0.memWxout & ~DUT.p0.notdonem);
+   assign MemWrite = (DUT.p0.M.en & DUT.p0.M.wr);
    // Is memory being written to (1 bit signal)
    
-   assign MemAddress = DUT.p0.data1out;
+   assign MemAddress = DUT.p0.M.addr;
    // Address to access memory with (for both reads and writes to memory, 16 bits)
    
-   assign MemDataIn = DUT.p0.data2out;
+   assign MemDataIn = DUT.p0.M.data_in;
    // Data to be written to memory for memory writes (16 bits)
    
-   assign MemDataOut = DUT.p0.readData;
+   assign MemDataOut = DUT.p0.M.mem_out;
    // Data read from memory for memory reads (16 bits)
 
+   /*TODO
    // new added 05/03
    assign ICacheReq = DUT.p0.readData;
    // Signal indicating a valid instruction read request to cache
@@ -171,8 +172,8 @@ module proc_hier_pbench();
    assign DCacheHit = DUT.p0.readData;
    // Signal indicating a valid data cache hit
    // Above assignment is a dummy example
-   
-   assign Halt = DUT.p0.haltxout;
+   */
+   assign Halt = DUT.p0.M.Halt;
    // Processor halted
    
    

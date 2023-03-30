@@ -19,8 +19,8 @@ module  mem_wb(
 
         input wire clk, rst;
 
-    dff_16 DATA[1:0](.q({ MemOutOut, ALUoutOut}), .err(), .d({MemOutIn, ALUoutIn}), .clk(clk), .rst(rst));
+    dff DATA[1:0](.q({ MemOutOut, ALUoutOut}), .err(), .d({MemOutIn, ALUoutIn}), .clk(clk), .rst(rst));
 
-    dff_16 WB_cntrl(.q(Val2RegOut), .err(), .d(Val2RegIn), .clk(clk), .rst(rst));
+    dff WB_cntrl(.q(Val2RegOut), .err(), .d(Val2RegIn), .clk(clk), .rst(rst));
 
     endmodule

@@ -23,10 +23,10 @@ module ex_mem(
 
     input wire clk, rst;
 
-    dff_16 DATA[1:0](.q({RtOut, ALUoutOut}), .err(), .d({RtIn, ALUoutIn}), .clk(clk), .rst(rst));
+    dff DATA[1:0](.q({RtOut, ALUoutOut}), .err(), .d({RtIn, ALUoutIn}), .clk(clk), .rst(rst));
 
-    dff_16 MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}), .err(), .d({MemEnableIn, MemWrIn, HaltIns}), .clk(clk), .rst(rst));
-    dff_16 WB_cntrl(.q(Val2RegOut), .err(), .d(Val2RegIn), .clk(clk), .rst(rst));
+    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}), .err(), .d({MemEnableIn, MemWrIn, HaltIns}), .clk(clk), .rst(rst));
+    dff WB_cntrl(.q(Val2RegOut), .err(), .d(Val2RegIn), .clk(clk), .rst(rst));
 
     // (.q(), .err(), .d(), .clk(clk), .rst(rst));
 

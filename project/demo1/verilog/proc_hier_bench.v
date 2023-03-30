@@ -126,7 +126,6 @@ module proc_hier_bench();
    // names on the right hand side
     
    assign PC = DUT.p0.F.PC;
-   // assign PC = DUT.;
    assign Inst = DUT.p0.F.Instr;
    
    assign RegWrite = DUT.p0.D.RegisterMem.en;
@@ -141,7 +140,6 @@ module proc_hier_bench();
    assign MemRead =  (DUT.p0.M.en & ~DUT.p0.M.wr);
    // Is memory being read, one bit signal (1 means yes, 0 means no)
    
-   //TODO
    assign MemWrite = (DUT.p0.M.en & DUT.p0.M.wr);
    // Is memory being written to (1 bit signal)
    

@@ -52,7 +52,8 @@ module proc (/*AUTOARG*/
 
     /*-----ID WIRES-----*/
     wire[15:0] ID_Instr, ID_PC, ID_ImmExt, ID_Rs, ID_Rt;
-    wire ID_LinkReg, ID_DestRegSel, ID_RegWrite;
+    wire[1:0] ID_LinkReg, ID_DestRegSel;
+    wire ID_RegWrite;
     wire ID_ALUSel, ID_MemEnable, ID_MemWr, ID_Halt, ID_Val2Reg;     
 
     /*-----EX WIRES-----*/
@@ -61,11 +62,11 @@ module proc (/*AUTOARG*/
 
     /*-----MEM WIRES-----*/
 
-    wire[15:0] MEM_Rt, MEM_ALUout, MEM_MemOut; 
+    wire[15:0] MEM_Rt, MEM_ALUout, MEM_MEMout; 
     wire MEM_MemEnable, MEM_MemWr, MEM_Halt, MEM_Val2Reg;        
 
     /*-----WB WIRES-----*/
-    wire[15:0] WB_MemOut, WB_ALUout;
+    wire[15:0] WB_MEMout, WB_ALUout;
     wire WB_Val2Reg;
 
 
@@ -103,8 +104,8 @@ module proc (/*AUTOARG*/
 
     /*-----DECODE-----*/
     
-    decode D( .Reg1Data(Rs), .Reg2Data(Rt), .Instr(ID_Instr), .Imm(ID_ImmExt), .Writeback(Writeback),
-                .PC(ID_PC), .LBI(LinkReg[0]), .Link(LinkReg[1]), .DestRegSel(DestRegSel), .en(RegWrite), .clk(clk), .rst(rst) );
+    decode D( .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .Instr(ID_Instr), .Imm(ID_ImmExt), .Writeback(Writeback),
+                .PC(ID_PC), .LBI(ID_LinkReg[0]), .Link(ID_LinkReg[1]), .DestRegSel(ID_DestRegSel), .en(ID_RegWrite), .clk(clk), .rst(rst) );
     /*---------------*/
 
     /*-----ID/EX-----*/
@@ -130,7 +131,7 @@ module proc (/*AUTOARG*/
     /*---------------*/
 
     /*-----EXECUTE-----*/
-    execute X(.out(ALUout), .RsVal(Rs), .RtVal(Rt), .Imm(ImmExt), .ALUSel(ALUSel), .opcode(Instr[15:11]), .funct(Instr[1:0]));
+    execute X(.out(EX_ALUout), .RsVal(EX_Rs), .RtVal(EX_Rt), .Imm(EX_ImmExt), .ALUSel(EX_ALUSel), .opcode(EX_Instr[15:11]), .funct(EX_Instr[1:0]));
     /*---------------*/
 
     /*-----EX/MEM-----*/
@@ -150,17 +151,18 @@ module proc (/*AUTOARG*/
     /*---------------*/
 
     /*-----MEMORY-----*/
-    memory M (.data_out(MEMout), .data_in(Rt), .addr(ALUout), .enable(MemEnable), .wr(MemWr), .createdump(), .Halt(Halt), .clk(clk), .rst(rst));
+    memory M (.data_out(MEM_MEMout), .data_in(MEM_Rt), .addr(MEM_ALUout), .enable(MEM_MemEnable), .wr(MEM_MemWr), 
+              .createdump(), .Halt(MEM_Halt), .clk(clk), .rst(rst));
     /*---------------*/
 
     /*-----MEM/WB-----*/
         mem_wb MEM_WB_PIPE(
         /*-----PIPELINE OUT-----*/
-        .MemOutOut(WB_MemOut), .ALUoutOut(WB_ALUout),                              //Data out
+        .MemOutOut(WB_MEMout), .ALUoutOut(WB_ALUout),                              //Data out
         .Val2RegOut(WB_Val2Reg),                                               //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
-        .MemOutIn(MEM_MemOut), .ALUoutIn(MEM_ALUout),                                     //Data in
+        .MemOutIn(MEM_MEMout), .ALUoutIn(MEM_ALUout),                                     //Data in
         .Val2RegIn(MEM_Val2Reg),                                                 //Control in (Writeback)
 
         .clk(clk), .rst(rst)
@@ -168,7 +170,7 @@ module proc (/*AUTOARG*/
     /*---------------*/
 
     /*-----WRITEBACK-----*/
-    wb W(.Writeback(Writeback), .ALUout(ALUout), .MEMout(MEMout), .Val2Reg(Val2Reg));
+    wb W(.Writeback(Writeback), .ALUout(WB_ALUout), .MEMout(WB_MEMout), .Val2Reg(WB_Val2Reg));
     /*---------------*/
 
     /*-----CONTROL-----*/

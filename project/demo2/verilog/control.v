@@ -140,7 +140,7 @@ module control(
                 ALUSel          = 1'b0;        // Do Not use the Immediate value in ALU
                 Halt            = 1'b0;        // Do Not halt
                 LinkReg[1:0]    = 2'b00;       // Do Not Link, Do Not LBI
-                DestRegSel[1:0] = 1'b01;       // Do use Rd-R
+                DestRegSel[1:0] = 2'b01;       // Do use Rd-R
                 ALUcntrl[4:0]   = Instr[4:0];  // Pass Thru?
                 ImmSel[2:0]     = 3'b000;      // zero extend 5 bits. // Don't Cares 3'bXXX
                 RegWrite        = 1'b1;        // Do write to register
