@@ -77,7 +77,8 @@ module proc (/*AUTOARG*/
         .MemEnableIn(MemEnable), .MemWrIn(MemWr), .HaltIn(Halt),                //Control in (Memory)
         .Val2RegIn(Val2Reg),                                                    //Control in (Writeback)
 
-        .clk(clk), .rst(rst));
+        .clk(clk), .rst(rst)
+    );
 
     /*---------------*/
 
@@ -90,22 +91,24 @@ module proc (/*AUTOARG*/
 
     /*-----ID/EX-----*/
 
-    id_ex id_ed_PIPE(
-    /*-----PIPELINE OUT-----*/
-    .InstrOut(EX_Instr), .ImmExtOut(EX_ImmExt), .PcOut(EX_PC),          //Data out
-        .RsOut(EX_Rs), .RtOut(EX_Rt)               
-    .ALUSelOut(EX_ALUSel),                                              //Control out (Execute)
-    .MemEnableOut(EX_MemEnable), .MemWrOut(EX_MemWr), .HaltOut(EX_Halt),//Control out (Memory)
-    .Val2RegOut(EX_Val2Reg),                                            //Control out (Writeback)
+    id_ex ID_EX_PIPE(
+        /*-----PIPELINE OUT-----*/
+        .InstrOut(EX_Instr), .ImmExtOut(EX_ImmExt), .PcOut(EX_PC),          //Data out
+            .RsOut(EX_Rs), .RtOut(EX_Rt)               
+        .ALUSelOut(EX_ALUSel),                                              //Control out (Execute)
+        .MemEnableOut(EX_MemEnable), .MemWrOut(EX_MemWr), .HaltOut(EX_Halt),//Control out (Memory)
+        .Val2RegOut(EX_Val2Reg),                                            //Control out (Writeback)
 
-    /*-----PIPELINE IN-----*/
-    .InstrIn(ID_Instr), .ImmExtIn(ID_ImmExt), .PcIn(ID_PC),             //Data in
-        .RsIn(ID_Rs), .RtIn(ID_Rt),     
-    .ALUSelIn(ID_ALUSel),                                               //Control out (Execute)
-    .MemEnableIn(ID_MemEnable), .MemWrIn(ID_MemWr), .HaltIn(ID_Halt),   //Control out (Memory)
-    .Val2RegIn(ID_Val2Reg),                                             //Control out (Writeback)
+        /*-----PIPELINE IN-----*/
+        .InstrIn(ID_Instr), .ImmExtIn(ID_ImmExt), .PcIn(ID_PC),             //Data in
+            .RsIn(ID_Rs), .RtIn(ID_Rt),     
+        .ALUSelIn(ID_ALUSel),                                               //Control in (Execute)
+        .MemEnableIn(ID_MemEnable), .MemWrIn(ID_MemWr), .HaltIn(ID_Halt),   //Control in (Memory)
+        .Val2RegIn(ID_Val2Reg),                                             //Control in (Writeback)
 
-    .clk(clk), .rst(rst));
+        .clk(clk), .rst(rst)
+    );
+
     /*---------------*/
 
     /*-----EXECUTE-----*/
@@ -113,7 +116,19 @@ module proc (/*AUTOARG*/
     /*---------------*/
 
     /*-----EX/MEM-----*/
+    ex_mem EX_MEM_PIPE(
+        /*-----PIPELINE OUT-----*/
+        .RtOut(MEM_RtOut), .ALUoutOut(MEM_ALUout),                              //Data out
+        .MemEnableOut(MEM_MemEnable), .MemWrOut(MEM_MemWr), .HaltOut(MEM_Halt), //Control out (Memory)
+        .Val2RegOut(MEM_Val2Reg),                                               //Control out (Writeback)
 
+        /*-----PIPELINE IN-----*/
+        .RtIn(EX_Rt), .ALUoutIn(EX_ALUout),                                     //Data in
+        .MemEnableIn(EX_MemEnable), .MemWrIn(EX_MemWr), .HaltIn(EX_Halt),       //Control in (Memory)
+        .Val2RegIn(EX_Val2Reg),                                                 //Control in (Writeback)
+
+        .clk(clk), .rst(rst)
+    );
     /*---------------*/
 
     /*-----MEMORY-----*/

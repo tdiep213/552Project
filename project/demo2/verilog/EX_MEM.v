@@ -1,19 +1,19 @@
-module id_ex(
+module ex_mem(
     /*-----PIPELINE OUT-----*/
-    InstrOut, ImmExtOut, PcOut,RsOut, RtOut,    //Data out
+    RtOut, ALUoutOut,    //Data out
     ALUSelOut,                                  //Control out (Execute)
     MemEnableOut, MemWrOut, HaltOut,            //Control out (Memory)
     Val2RegOut,                                 //Control out (Writeback)
 
     /*-----PIPELINE IN-----*/
-    InstrIn, ImmExtIn, PcIn,RsIn, RtIn, //Data in
+    RtIn, ALUoutIn, //Data in
     ALUSelIn,                           //Control in (Execute)
     MemEnableIn, MemWrIn, HaltIn,       //Control in (Memory)
     Val2RegIn,                          //Control in (Writeback)
 
     clk, rst);
 
-    dff_16 DATA[4:0]A(.q({InstrOut, ImmExtOut, PcOut,RsOut, RtOut}), .err(), .d({InstrIn, ImmExtIn, PcIn,RsIn, RtIn}), .clk(clk), .rst(rst));
+    dff_16 DATA[1:0]A(.q({RtOut, ALUoutOut}), .err(), .d({RtIn, ALUoutIn}), .clk(clk), .rst(rst));
 
     dff_16 EX_cntrl(.q(ALUSelOut), .err(), .d(ALUSelIn), .clk(clk), .rst(rst));
     dff_16 MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}), .err(), .d({MemEnableIn, MemWrIn, HaltIns}), .clk(clk), .rst(rst));
