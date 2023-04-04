@@ -45,16 +45,16 @@ module control(
                 case(Instr[1:0])
                     2'b00: begin
                         Halt = 1'b1; // Do Halt PC from executing new instructions
-                        ALUcntrl = ALUcntrl; // Do pass on Halt opcode
+                        ALUcntrl = Instr[4:0]; // Do pass on Halt opcode
                     end
                     2'b01: begin    // NOP
                         Halt = 1'b0; // Do Not Halt PC from executing new instructions
-                        ALUcntrl = ALUcntrl; // Do pass on NOP opcode
+                        ALUcntrl = Instr[4:0]; // Do pass on NOP opcode
                     end
                     2'b10: begin    // siic // Currently NOP/Okay if it breaks
                         SIIC = 1'b1;
                         Halt = 1'b0; // Don't Care allowed to break // Do Halt
-                        ALUcntrl = ALUcntrl; // Don't Care allowed to break // Do pass along opcode
+                        ALUcntrl = Instr[4:0]; // Don't Care allowed to break // Do pass along opcode
                     end
                     2'b11: begin    // RTI // Currently NOP
                         Halt = 1'b0; // Do Not Halt PC from executing new instructions 
