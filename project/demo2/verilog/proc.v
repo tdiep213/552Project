@@ -33,7 +33,7 @@ module proc (/*AUTOARG*/
     wire zero, sign;
 
     //Control signals
-    wire[4:0] ALUcntrl;
+    // deprecated wire[4:0] ALUcntrl;
     wire RegJmp, Halt, PcSel;  //FETCH
     wire RegWrite;   //DECODE
     wire[1:0] LinkReg, DestRegSel;

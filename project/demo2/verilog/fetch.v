@@ -29,7 +29,7 @@ module fetch (
    clk, 
    rst);
    // TODO: Your code here
-   output wire[15:0] Instr, PC; 
+   output wire[15:0] Instr_C, PC; 
    output wire RegWrite, DestRegSel, MemEnable, MemWr, Val2Reg, ImmSel, LinkReg, ctrlErr;
    
    input wire[15:0] Imm, Rs;
@@ -37,7 +37,7 @@ module fetch (
    
    input wire clk, rst;
 
-   wire[15:0] PcAddr;
+   wire[15:0] PcAddr, Instr;
    
    
    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(Imm),.Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt), .SIIC(SIIC), .clk(clk), .rst(rst));
