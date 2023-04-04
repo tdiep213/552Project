@@ -72,7 +72,7 @@ module proc (/*AUTOARG*/
 
     fetch F(
         // outputs
-            .Instr(IF_Instr), 
+            .Instr_C(IF_Instr), 
             .PC(IF_PC), 
             .Imm(IF_ImmExt), 
             .Rs(ID_Rs), 
