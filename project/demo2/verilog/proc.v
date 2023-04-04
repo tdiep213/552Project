@@ -57,8 +57,9 @@ module proc (/*AUTOARG*/
     wire ID_ALUSel, ID_MemEnable, ID_MemWr, ID_Halt, ID_Val2Reg;     
 
     /*-----EX WIRES-----*/
-    wire[15:0] EX_Instr, EX_ImmExt, EX_PC, EX_Rs, EX_Rt, EX_ALUSel;
-    wire EX_MemEnable, EX_MemWr, EX_Halt, EX_Val2Reg,EX_ALUout;
+    wire[15:0] EX_Instr, EX_ImmExt, EX_PC, EX_Rs, EX_Rt, EX_ALUout;
+    wire EX_MemEnable, EX_MemWr, EX_Halt, EX_Val2Reg, EX_ALUSel;
+    
 
     /*-----MEM WIRES-----*/
 
