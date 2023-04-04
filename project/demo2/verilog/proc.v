@@ -70,7 +70,23 @@ module proc (/*AUTOARG*/
     /*-----FETCH-----*/
     wire[15:0] IF_Instr, IF_PC, IF_ImmExt; 
 
-    fetch F(.Instr(IF_Instr), .PC(IF_PC), .Imm(IF_ImmExt), .Rs(ID_Rs), .RegJmp(RegJmp), .Halt(Halt), .PcSel(PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
+    fetch F(
+        // outputs
+            .Instr(IF_Instr), 
+            .PC(IF_PC), 
+            .Imm(IF_ImmExt), 
+            .Rs(ID_Rs), 
+            .RegWrite(RegWrite), 
+            .DestRegSel(DestRegSel),
+            .MemEnable(MemEnable), 
+            .MemWr(MemWr),
+            .Val2Reg(Val2Reg), 
+            .ALUSel(ALUSel), 
+            .ImmSel(ImmSel),
+            .LinkReg(LinkReg), 
+            .ctrlErr(ctrlErr), 
+        // inputs
+            .RegJmp(RegJmp), .Halt(Halt), .PcSel(PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
 
     /*---------------*/
 
@@ -91,7 +107,7 @@ module proc (/*AUTOARG*/
         .LinkRegIn(LinkReg), .DestRegSelIn(DestRegSel), .RegWriteIn(RegWrite),  //Execute control//Control in (Decode)
         .ALUSelIn(ALUSel),                                                      //Control in (Execute)
         .MemEnableIn(MemEnable), .MemWrIn(MemWr), .HaltIn(Halt),                //Control in (Memory)
-        .Val2RegIn(Val2Reg),                                                    //Control in (Writeback)
+        .Val2RegIn(Val2Reg),                                                     //Control in (Writeback)
 
         .clk(clk), .rst(rst)
     );
@@ -173,16 +189,16 @@ module proc (/*AUTOARG*/
     /*-----CONTROL-----*/
     sign_ext EXT(.out(IF_ImmExt), .err(ext_err), .in(IF_Instr), .zero_ext(ImmSel));
 
-    assign sign = ID_Rs[15];
-    assign zero = &(ID_Rs == 16'h0000);
+    // assign sign = ID_Rs[15];
+    // assign zero = &(ID_Rs == 16'h0000);
 
-    control CNTRL(
-    //Output(s)
-    .RegWrite(RegWrite), .DestRegSel(DestRegSel), .PcSel(PcSel), .RegJmp(RegJmp), .MemEnable(MemEnable), .MemWr(MemWr),
-    .ALUcntrl(ALUcntrl), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(LinkReg), .ctrlErr(ctrlErr),
-    .SIIC(SIIC),   
-    //Input(s)
-    .Instr(IF_Instr[15:11]), .Zflag(zero), .Sflag(sign));
+    // control CNTRL(
+    // //Output(s)
+    // .RegWrite(RegWrite), .DestRegSel(DestRegSel), .PcSel(PcSel), .RegJmp(RegJmp), .MemEnable(MemEnable), .MemWr(MemWr),
+    // .ALUcntrl(ALUcntrl), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(LinkReg), .ctrlErr(ctrlErr),
+    // .SIIC(SIIC),   
+    // //Input(s)
+    // .Instr(IF_Instr[15:11]), .Zflag(zero), .Sflag(sign));
 
     always@* begin
         case({ctrlErr, ext_err})
