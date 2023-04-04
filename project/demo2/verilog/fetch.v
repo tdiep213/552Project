@@ -47,6 +47,8 @@ module fetch (
    memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                      .createdump(), .clk(clk), .rst(rst));
 
+   wire zero, sign;
+
    assign sign = Rs[15];
    assign zero = &(Rs == 16'h0000);
 

@@ -30,7 +30,7 @@ module proc (/*AUTOARG*/
 
     wire[15:0] Writeback;
 
-    wire zero, sign;
+
 
     //Control signals
     // deprecated wire[4:0] ALUcntrl;
