@@ -30,7 +30,7 @@ module fetch (
    rst);
    // TODO: Your code here
    output wire[15:0] Instr_C, PC; 
-   output wire RegWrite, DestRegSel, MemEnable, 
+   output wire RegWrite, MemEnable, 
                MemWr, Val2Reg, ctrlErr, ALUSel;
 
    output wire [1:0] LinkReg, DestRegSel;
