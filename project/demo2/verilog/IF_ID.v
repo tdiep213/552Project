@@ -27,8 +27,7 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
 
 
     input wire clk, rst;
-
-
+    
     dff_16 Instruction(.q(InstrOut), .err(), .d(InstrIn), .clk(clk), .rst(rst));
     dff_16 Immediate(.q(ImmExtOut), .err(), .d(ImmExtIn), .clk(clk), .rst(rst));
     dff_16 ProgCnt(.q(PcOut), .err(), .d(PcIn), .clk(clk), .rst(rst));

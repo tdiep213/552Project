@@ -25,7 +25,7 @@ module RegMem(
 
 
     wire[15:0] out1, out2;
-    rf RegFile(.read1OutData(Reg1Data), .read2OutData(Reg2Data), .err(),
+    rf_bypass RegFile(.read1OutData(Reg1Data), .read2OutData(Reg2Data), .err(),
                   .clk(clk), .rst(rst), .read1RegSel(ReadReg1), .read2RegSel(ReadReg2),
                   .writeRegSel(WriteReg), .writeInData(WriteData), .writeEn(en));
     

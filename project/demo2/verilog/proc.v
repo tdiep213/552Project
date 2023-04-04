@@ -28,11 +28,7 @@ module proc (/*AUTOARG*/
 
     wire[2:0] ImmSel;
 
-    wire[15:0] Instr, PC, ImmExt, Rs;
-    wire[15:0] Rt, Writeback;
-
-    wire[15:0] ALUout;
-    wire[15:0] MEMout;
+    wire[15:0] Writeback;
 
     wire zero, sign;
 
@@ -73,8 +69,8 @@ module proc (/*AUTOARG*/
 
     /*-----FETCH-----*/
     wire[15:0] IF_Instr, IF_PC, IF_ImmExt; 
-    fetch F(.Instr(IF_Instr), .PC(IF_PC), .Imm(ImmExt), .Rs(Rs), .RegJmp(RegJmp), .Halt(Halt), .PcSel(PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
 
+    fetch F(.Instr(IF_Instr), .PC(IF_PC), .Imm(IF_ImmExt), .Rs(ID_Rs), .RegJmp(RegJmp), .Halt(Halt), .PcSel(PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
 
     /*---------------*/
 
@@ -175,10 +171,10 @@ module proc (/*AUTOARG*/
     /*---------------*/
 
     /*-----CONTROL-----*/
-    sign_ext EXT(.out(IF_ImmExt), .err(ext_err), .in(Instr), .zero_ext(ImmSel));
+    sign_ext EXT(.out(IF_ImmExt), .err(ext_err), .in(IF_Instr), .zero_ext(ImmSel));
 
-    assign sign = Rs[15];
-    assign zero = &(Rs == 16'h0000);
+    assign sign = ID_Rs[15];
+    assign zero = &(ID_Rs == 16'h0000);
 
     control CNTRL(
     //Output(s)
@@ -186,7 +182,7 @@ module proc (/*AUTOARG*/
     .ALUcntrl(ALUcntrl), .Val2Reg(Val2Reg), .ALUSel(ALUSel), .ImmSel(ImmSel), .Halt(Halt), .LinkReg(LinkReg), .ctrlErr(ctrlErr),
     .SIIC(SIIC),   
     //Input(s)
-    .Instr(Instr[15:11]), .Zflag(zero), .Sflag(sign));
+    .Instr(IF_Instr[15:11]), .Zflag(zero), .Sflag(sign));
 
     always@* begin
         case({ctrlErr, ext_err})
@@ -194,7 +190,7 @@ module proc (/*AUTOARG*/
         endcase
     end
 
-    assign EPC_D = SIIC ? PC : EPC;
+    assign EPC_D = SIIC ? IF_PC : EPC;
     dff_16 EPC_REG(.q(EPC), .err(), .d(EPC_D), .clk(clk), .rst(rst));
 
 endmodule // proc
