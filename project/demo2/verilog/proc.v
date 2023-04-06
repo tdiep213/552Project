@@ -127,7 +127,7 @@ module proc (/*AUTOARG*/
       endcase
    end
 
-    decode D( .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .ImmExt(ID_ImmExt)), .ext_err(ext_err), .Instr(ID_Instr), .Writeback(Writeback),
+    decode D( .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .ImmExt(ID_ImmExt), .ext_err(ext_err), .Instr(ID_Instr), .Writeback(Writeback),
                 .PC(ID_PC), .LBI(ID_LinkReg[0]), .Link(ID_LinkReg[1]), .WriteRegAddr(WB_WriteRegAddr), .ImmSelect(ImmSel), .en(WB_RegWrite), .clk(clk), .rst(rst) );
     /*---------------*/
 
