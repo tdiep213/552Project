@@ -21,7 +21,7 @@ module decode (Reg1Data, Reg2Data, Instr, Imm, Writeback, PC, LBI, Link, WriteRe
   
    assign Rs = Instr[10:8];
    assign Rt = Instr[7:5];
-
+ 
 
     //Write Register Data logic
     wire [15:0] WriteData, PcSum2, ImmSel;

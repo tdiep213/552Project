@@ -130,7 +130,7 @@ module proc (/*AUTOARG*/
         .ALUSelOut(EX_ALUSel),                                              //Control out (Execute)
         .MemEnableOut(EX_MemEnable), .MemWrOut(EX_MemWr), .HaltOut(EX_Halt),//Control out (Memory)
         .Val2RegOut(EX_Val2Reg),                                            //Control out (Writeback)
-
+ 
         /*-----PIPELINE IN-----*/
         .InstrIn(ID_Instr), .ImmExtIn(ID_ImmExt), .PcIn(ID_PC),             //Data in
             .RsIn(ID_Rs), .RtIn(ID_Rt),     
