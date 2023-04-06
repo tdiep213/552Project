@@ -39,7 +39,7 @@ module pc(
             4'b?100: PcAddr = RsImm;        
             4'b1000: PcAddr = PcImm;
             4'b???1: PcAddr = 2;
-            default: PcAddr = PcQ;
+            default: PcAddr = PcQ; //Halt
         endcase
     end
 
