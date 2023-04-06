@@ -122,7 +122,7 @@ module proc (/*AUTOARG*/
     
    always@* begin
       case(ID_DestRegSel)
-         2'b00: ID_WriteRegAddr = ID_Rs;           // Rs
+         2'b00: ID_WriteRegAddr = ID_Instr[10:8];           // Rs
          2'b01: ID_WriteRegAddr = ID_Instr[4:2];   // Rd-R
          2'b10: ID_WriteRegAddr = 3'b111;       // R7
          2'b11: ID_WriteRegAddr = ID_Instr[7:5];   // Rd-I
