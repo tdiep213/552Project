@@ -43,6 +43,7 @@ module control(
                   MemWr             = 1'b0;    // Do Not write to memory
                   MemEnable         = 1'b0;    // Do Not enable mem access
                   SIIC              = 1'b0;
+                  b_flag            = 1'b0;
                 case(Instr[1:0])
                     2'b00: begin
                         Halt = 1'b1; // Do Halt PC from executing new instructions
@@ -81,6 +82,7 @@ module control(
                 DestRegSel[1:0] = 2'b11;       // Do use Rd-I
                 ALUcntrl[4:0]   = Instr[4:0];  // Do pass opcode to ALU
                 SIIC            = 1'b0;
+                b_flag            = 1'b0;
                 case(Instr[1])
                     1'b0: ImmSel[2:0] = 3'b100;   // Do use sign extension (specific to I-format 1!!)
                     1'b1: ImmSel[2:0] = 3'b000;   // Do use zero extension
@@ -98,6 +100,7 @@ module control(
                 DestRegSel[1:0] = 2'b11;       // Do use Rd-I
                 ALUcntrl[4:0]   = 5'b01000;    // Do act like performing ADDI
                 ImmSel[2:0]     = 3'b100;      // Do sign extend 5 bits
+                b_flag            = 1'b0;
                 case(Instr[0])
                     1'b0: begin // ST Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd
                         Val2Reg = 1'b0;          // Do transmit ALU output
@@ -128,6 +131,7 @@ module control(
                 RegWrite        = 1'b1;    // Do write to register
                 MemWr           = 1'b1;    // Do write to memory
                 MemEnable       = 1'b1;    // Do enable mem access
+                b_flag            = 1'b0;
             end
 //========================================================//
 
@@ -147,6 +151,7 @@ module control(
                 RegWrite        = 1'b1;        // Do write to register
                 MemWr           = 1'b0;        // Do Not write to memory
                 MemEnable       = 1'b0;        // Do Not enable mem access
+                b_flag            = 1'b0;
             end
 //========================================================//
 
@@ -164,14 +169,7 @@ module control(
                 RegWrite        = 1'b0;        // Do Not write to register
                 MemWr           = 1'b0;        // Do Not write to memory
                 MemEnable       = 1'b0;        // Do Not enable mem access
-                case(Instr[1:0])
-                    //BRANCH NEEDS TO OCCUR AFTER DECODE//
-                    2'b00: b_flag = 1;//PcSel = Zflag;    // BEQZ Rs, immediate if (Rs == 0) then PC <- PC + 2 + I(sign ext.)   
-                    2'b01: b_flag = 1;//PcSel = ~Zflag;   // BNEZ Rs, immediate if (Rs != 0) then PC <- PC + 2 + I(sign ext.)
-                    2'b10: b_flag = 1;//PcSel = Sflag;    // BLTZ Rs, immediate if (Rs < 0) then PC <- PC + 2 + I(sign ext.)
-                    2'b11: b_flag = 1;//PcSel = ~Sflag;   // BGEZ Rs, immediate if (Rs >= 0) then PC <- PC + 2 + I(sign ext.)
-                    default: ctrlErr = 1'b1;
-                endcase
+                b_flag            = 1'b1;
             end
             5'b11000, 5'b10010: begin // LBI and SLBI
                 SIIC            = 1'b0;
@@ -185,6 +183,7 @@ module control(
                 RegWrite        = 1'b1;    // Do write to register
                 MemWr           = 1'b0;    // Do Not write to memory
                 MemEnable       = 1'b0;    // Do Not enable mem access
+                b_flag            = 1'b0;
                 case(Instr[4:0])
                     5'b11000: begin
                         ImmSel[2:0] = 3'b101;  // Do sign extend 8 bits   // LBI Rs, immediate Rs <- I(sign ext.)
@@ -207,6 +206,7 @@ module control(
                 DestRegSel[1:0] = 2'b10;       // Do use R7
                 ALUcntrl[4:0]   = 5'b01000;    // Pass ADDI Opcode
                 MemWr           = 1'b0;        // Do Not write to memory
+                b_flag            = 1'b0;
                 case(Instr[0])
 //---------------------- J Format ------------------------//
                     1'b0:  begin 

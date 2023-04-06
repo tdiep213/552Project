@@ -41,7 +41,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
     assign Sflag = Reg1Data[15];
     assign Zflag = &(Reg1Data == 16'h0000);
 
-   assign PcSel = (b_flag & ~Halt) ? 0 : branch; 
+   assign PcSel = (b_flag & ~Halt) ? branch : 1'b0; 
 
    always @* begin
       case(Instr[12:11])
