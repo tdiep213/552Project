@@ -5,9 +5,9 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (Reg1Data, Reg2Data, ImmExt, ext_err, Instr, Writeback, PC, LBI, Link, WriteRegAddr, ImmSelect, en, clk, rst );
+module decode (Reg1Data, Reg2Data, Imm, ext_err, Instr, Writeback, PC, LBI, Link, WriteRegAddr, ImmSelect, en, clk, rst );
    // TODO: Your code here
-   output wire[15:0] Reg1Data, Reg2Data, ImmExt; 
+   output wire[15:0] Reg1Data, Reg2Data, Imm; 
    output wire ext_err;
 
    input wire[15:0] Instr, PC;
