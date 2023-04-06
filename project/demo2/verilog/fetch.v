@@ -26,8 +26,6 @@
     PcSel, 
     SIIC,
     // inputs
-
-     
     clk, 
     rst);
     // TODO: Your code here

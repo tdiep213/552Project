@@ -28,7 +28,7 @@ module ex_mem(
     dff_16 DATA[1:0](.q({RtOut, ALUoutOut}), .err(),  .d({RtIn, ALUoutIn}), .clk(clk), .rst(rst));
     dff WB_data[2:0](.q(WriteRegAddrOut),  .d(WriteRegAddrIn), .clk(clk), .rst(rst));
 
-    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIns}), .clk(clk), .rst(rst));
+    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk), .rst(rst));
     dff WB_cntrl[1:0](.q({Val2RegOut, RegWriteOut}),  .d({Val2RegIn, RegWriteIn}), .clk(clk), .rst(rst));
 
     // (.q(),  .d(), .clk(clk), .rst(rst));

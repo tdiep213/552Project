@@ -34,7 +34,7 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
     
     dff ID_cntrl[4:0](.q({LinkRegOut, DestRegSelOut, RegWriteOut}),  .d({LinkRegIn, DestRegSelIn, RegWriteIn}), .clk(clk) , .rst(rst));
     dff EX_cntrl(.q(ALUSelOut),  .d(ALUSelIn), .clk(clk), .rst(rst));
-    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIns}), .clk(clk), .rst(rst));
+    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk), .rst(rst));
     dff WB_cntrl(.q(Val2RegOut),  .d(Val2RegIn), .clk(clk), .rst(rst));
 
     // (.q(),  .d(), .clk(clk), .rst(rst));

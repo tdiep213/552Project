@@ -202,8 +202,8 @@ module proc (/*AUTOARG*/
     /*-----CONTROL-----*/
     sign_ext EXT(.out(IF_ImmExt), .err(ext_err), .in(IF_Instr), .zero_ext(ImmSel));
 
-    // assign sign = ID_Rs[15];
-    // assign zero = &(ID_Rs == 16'h0000);
+    assign sign = ID_Rs[15];
+    assign zero = &(ID_Rs == 16'h0000);
 
     // control CNTRL(
     // //Output(s)
