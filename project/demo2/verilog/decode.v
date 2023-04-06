@@ -5,7 +5,7 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, b_flag,  WriteRegAddr, en, clk, rst );
+module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, b_flag, Halt,  WriteRegAddr, en, clk, rst );
    // TODO: Your code here
    output wire[15:0] Reg1Data, Reg2Data; 
    output wire PcSel;
@@ -13,7 +13,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
    input wire[15:0] Instr, Imm, PC;
    input wire[15:0] Writeback;
    input wire[2:0] WriteRegAddr;
-   input wire LBI, Link, en, b_flag;
+   input wire LBI, Link, en, b_flag, Halt;
    input wire clk, rst;
 
    
@@ -41,7 +41,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
     assign Sflag = Reg1Data[15];
     assign Zflag = &(Reg1Data == 16'h0000);
 
-   assign PcSel = b_flag ? 0 : branch; 
+   assign PcSel = (b_flag & ~Halt) ? 0 : branch; 
 
    always @* begin
       case(Instr[12:11])
