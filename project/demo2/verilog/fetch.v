@@ -10,8 +10,6 @@
     // outputs
     Instr_C, 
     PC, 
-    Imm, 
-    Rs, 
     RegWrite, 
     DestRegSel,
     MemEnable, 
@@ -23,20 +21,25 @@
     ctrlErr, 
     RegJmp, 
     Halt, 
-    PcSel, 
     SIIC,
+    b_flag,
     // inputs
+    Imm, 
+    Rs, 
+    PcSel,
     clk, 
     rst);
     // TODO: Your code here
     output wire[15:0] Instr_C, PC; 
     output wire RegWrite, MemEnable, 
-                MemWr, Val2Reg, ctrlErr, ALUSel;
+                MemWr, Val2Reg, ctrlErr, ALUSel, b_flag;
 
     output wire [1:0] LinkReg, DestRegSel;
     output wire [2:0] ImmSel;
+    output wire RegJmp, Halt, SIIC;
+
     input wire[15:0] Imm, Rs;
-    output wire RegJmp, Halt, PcSel, SIIC;
+    input wire PcSel;
 
     input wire clk, rst;
 
@@ -56,7 +59,7 @@
     //Output(s)
     .RegWrite(RegWrite), 
     .DestRegSel(DestRegSel),
-    .PcSel(PcSel), 
+    .PcSel(), 
     .RegJmp(RegJmp), 
     .MemEnable(MemEnable), 
     .MemWr(MemWr),
@@ -67,7 +70,8 @@
     .Halt(Halt), 
     .LinkReg(LinkReg), 
     .ctrlErr(ctrlErr),
-    .SIIC(SIIC),   
+    .SIIC(SIIC),
+    .b_flag(b_flag),   
     //Input(s)
     .Instr(Instr[15:11]), 
     .Zflag(zero), 

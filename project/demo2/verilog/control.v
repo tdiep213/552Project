@@ -15,12 +15,13 @@ module control(
     LinkReg,    // (Link, LBI) 
     ctrlErr,    // temporary err flag for phase 1.
     SIIC,
+    b_flag,
     //Input(s)
     Instr,      // 5 msb of instruction
     Zflag, 
     Sflag
 );
-    output reg RegWrite, PcSel, RegJmp, MemEnable, MemWr, Val2Reg, ALUSel, Halt, ctrlErr, SIIC;
+    output reg RegWrite, PcSel, RegJmp, MemEnable, MemWr, Val2Reg, ALUSel, Halt, ctrlErr, SIIC, b_flag;
     output reg [1:0] LinkReg, DestRegSel; // TODO
     output reg [2:0] ImmSel;
     output reg[4:0] ALUcntrl;
@@ -164,10 +165,11 @@ module control(
                 MemWr           = 1'b0;        // Do Not write to memory
                 MemEnable       = 1'b0;        // Do Not enable mem access
                 case(Instr[1:0])
-                    2'b00: PcSel = Zflag;    // BEQZ Rs, immediate if (Rs == 0) then PC <- PC + 2 + I(sign ext.)   
-                    2'b01: PcSel = ~Zflag;   // BNEZ Rs, immediate if (Rs != 0) then PC <- PC + 2 + I(sign ext.)
-                    2'b10: PcSel = Sflag;    // BLTZ Rs, immediate if (Rs < 0) then PC <- PC + 2 + I(sign ext.)
-                    2'b11: PcSel = ~Sflag;   // BGEZ Rs, immediate if (Rs >= 0) then PC <- PC + 2 + I(sign ext.)
+                    //BRANCH NEEDS TO OCCUR AFTER DECODE//
+                    2'b00: b_flag = 1;//PcSel = Zflag;    // BEQZ Rs, immediate if (Rs == 0) then PC <- PC + 2 + I(sign ext.)   
+                    2'b01: b_flag = 1;//PcSel = ~Zflag;   // BNEZ Rs, immediate if (Rs != 0) then PC <- PC + 2 + I(sign ext.)
+                    2'b10: b_flag = 1;//PcSel = Sflag;    // BLTZ Rs, immediate if (Rs < 0) then PC <- PC + 2 + I(sign ext.)
+                    2'b11: b_flag = 1;//PcSel = ~Sflag;   // BGEZ Rs, immediate if (Rs >= 0) then PC <- PC + 2 + I(sign ext.)
                     default: ctrlErr = 1'b1;
                 endcase
             end
