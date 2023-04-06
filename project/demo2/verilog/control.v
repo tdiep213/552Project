@@ -217,6 +217,7 @@ module control(
                                 MemEnable= 1'b0;        // Do Not enable mem acces
                             end
                             1'b1: begin // JAL displacement R7 <- PC + 2 and PC <- PC + 2 + D(sign ext.)
+                                LinkReg[1:0]    = 2'b10;
                                 PcSel    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b1;        // Do write to register
                                 MemEnable= 1'b0;        // Do enable mem access
