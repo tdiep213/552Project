@@ -75,10 +75,8 @@ module proc (/*AUTOARG*/
     wire[15:0] IF_Instr, IF_PC, IF_ImmExt; 
 
     fetch F(
-        // outputs
-            .Instr_C(IF_Instr), 
-            .PC(IF_PC), 
-            .Imm(IF_ImmExt), 
+            .Instr_C(IF_Instr), .PC(IF_PC), 
+            .Imm(ID_ImmExt), 
             .Rs(ID_Rs), 
             .RegWrite(RegWrite), 
             .DestRegSel(DestRegSel),
@@ -89,7 +87,6 @@ module proc (/*AUTOARG*/
             .ImmSel(ImmSel),
             .LinkReg(LinkReg), 
             .ctrlErr(ctrlErr), 
-        // inputs
             .RegJmp(RegJmp), .Halt(Halt), .PcSel(PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
 
     /*---------------*/
@@ -99,14 +96,14 @@ module proc (/*AUTOARG*/
 
     if_id IF_ID_PIPE(
         /*-----PIPELINE OUT-----*/
-        .InstrOut(ID_Instr), .ImmExtOut(ID_ImmExt), .PcOut(ID_PC),              //Data out
+        .InstrOut(ID_Instr), .PcOut(ID_PC),                                     //Data out
         .LinkRegOut(ID_LinkReg), .DestRegSelOut(ID_DestRegSel),                 //Control out (Decode)
         .ALUSelOut(ID_ALUSel),                                                  //Control out (Execute)
         .MemEnableOut(ID_MemEnable), .MemWrOut(ID_MemWr), .HaltOut(ID_Halt), //Control out (Memory)
         .Val2RegOut(ID_Val2Reg), .RegWriteOut(ID_RegWrite),                     //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
-        .InstrIn(IF_Instr), .ImmExtIn(IF_ImmExt), .PcIn(IF_PC),                 //Data in 
+        .InstrIn(IF_Instr), .PcIn(IF_PC),                                       //Data in 
         .LinkRegIn(LinkReg), .DestRegSelIn(DestRegSel),                         //Execute control//Control in (Decode)
         .ALUSelIn(ALUSel),                                                      //Control in (Execute)
         .MemEnableIn(MemEnable), .MemWrIn(MemWr), .HaltIn(Halt),                //Control in (Memory)
@@ -130,8 +127,8 @@ module proc (/*AUTOARG*/
       endcase
    end
 
-    decode D( .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .Instr(ID_Instr), .Imm(ID_ImmExt), .Writeback(Writeback),
-                .PC(ID_PC), .LBI(ID_LinkReg[0]), .Link(ID_LinkReg[1]), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .clk(clk), .rst(rst) );
+    decode D( .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .ImmExt(ID_ImmExt)), .ext_err(ext_err), .Instr(ID_Instr), .Writeback(Writeback),
+                .PC(ID_PC), .LBI(ID_LinkReg[0]), .Link(ID_LinkReg[1]), .WriteRegAddr(WB_WriteRegAddr), .ImmSelect(ImmSel), .en(WB_RegWrite), .clk(clk), .rst(rst) );
     /*---------------*/
 
     /*-----ID/EX-----*/
@@ -200,7 +197,6 @@ module proc (/*AUTOARG*/
     /*---------------*/
 
     /*-----CONTROL-----*/
-    sign_ext EXT(.out(IF_ImmExt), .err(ext_err), .in(IF_Instr), .zero_ext(ImmSel));
 
     assign sign = ID_Rs[15];
     assign zero = &(ID_Rs == 16'h0000);

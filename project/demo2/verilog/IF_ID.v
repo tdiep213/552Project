@@ -1,4 +1,4 @@
-module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
+module if_id(InstrOut, PcOut, InstrIn, PcIn, clk, rst,
         LinkRegOut, DestRegSelOut, RegWriteOut, //Decode control
         LinkRegIn, DestRegSelIn, RegWriteIn,
         ALUSelOut, //Execute control
@@ -9,9 +9,11 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
         Val2RegIn
 
 );
-    output wire[15:0] InstrOut, ImmExtOut, PcOut;
+    output wire[15:0] InstrOut, PcOut;
+    //ImmExtOut,
     
-    input wire[15:0] InstrIn, ImmExtIn, PcIn;
+    input wire[15:0] InstrIn, PcIn;
+    // ImmExtIn,
 
     input wire[1:0] LinkRegIn, DestRegSelIn;
     input wire RegWriteIn;                          //DECODE
@@ -29,7 +31,7 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
     input wire clk, rst;
     
     dff_16 Instruction(.q(InstrOut), .err(), .d(InstrIn), .clk(clk), .rst(rst));
-    dff_16 Immediate(.q(ImmExtOut), .err(), .d(ImmExtIn), .clk(clk), .rst(rst));
+    // dff_16 Immediate(.q(ImmExtOut), .err(), .d(ImmExtIn), .clk(clk), .rst(rst));     // Maybe.. if we send immediate back from Decode, then do we need to store it if it gets used immediately by fetch?
     dff_16 ProgCnt(.q(PcOut), .err(), .d(PcIn), .clk(clk), .rst(rst));
     
     dff ID_cntrl[4:0](.q({LinkRegOut, DestRegSelOut, RegWriteOut}),  .d({LinkRegIn, DestRegSelIn, RegWriteIn}), .clk(clk) , .rst(rst));
