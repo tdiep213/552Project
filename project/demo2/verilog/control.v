@@ -78,8 +78,8 @@ module control(
                 Halt            = 1'b0;        // Do Not halt
                 LinkReg[1:0]    = 2'b00;       // Do Not Link, Do Not LBI
                 DestRegSel[1:0] = 2'b11;       // Do use Rd-I
-                ALUcntrl[4:0] = Instr[4:0];  // Do pass opcode to ALU
-                SIIC              = 1'b0;
+                ALUcntrl[4:0]   = Instr[4:0];  // Do pass opcode to ALU
+                SIIC            = 1'b0;
                 case(Instr[1])
                     1'b0: ImmSel[2:0] = 3'b100;   // Do use sign extension (specific to I-format 1!!)
                     1'b1: ImmSel[2:0] = 3'b000;   // Do use zero extension
@@ -88,7 +88,7 @@ module control(
             end
             5'b1000?: begin 
                 // Common for all I-format 1 Memory Ops
-                SIIC              = 1'b0;
+                SIIC            = 1'b0;
                 PcSel           = 1'b0;        // Do Not add Imm to PC + 2
                 RegJmp          = 1'b0;        // Do Not Jmp from Rs
                 ALUSel          = 1'b1;        // Do use the Immediate value in ALU
@@ -114,7 +114,7 @@ module control(
                 endcase
             end   
             5'b10011: begin // STU Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd and //  Rs <- Rs + I(sign ext.)
-            SIIC              = 1'b0;
+                SIIC            = 1'b0;
                 PcSel           = 1'b0;    // Do Not add Imm to PC + 2
                 RegJmp          = 1'b0;    // Do Not Jmp from Rs
                 Val2Reg         = 1'b0;    // Do transmit ALU output
@@ -133,7 +133,7 @@ module control(
 //===================== R Format =========================//
             // BTR, ADD, SUB, XOR, ANDN, SLL, SRL, ROL, ROR, SEQ, SLT, SLE, SCO
             5'b11001, 5'b1101?, 5'b111??: begin     // Excludes 5'b11000 (LBI)
-            SIIC              = 1'b0;
+                SIIC            = 1'b0;
                 PcSel           = 1'b0;        // Do Not add Imm to PC + 2
                 RegJmp          = 1'b0;        // Do Not Jmp from Rs
                 Val2Reg         = 1'b0;        // Do transmit ALU output // 1'bX 
@@ -151,7 +151,7 @@ module control(
 
 //===================== I Format 2 =======================//
             5'b011??: begin
-                SIIC              = 1'b0;
+                SIIC            = 1'b0;
                 RegJmp          = 1'b0;        // Do Not Jmp from Rs
                 Val2Reg         = 1'b0;        // Don't Care // Do transmit ALU output // 1'bX 
                 ALUSel          = 1'b0;        // Don't Care // Do Not use the Immediate value in ALU
@@ -172,14 +172,14 @@ module control(
                 endcase
             end
             5'b11000, 5'b10010: begin // LBI and SLBI
-            SIIC              = 1'b0;
+                SIIC            = 1'b0;
                 PcSel           = 1'b0;    // Do Not add Imm to PC + 2
                 RegJmp          = 1'b0;    // Do Not Jmp from Rs
                 Val2Reg         = 1'b0;    // Do transmit ALU output // 1'bX 
                 ALUSel          = 1'b1;    // Do use the Immediate value in ALU
                 Halt            = 1'b0;    // Do Not halt
-                DestRegSel[1:0] = 2'b00;    // Do use Rs
-                ALUcntrl[4:0]   = 5'b11000;// Do pass LBI instr to ALU
+                DestRegSel[1:0] = 2'b00;   // Do use Rs
+                ALUcntrl[4:0]   = Instr[4:0];// Do pass instr to ALU
                 RegWrite        = 1'b1;    // Do write to register
                 MemWr           = 1'b0;    // Do Not write to memory
                 MemEnable       = 1'b0;    // Do Not enable mem access
@@ -196,7 +196,7 @@ module control(
                 endcase
             end
             5'b001??: begin 
-                SIIC              = 1'b0;
+                SIIC            = 1'b0;
                 PcSel           = 1'b1;        // Do add Imm to PC + 2
                 Val2Reg         = 1'b0;        // Sometimes Care // Do transmit ALU output
                 ALUSel          = 1'b1;        // Sometimes Care // Do Not use the Immediate value in ALU
