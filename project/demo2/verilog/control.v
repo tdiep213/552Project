@@ -190,7 +190,7 @@ module control(
                     end
                     5'b10010: begin
                         ImmSel[2:0] = 3'b001;  // Do zero extend 8 bits. // SLBI Rs, immediate Rs <- (Rs << 8) | I(zero ext.)
-                        LinkReg[1:0]= 2'b00;   // Do Not LBI, Do Not Link
+                        LinkReg[1:0]= 2'b01;   // Do Not LBI, Do Not Link
                     end
                     default: ctrlErr = 1'b1;
                 endcase
