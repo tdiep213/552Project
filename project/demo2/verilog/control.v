@@ -202,7 +202,7 @@ module control(
                 Val2Reg         = 1'b0;        // Sometimes Care // Do transmit ALU output
                 ALUSel          = 1'b1;        // Sometimes Care // Do use the Immediate value in ALU
                 Halt            = 1'b0;        // Do Not halt
-                LinkReg[1:0]    = 2'b00;       // Do Not Link, Do Not LBI
+                
                 DestRegSel[1:0] = 2'b10;       // Do use R7
                 ALUcntrl[4:0]   = 5'b01000;    // Pass ADDI Opcode
                 MemWr           = 1'b0;        // Do Not write to memory
@@ -214,6 +214,7 @@ module control(
                         ImmSel[2:0]   = 3'b110;         // Do sign extend 11 bits.
                         case(Instr[1]) // J-format
                             1'b0: begin // J displacement PC <- PC + 2 + D(sign ext.)
+                                LinkReg[1:0]    = 2'b00;       // Do Not Link, Do Not LBI
                                 PcSel    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b0;        // Do Not write to register
                                 MemEnable= 1'b0;        // Do Not enable mem acces
@@ -233,6 +234,7 @@ module control(
                         ImmSel[2:0]   = 3'b101;         // Do sign extend 8 bits.
                         case(Instr[1])
                             1'b0: begin // JR Rs, immediate PC <- Rs + I(sign ext.)
+                            LinkReg[1:0]    = 2'b00;       // Do Not Link, Do Not LBI
                                 PcSel    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b0;        // Do Not write to register
                                 MemEnable= 1'b0;        // Do Not enable mem access
