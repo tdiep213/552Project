@@ -201,7 +201,7 @@ module control(
                 Val2Reg         = 1'b0;        // Sometimes Care // Do transmit ALU output
                 ALUSel          = 1'b1;        // Sometimes Care // Do Not use the Immediate value in ALU
                 Halt            = 1'b0;        // Do Not halt
-                LinkReg[1:0]    = 2'b10;       // Do Not Link, Do Not LBI
+                LinkReg[1:0]    = 2'b00;       // Do Not Link, Do Not LBI
                 DestRegSel[1:0] = 2'b10;       // Do use R7
                 ALUcntrl[4:0]   = 5'b01000;    // Pass ADDI Opcode
                 MemWr           = 1'b0;        // Do Not write to memory
