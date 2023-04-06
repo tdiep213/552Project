@@ -18,7 +18,7 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
     input wire ALUSelIn;                            //EXECUTE
     input wire MemEnableIn, MemWrIn, HaltIn;        //MEMORY
     input wire Val2RegIn;                           //Writeback
- 
+
     output wire[1:0] LinkRegOut, DestRegSelOut;
     output wire  RegWriteOut; //Decode control
     output wire ALUSelOut; //Execute control

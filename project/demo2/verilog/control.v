@@ -178,8 +178,8 @@ module control(
                 Val2Reg         = 1'b0;    // Do transmit ALU output // 1'bX 
                 ALUSel          = 1'b1;    // Do use the Immediate value in ALU
                 Halt            = 1'b0;    // Do Not halt
-                DestRegSel[1:0] = 2'b00;    // Do use Rs
-                ALUcntrl[4:0]   = 5'b11000;// Do pass LBI instr to ALU
+                DestRegSel[1:0] = 2'b00;   // Do use Rs
+                ALUcntrl[4:0]   = Instr[4:0];// Do pass instr to ALU
                 RegWrite        = 1'b1;    // Do write to register
                 MemWr           = 1'b0;    // Do Not write to memory
                 MemEnable       = 1'b0;    // Do Not enable mem access
@@ -190,7 +190,7 @@ module control(
                     end
                     5'b10010: begin
                         ImmSel[2:0] = 3'b001;  // Do zero extend 8 bits. // SLBI Rs, immediate Rs <- (Rs << 8) | I(zero ext.)
-                        LinkReg[1:0]= 2'b01;   // Do Not LBI, Do Not Link
+                        LinkReg[1:0]= 2'b00;   // Do Not LBI, Do Not Link
                     end
                     default: ctrlErr = 1'b1;
                 endcase
