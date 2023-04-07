@@ -93,7 +93,7 @@ module proc (/*AUTOARG*/
             .ctrlErr(ctrlErr),
             .b_flag(b_flag), 
         // inputs
-            .RegJmp(RegJmp), .Halt(Halt), .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
+            .BrnchAddr(ID_ImmExt), .RegJmp(RegJmp), .Halt(Halt), .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
 
     /*---------------*/
 
@@ -135,7 +135,7 @@ module proc (/*AUTOARG*/
 
     decode D( .PcSel(ID_PcSel), .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .Instr(ID_Instr), .Imm(WB_ImmExt), .Writeback(Writeback),
                 .PC(WB_PC), .LBI(WB_LinkReg[0]), .Link(WB_LinkReg[1]), .b_flag(ID_b_flag),
-                .Halt(ID_Halt), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .clk(clk), .rst(rst) );
+                .Halt(Halt), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .clk(clk), .rst(rst) );
     /*---------------*/
 
     /*-----ID/EX-----*/
@@ -182,7 +182,7 @@ module proc (/*AUTOARG*/
 
     /*-----MEMORY-----*/
     memory M (.data_out(MEM_MEMout), .data_in(MEM_Rt), .addr(MEM_ALUout), .enable(MEM_MemEnable), .wr(MEM_MemWr), 
-              .createdump(), .Halt(MEM_Halt), .clk(clk), .rst(rst));
+              .createdump(), .Halt(Halt), .clk(clk), .rst(rst));
     /*---------------*/
 
     /*-----MEM/WB-----*/

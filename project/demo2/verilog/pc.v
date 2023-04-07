@@ -4,14 +4,14 @@ module pc(
     PcAddr,
     PC,
     //Inputs
-    Imm,
+    Imm,BrnchImm,
     Rs,
     PcSel,RegJmp,Halt,SIIC, //Control Signals
     clk, rst
 );
     input wire PcSel, RegJmp, Halt, SIIC;
     input wire clk, rst;
-    input wire[15:0] Imm, Rs;
+    input wire[15:0] Imm, Rs, BrnchImm;
     output reg[15:0] PcAddr; //Next Instruction 
     output wire[15:0]  PC;     //Previous Instruction + 2
     
@@ -20,7 +20,7 @@ module pc(
     assign zero = 0;
 
     cla16b PcInc(.sum(Inc2), .cOut(), .inA(PcQ), .inB(16'h0002), .cIn(zero));
-    cla16b PImm(.sum(PcImm), .cOut(), .inA(Inc2), .inB(Imm), .cIn(zero));
+    cla16b PImm(.sum(PcImm), .cOut(), .inA(Inc2), .inB(BrnchImm), .cIn(zero));
     cla16b RImm(.sum(RsImm), .cOut(), .inA(Rs), .inB(Imm), .cIn(zero));
     
     // assign stage1 = PcSel ? PcImm : Inc2;    // PC + 2 + Imm : PC + 2
