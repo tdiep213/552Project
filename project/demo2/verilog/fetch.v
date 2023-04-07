@@ -78,6 +78,6 @@
     .Sflag(sign));
 
     assign Instr_C[10:0] = Instr[10:0];
-
+    
     endmodule
     `default_nettype wire
