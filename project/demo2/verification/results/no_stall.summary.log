@@ -1,0 +1,5 @@
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/pipelineTests-noStallsFwd/NOP_BRJ.asm SUCCESS CPI:5.4 CYCLES:76 ICOUNT:14 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/pipelineTests-noStallsFwd/NOP_I.asm SUCCESS CPI:6.6 CYCLES:66 ICOUNT:10 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/pipelineTests-noStallsFwd/NOP_LDST.asm SUCCESS CPI:5.3 CYCLES:37 ICOUNT:7 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/pipelineTests-noStallsFwd/NOP_R.asm SUCCESS CPI:6.6 CYCLES:106 ICOUNT:16 IHITRATE: 0 DHITRATE: 0
+/u/s/i/sinclair/courses/cs552/spring2023/handouts/testprograms/public/pipelineTests-noStallsFwd/nologic.asm SUCCESS CPI:5.5 CYCLES:22 ICOUNT:4 IHITRATE: 0 DHITRATE: 0
