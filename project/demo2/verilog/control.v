@@ -16,17 +16,15 @@ module control(
     ctrlErr,    // temporary err flag for phase 1.
     SIIC,
     b_flag,
+    valid_n,
     //Input(s)
-    Instr,      // 5 msb of instruction
-    Zflag, 
-    Sflag
+    Instr     // 5 msb of instruction
 );
-    output reg RegWrite, PcSel, RegJmp, MemEnable, MemWr, Val2Reg, ALUSel, Halt, ctrlErr, SIIC, b_flag;
+    output reg RegWrite, PcSel, RegJmp, MemEnable, MemWr, Val2Reg, ALUSel, Halt, ctrlErr, SIIC, b_flag, valid_n;
     output reg [1:0] LinkReg, DestRegSel; // TODO
     output reg [2:0] ImmSel;
     output reg[4:0] ALUcntrl;
     input wire[4:0] Instr;
-    input wire Zflag, Sflag;
 
     always @* begin
         casex(Instr[4:0])
@@ -43,7 +41,8 @@ module control(
                   MemWr             = 1'b0;    // Do Not write to memory
                   MemEnable         = 1'b0;    // Do Not enable mem access
                   SIIC              = 1'b0;
-                  b_flag            = 1'b0;
+                  b_flag            = 1'b1;
+                  valid_n = 1'b0;
                 case(Instr[1:0])
                     2'b00: begin
                         Halt = 1'b1; // Do Halt PC from executing new instructions
@@ -83,6 +82,7 @@ module control(
                 ALUcntrl[4:0]   = Instr[4:0];  // Do pass opcode to ALU
                 SIIC            = 1'b0;
                 b_flag            = 1'b0;
+                valid_n = 1'b0;
                 case(Instr[1])
                     1'b0: ImmSel[2:0] = 3'b100;   // Do use sign extension (specific to I-format 1!!)
                     1'b1: ImmSel[2:0] = 3'b000;   // Do use zero extension
@@ -101,6 +101,7 @@ module control(
                 ALUcntrl[4:0]   = 5'b01000;    // Do act like performing ADDI
                 ImmSel[2:0]     = 3'b100;      // Do sign extend 5 bits
                 b_flag            = 1'b0;
+                valid_n = 1'b0;
                 case(Instr[0])
                     1'b0: begin // ST Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd
                         Val2Reg = 1'b0;          // Do transmit ALU output
@@ -132,6 +133,7 @@ module control(
                 MemWr           = 1'b1;    // Do write to memory
                 MemEnable       = 1'b1;    // Do enable mem access
                 b_flag            = 1'b0;
+                valid_n = 1'b0;
             end
 //========================================================//
 
@@ -152,6 +154,7 @@ module control(
                 MemWr           = 1'b0;        // Do Not write to memory
                 MemEnable       = 1'b0;        // Do Not enable mem access
                 b_flag            = 1'b0;
+                valid_n = 1'b0;
             end
 //========================================================//
 
@@ -170,6 +173,7 @@ module control(
                 MemWr           = 1'b0;        // Do Not write to memory
                 MemEnable       = 1'b0;        // Do Not enable mem access
                 b_flag            = 1'b1;
+                valid_n = 1'b1;
             end
             5'b11000, 5'b10010: begin // LBI and SLBI
                 SIIC            = 1'b0;
@@ -184,6 +188,7 @@ module control(
                 MemWr           = 1'b0;    // Do Not write to memory
                 MemEnable       = 1'b0;    // Do Not enable mem access
                 b_flag            = 1'b0;
+                valid_n = 1'b1;
                 case(Instr[4:0])
                     5'b11000: begin
                         ImmSel[2:0] = 3'b101;  // Do sign extend 8 bits   // LBI Rs, immediate Rs <- I(sign ext.)
@@ -204,7 +209,8 @@ module control(
                 DestRegSel[1:0] = 2'b10;       // Do use R7
                 ALUcntrl[4:0]   = 5'b01000;    // Pass ADDI Opcode
                 MemWr           = 1'b0;        // Do Not write to memory
-                b_flag            = 1'b0;
+                // b_flag            = 1'b0;
+                valid_n = 1'b1;
                 case(Instr[0])
 //---------------------- J Format ------------------------//
                     1'b0:  begin 
@@ -213,13 +219,13 @@ module control(
                         case(Instr[1]) // J-format
                             1'b0: begin // J displacement PC <- PC + 2 + D(sign ext.)
                                 LinkReg[1:0]= 2'b00;    // Do Not Link, Do Not LBI
-                                PcSel    = 1'b1;        // Do add Imm to PC + 2
+                                b_flag    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b0;        // Do Not write to register
                                 MemEnable= 1'b0;        // Do Not enable mem acces
                             end
                             1'b1: begin // JAL displacement R7 <- PC + 2 and PC <- PC + 2 + D(sign ext.)
                                 LinkReg[1:0]= 2'b10;    // Do LINK, Do Not LBI
-                                PcSel    = 1'b1;        // Do add Imm to PC + 2
+                                b_flag    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b1;        // Do write to register
                                 MemEnable= 1'b0;        // Do enable mem access
                             end
@@ -233,13 +239,13 @@ module control(
                         case(Instr[1])
                             1'b0: begin // JR Rs, immediate PC <- Rs + I(sign ext.)
                                 LinkReg[1:0]= 2'b00;    // Do Not Link, Do Not LBI
-                                PcSel    = 1'b1;        // Do add Imm to PC + 2
+                                b_flag    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b0;        // Do Not write to register
                                 MemEnable= 1'b0;        // Do Not enable mem access
                             end
                             1'b1: begin // JALR Rs, immediate R7 <- PC + 2 and PC <- Rs + I(sign ext.)
                                 LinkReg[1:0]= 2'b10;    // Do Link, Do Not LBI
-                                PcSel    = 1'b0;        // Do Not add Imm to PC + 2
+                                b_flag    = 1'b0;        // Do Not add Imm to PC + 2
                                 RegWrite = 1'b1;        // Do write to register
                                 MemEnable= 1'b0;        // Do enable mem access
                             end

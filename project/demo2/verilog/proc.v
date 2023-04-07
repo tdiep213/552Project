@@ -44,7 +44,8 @@ module proc (/*AUTOARG*/
     wire Val2Reg;              //WRITEBACK
     wire ctrlErr, ext_err;     //ERRORs
     wire b_flag; 
-    reg[2:0] IF_WriteRegAddr;
+    wire[2:0] IF_WriteRegAddr;
+    wire HazNOP;
     /*-----ID WIRES-----*/
     wire[15:0] ID_Instr, ID_PC, ID_ImmExt, ID_Rs, ID_Rt;
     wire[2:0] ID_WriteRegAddr;
@@ -81,10 +82,9 @@ module proc (/*AUTOARG*/
         // outputs
             .Instr_C(IF_Instr), 
             .PC(IF_PC), 
-            .Imm(IF_ImmExt), 
             .Rs(ID_Rs), 
             .RegWrite(RegWrite), 
-            .DestRegSel(DestRegSel),
+            .WriteRegAddr(IF_WriteRegAddr),
             .MemEnable(MemEnable), 
             .MemWr(MemWr),
             .Val2Reg(Val2Reg), 
@@ -92,20 +92,13 @@ module proc (/*AUTOARG*/
             .ImmSel(ImmSel),
             .LinkReg(LinkReg), 
             .ctrlErr(ctrlErr),
-            .b_flag(b_flag), 
+            .b_flag(b_flag),
+            .Halt(Halt), 
         // inputs
-            .BrnchAddr(ID_ImmExt), .RegJmp(RegJmp), .Halt(Halt), .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
+            .Imm(IF_ImmExt), .BrnchAddr(ID_ImmExt), .RegJmp(RegJmp), 
+             .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
 
-    always@* begin
-      case(DestRegSel)
-         2'b00: IF_WriteRegAddr = IF_Instr[10:8];   // Rs
-         2'b01: IF_WriteRegAddr = IF_Instr[4:2];    // Rd-R
-         2'b10: IF_WriteRegAddr = 3'b111;           // R7
-         2'b11: IF_WriteRegAddr = IF_Instr[7:5];    // Rd-I
-         default: IF_WriteRegAddr = IF_Instr[4:2];
-      endcase
-   end
-
+ 
     /*---------------*/
 
     /*-----IF/ID-----*/
