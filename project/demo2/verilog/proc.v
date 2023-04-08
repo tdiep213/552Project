@@ -200,7 +200,7 @@ module proc (/*AUTOARG*/
     /*---------------*/
 
     /*-----CONTROL-----*/
-    sign_ext EXT(.out(IF_ImmExt), .err(ext_err), .in(IF_Instr), .zero_ext(ImmSel));
+    sign_ext EXT(.out(ID_ImmExt), .err(ext_err), .in(IF_Instr), .zero_ext(ImmSel));
 
 
     always@* begin
