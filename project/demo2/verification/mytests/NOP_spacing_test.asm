@@ -1,8 +1,7 @@
-## For several instruction types, 
-## run the same instruction repeatedly 
-## with decreasing NOPS, to determine where Hazards
-## are not being stalled away.
-
+// For several instruction types, 
+// run the same instruction repeatedly 
+// with decreasing NOPS, to determine where Hazards
+// are not being stalled away.
 lbi r0, 0
 nop
 nop
