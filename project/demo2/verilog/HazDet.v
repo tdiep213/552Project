@@ -65,10 +65,10 @@ dff_16 MEM_ID_EX( .q(EX_Imm),  .err(), .d(ID_Imm),  .clk(clk), .rst(rst));
 dff_16 MEM_EX_MEM(.q(MEM_Imm), .err(), .d(EX_Imm),  .clk(clk), .rst(rst));
 dff_16 MEM_MEM_WB(.q(WB_Imm),  .err(), .d(MEM_Imm), .clk(clk), .rst(rst));
 
-dff_16 MEM_IF_ID( .q(ID_Rs),  .err(), .d(IF_Rs),  .clk(clk), .rst(rst));
-dff_16 MEM_ID_EX( .q(EX_Rs),  .err(), .d(ID_Rs),  .clk(clk), .rst(rst));
-dff_16 MEM_EX_MEM(.q(MEM_Rs), .err(), .d(EX_Rs),  .clk(clk), .rst(rst));
-dff_16 MEM_MEM_WB(.q(WB_Rs),  .err(), .d(MEM_Rs), .clk(clk), .rst(rst));
+dff [2:0] Rs_IF_ID( .q(ID_Rs),  .err(), .d(IF_Rs),  .clk(clk), .rst(rst));
+dff [2:0] Rs_ID_EX( .q(EX_Rs),  .err(), .d(ID_Rs),  .clk(clk), .rst(rst));
+dff [2:0] Rs_EX_MEM(.q(MEM_Rs), .err(), .d(EX_Rs),  .clk(clk), .rst(rst));
+dff [2:0] Rs_MEM_WB(.q(WB_Rs),  .err(), .d(MEM_Rs), .clk(clk), .rst(rst));
 // might be overkill on number of cases, but better safe than sorry
 // compare "addresses" in each stage to new addrs to determine NOP
 assign MemHazDet =
