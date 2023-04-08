@@ -67,7 +67,7 @@ dff_16 MEM_MEM_WB(.q(WB_MemAddr), .err(), .d(MEM_MemAddr), .clk(clk), .rst(rst))
 assign MemHazDet = 
     ((MemAddr == ID_MemAddr) & ID_valid_n)|
     ((MemAddr == EX_MemAddr) & EX_valid_n)|
-    ((MemAddr == MEMEM_MemAddrM_chk) & MEM_valid_n)|
+    ((MemAddr == MEM_MemAddr) & MEM_valid_n)|
     ((MemAddr == WB_MemAddr) & WB_valid_n);
 
 assign NOP = (RegHazDet | MemHazDet ) ? 1'b1 : 1'b0;
