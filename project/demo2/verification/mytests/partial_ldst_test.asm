@@ -1,5 +1,3 @@
-// Trying portions of the complex ldst complex_tests
-
 lbi r0, 0
 nop
 nop
