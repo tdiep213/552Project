@@ -49,7 +49,7 @@
     wire [15:0] HazDet_Instr;
     wire[15:0] Instr_B;
     wire[1:0] DestRegSel;
-    wire HazNOP, PCStall, valid_n;
+    wire HazNOP, PCStall, valid_n, PCStall_prev, PCStall_now;
 
     pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(Imm), .BrnchImm(BrnchAddr) , .Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall_now), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
@@ -65,7 +65,7 @@
       endcase
     end
 
-    wire PCStall_prev, PCStall_now, HDU_MemEnable;
+    wire HDU_MemEnable;
     wire [15:0] HDU_Rs, HDU_Imm;
     wire [2:0]  HDU_WrRegAddr;
 
