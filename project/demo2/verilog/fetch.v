@@ -49,7 +49,7 @@
     wire [15:0] HazDet_Instr;
     wire[15:0] Instr_B;
     wire[1:0] DestRegSel;
-    wire HazNOP, PCStall, valid_n, PCStall_prev, PCStall_now;
+    wire HazNOP, PCStall, valid_n, PCStall_prev, PCStall_now, HazNOP_prev;
 
     pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(Imm), .BrnchImm(BrnchAddr) , .Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall_now), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
@@ -76,7 +76,7 @@
     assign PCStall_now = (HazNOP & PCStall);
     
     dff crying(.q(PCStall_prev), .d(PCStall_now), .clk(clk), .rst(rst));
-    dff NOPDFF(.q(HazNOP_prev),  .d(HazNop),      .clk(clk), .rst(rst));
+    dff NOPDFF(.q(HazNOP_prev),  .d(HazNOP),      .clk(clk), .rst(rst));
     assign HDU_Rs        = HazNOP_prev ? 16'h0000 : Rs;
     assign HDU_MemEnable = HazNOP_prev ?     1'b0 : MemEnable;
     assign HDU_WrRegAddr = HazNOP_prev ?   3'b000 : WriteRegAddr;
