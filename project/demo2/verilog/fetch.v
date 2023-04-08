@@ -70,7 +70,7 @@
     wire [2:0]  HDU_WrRegAddr;
 
     assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
-    HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(HazDet_Instr), .valid_n(valid_n), .MemEnable(HDU_MemEnable), .Rd(HDU_WrRegAddr), .Imm(HDU_Imm), .Reg1Data(HDU_Rs), .clk(clk), .rst(rst));
+    HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(HazDet_Instr), .valid_n(valid_n), .MemEnable(HDU_MemEnable), .Rd(HDU_WrRegAddr), .Imm(Imm), .Reg1Data(HDU_Rs), .clk(clk), .rst(rst));
     
     assign Instr_B = HazNOP ? 16'h0800 : Instr;
     assign PCStall_now = (HazNOP & PCStall);
@@ -80,7 +80,7 @@
     assign HDU_Rs        = HazNOP_prev ? 16'h0000 : Rs;
     assign HDU_MemEnable = HazNOP_prev ?     1'b0 : MemEnable;
     assign HDU_WrRegAddr = HazNOP_prev ?   3'b000 : WriteRegAddr;
-    //assign HDU_Imm       = HazNOP_prev ? 16'h0000 : Imm;
+    assign HDU_Imm       = HazNOP_prev ? 16'h0000 : Imm;
 
 
     control CNTRL(
