@@ -65,19 +65,22 @@ dff_16 MEM_ID_EX( .q(EX_Imm),  .err(), .d(ID_Imm),  .clk(clk), .rst(rst));
 dff_16 MEM_EX_MEM(.q(MEM_Imm), .err(), .d(EX_Imm),  .clk(clk), .rst(rst));
 dff_16 MEM_MEM_WB(.q(WB_Imm),  .err(), .d(MEM_Imm), .clk(clk), .rst(rst));
 
-dff Rs_IF_ID [2:0](.q(ID_Rs),  .d(IF_Rs),  .clk(clk), .rst(rst));
-dff Rs_ID_EX [2:0](.q(EX_Rs),  .d(ID_Rs),  .clk(clk), .rst(rst));
-dff Rs_EX_MEM[2:0](.q(MEM_Rs), .d(EX_Rs),  .clk(clk), .rst(rst));
-dff Rs_MEM_WB[2:0](.q(WB_Rs),  .d(MEM_Rs), .clk(clk), .rst(rst));
+/*  
+    (if memenabled) AND
+        (if reading memory from memaddr when writing to memaddr
+        (compare incoming memread address to other memwrite addrs))
+    )
+*/
+
 // might be overkill on number of cases, but better safe than sorry
-// compare "addresses" in each stage to new addrs to determine NOP
-assign MemHazDet =
- (((Imm == ID_Imm)  & (ID_Rs == IF_Rs))  & ID_valid_n)  |
- (((Imm == EX_Imm)  & (EX_Rs == IF_Rs))  & EX_valid_n)  |
- (((Imm == MEM_Imm) & (MEM_Rs == IF_Rs)) & MEM_valid_n) |
- (((Imm == WB_Imm)  & (WB_Rs == IF_Rs))  & WB_valid_n);
-// if the Imm and Register are the same the memaddr may be the same
-// currenlty can't read the data from Rs, so only have address to work with.
+// compare addresses in each stage to new addrs to determine NOP
+cla16b RtImm(.sum(MemAddr), .cOut(), .inA(Reg1Data), .inB(Imm), .cIn(1'b0));   
+
+assign MemHazDet = (MemEnable == 1) &
+(((MemAddr == ID_MemAddr)  & ID_valid_n)  |
+ ((MemAddr == EX_MemAddr)  & EX_valid_n)  |
+ ((MemAddr == MEM_MemAddr) & MEM_valid_n) |
+ ((MemAddr == WB_MemAddr)  & WB_valid_n));
 
 assign NOP = (RegHazDet | MemHazDet ) ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet) ? 1'b1 : 1'b0;
