@@ -51,7 +51,7 @@
     wire[1:0] DestRegSel;
     wire HazNOP, PCStall, valid_n, PCStall_prev;
 
-    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(Imm), .BrnchImm(BrnchAddr) , .Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall), .SIIC(SIIC), .clk(clk), .rst(rst));
+    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(Imm), .BrnchImm(BrnchAddr) , .Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall_now), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                         .createdump(), .clk(clk), .rst(rst));
 
@@ -67,7 +67,8 @@
     assign HazDet_Instr = PCStall_prev ? Instr_B : Instr;
     HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(HazDet_Instr), .valid_n(valid_n), .MemEnable(MemEnable), .Rd(WriteRegAddr), .Imm(Imm), .Reg1Data(Rs), .clk(clk), .rst(rst));
     assign Instr_B = HazNOP ? 16'h0800 : Instr;
-    dff crying(.q(PCStall_prev), .d(PCStall), .clk(clk), .rst(rst));
+    assign PCStall_now = (HazNOP & PCStall);
+    dff crying(.q(PCStall_prev), .d(PCStall_now), .clk(clk), .rst(rst));
 
 
     control CNTRL(
