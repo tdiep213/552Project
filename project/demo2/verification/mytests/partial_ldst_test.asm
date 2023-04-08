@@ -2,6 +2,8 @@
 
 lbi r0, 0
 nop
+nop
+nop
 lbi r5, 43
 nop
 nop
