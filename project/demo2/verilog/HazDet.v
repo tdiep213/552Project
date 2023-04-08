@@ -85,6 +85,6 @@ assign MemHazDet =
  ((WB_MemAddr  == MemAddr)  & WB_valid_n));
 
 assign NOP = (RegHazDet | MemHazDet ) ? 1'b1 : 1'b0;
-//assign PcStall = (RegHazDet | MemHazDet) ? 1'b1 : 1'b0;
+assign PcStall = 1'b0;//(RegHazDet | MemHazDet) ? 1'b1 : 1'b0;
 
 endmodule
