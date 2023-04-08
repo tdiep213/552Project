@@ -4,6 +4,12 @@
 // are not being stalled away.
 // As of writing,  one nop and zero nops are not enough space between instructions.
 // We must find the source of instruction delay.
+
+// Strangely enough, after adding a second round of instr and nops,
+// the lbi instr ran fine, and the last two addi failed instead.
+// so I added incrementing nops to the end, and found out
+// that our halt is preventing the instructions from finishing the last stages of the program
+
 lbi r0, 0
 nop
 nop
@@ -53,4 +59,7 @@ addi r4, r4, 11
 nop
 addi r5, r5, 12
 addi r6, r6, 13
+nop
+nop
+nop
 halt
