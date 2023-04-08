@@ -10,6 +10,10 @@
 // so I added incrementing nops to the end, and found out
 // that our halt is preventing the instructions from finishing the last stages of the program
 
+// however the other complex_tests still fail in the middle of the program, suggesting a secondary form of blockage
+// it could be ANY instruction run immediately after another will cause trouble, 
+// if it is followed by more than 1 other instruction
+
 lbi r0, 0
 nop
 nop
