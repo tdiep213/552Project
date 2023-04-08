@@ -39,14 +39,14 @@
     output wire [2:0] ImmSel;
     output wire RegJmp, Halt, SIIC;
 
-    input wire[15:0] Imm, Rs, HDU_Rs;
+    input wire[15:0] Imm, Rs;
     input wire[15:0] BrnchAddr;
     input wire PcSel;
 
     input wire clk, rst;
 
-    wire[15:0] PcAddr, Instr;
-    wire [15:0] HazDet_Instr;
+    wire[15:0] PcAddr, Instr, HDU_Rs;
+    wire[15:0] HazDet_Instr;
     wire[15:0] Instr_B;
     wire[1:0] DestRegSel;
     wire HazNOP, PCStall, valid_n, PCStall_prev, PCStall_now, HazNOP_prev;
