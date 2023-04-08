@@ -64,7 +64,7 @@
          default: WriteRegAddr = Instr[4:2];
       endcase
     end
-    HazDet_Instr = PCStall_prev ? Instr_B : Instr;
+    assign HazDet_Instr = PCStall_prev ? Instr_B : Instr;
     HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(HazDet_Instr), .valid_n(valid_n), .MemEnable(MemEnable), .Rd(WriteRegAddr), .Imm(Imm), .Reg1Data(Rs), .clk(clk), .rst(rst));
     assign Instr_B = HazNOP ? 16'h0800 : Instr;
     dff_16 crying(.q(PCStall_prev), .err(), .d(PCStall), .clk(clk), .rst(rst));
