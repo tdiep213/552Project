@@ -53,7 +53,7 @@ assign RegHazDet =
 /*-----MEM RAW Hazard Check-----*/
 
 wire[15:0] MemAddr, ID_MemAddr, EX_MemAddr, MEM_MemAddr, WB_MemAddr;
-wire[2:0]  ID_MemEnable, EX_MemEnable, MEM_MemEnable, WB_MemEnable;
+wire ID_MemEnable, EX_MemEnable, MEM_MemEnable, WB_MemEnable;
 wire MemHazDet;
 
 cla16b RtImm(.sum(MemAddr), .cOut(), .inA(Reg1Data), .inB(Imm), .cIn(1'b0));   
@@ -75,7 +75,7 @@ assign MemHazDet =
 ((MemEnable == 1 ) &
  (ID_MemEnable  == MemEnable) |
  (EX_MemEnable  == MemEnable) |
- (Mem_MemEnable == MemEnable) |
+ (MEM_MemEnable == MemEnable) |
  (WB_MemEnable  == MemEnable))
 &
 // AND the Memory accessed is the same memory accessed before
