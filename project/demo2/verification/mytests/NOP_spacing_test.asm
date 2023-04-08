@@ -26,4 +26,31 @@ lbi r4, 4
 nop
 lbi r5, 5
 lbi r6, 6
+nop
+nop
+nop
+nop
+nop
+addi r0, r0, 7
+nop
+nop
+nop
+nop
+nop
+addi r1, r1, 8
+nop
+nop
+nop
+nop
+addi r2, r2, 9
+nop
+nop
+nop
+addi r3, r3, 10
+nop
+nop
+addi r4, r4, 11
+nop
+addi r5, r5, 12
+addi r6, r6, 13
 halt
