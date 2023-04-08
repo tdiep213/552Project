@@ -14,9 +14,9 @@ module control(
     Halt,       // Stop current and future instructions from executing
     LinkReg,    // (Link, LBI) 
     ctrlErr,    // temporary err flag for phase 1.
-    SIIC,
-    b_flag,
-    valid_n,
+    SIIC,       // SIIC
+    b_flag,     // whomst? :P
+    valid_n,    // whomst? :P
     //Input(s)
     Instr     // 5 msb of instruction
 );
