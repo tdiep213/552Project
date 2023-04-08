@@ -39,7 +39,7 @@
     output wire [2:0] ImmSel;
     output wire RegJmp, Halt, SIIC;
 
-    input wire[15:0] Imm, Rs;
+    input wire[15:0] Imm, Rs, HDU_Rs;
     input wire[15:0] BrnchAddr;
     input wire PcSel;
 
@@ -66,7 +66,7 @@
     end
 
     wire HDU_MemEnable;
-    wire [15:0] HDU_Rs, HDU_Imm;
+    wire [15:0] HDU_Imm;
     wire [2:0]  HDU_WrRegAddr;
 
     assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
