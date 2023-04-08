@@ -91,7 +91,7 @@
     //Input(s)
     .Instr(Instr_B[15:11]));
 
-    //assign Instr_C[10:0] = Instr_B[10:0];
+    assign Instr_C[10:0] = Instr_B[10:0];
     
     endmodule
     `default_nettype wire
