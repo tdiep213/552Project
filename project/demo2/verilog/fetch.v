@@ -64,8 +64,8 @@
          default: WriteRegAddr = Instr[4:2];
       endcase
    end
-   // might be easier to have in proc instead, with more access to stage specific registers and specific signals?
-    HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(Instr_B), .valid_n(valid_n), .Rd(WriteRegAddr), .Imm(Imm), .clk(clk), .rst(rst));
+
+    HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(Instr_B), .valid_n(valid_n), .MemEnable(MemEnable) .Rd(WriteRegAddr), .Imm(Imm), .RegData1(Rs), .clk(clk), .rst(rst));
     assign Instr_B = HazNOP ? 16'h0800 : Instr;
     // dff_16 crying(.q(Instr_B), .err(), .d(Instr_A), .clk(clk), .rst(rst));
 

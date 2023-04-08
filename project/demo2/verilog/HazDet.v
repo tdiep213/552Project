@@ -1,10 +1,10 @@
-module HazDet(NOP, PcStall, Instr, valid_n, Rd, Imm, rst, clk);
+module HazDet(NOP, PcStall, Instr, valid_n, MemEnable, Rd, Imm, Reg1Data, rst, clk);
 output wire NOP, PcStall; 
 
 
-input wire[15:0] Instr, Imm;
+input wire[15:0] Instr, Imm, Reg1Data;
 input wire[2:0] Rd;
-input wire valid_n;
+input wire valid_n, MemEnable;
 input wire rst, clk;
 
 wire[2:0] IF_Rs, IF_Rt;
@@ -52,32 +52,37 @@ assign RegHazDet =
 
 /*-----MEM RAW Hazard Check-----*/
 
-wire[15:0] ID_Imm, EX_Imm, MEM_Imm, WB_Imm;
-wire[2:0]  ID_Rs, EX_Rs, MEM_Rs, WB_Rs;
+wire[15:0] MemAddr, ID_MemAddr, EX_MemAddr, MEM_MemAddr, WB_MemAddr;
+wire[2:0]  ID_MemEnable, EX_MemEnable, MEM_MemEnable, WB_MemEnable;
 wire MemHazDet;
 
-// not possible to determine true memaddr without value from Rs. Need to be passed this from fetch, or move into proc.
-// cla16b RtImm(.sum(MemAddr), .cOut(), .inA(), .inB(Imm), .cIn(1'b0));   
+cla16b RtImm(.sum(MemAddr), .cOut(), .inA(Reg1Data), .inB(Imm), .cIn(1'b0));   
 
 // Update addresses used in other stages
-dff_16 MEM_IF_ID( .q(ID_Imm),  .err(), .d(Imm),     .clk(clk), .rst(rst));
-dff_16 MEM_ID_EX( .q(EX_Imm),  .err(), .d(ID_Imm),  .clk(clk), .rst(rst));
-dff_16 MEM_EX_MEM(.q(MEM_Imm), .err(), .d(EX_Imm),  .clk(clk), .rst(rst));
-dff_16 MEM_MEM_WB(.q(WB_Imm),  .err(), .d(MEM_Imm), .clk(clk), .rst(rst));
+dff_16 MEM_IF_ID( .q(ID_MemAddr),  .err(), .d(MemAddr),     .clk(clk), .rst(rst));
+dff_16 MEM_ID_EX( .q(EX_MemAddr),  .err(), .d(ID_MemAddr),  .clk(clk), .rst(rst));
+dff_16 MEM_EX_MEM(.q(MEM_MemAddr), .err(), .d(EX_MemAddr),  .clk(clk), .rst(rst));
+dff_16 MEM_MEM_WB(.q(WB_MemAddr),  .err(), .d(WB_MemAddr), .clk(clk), .rst(rst));
 
-dff Rs_IF_ID [2:0](.q(ID_Rs),  .d(IF_Rs),  .clk(clk), .rst(rst));
-dff Rs_ID_EX [2:0](.q(EX_Rs),  .d(ID_Rs),  .clk(clk), .rst(rst));
-dff Rs_EX_MEM[2:0](.q(MEM_Rs), .d(EX_Rs),  .clk(clk), .rst(rst));
-dff Rs_MEM_WB[2:0](.q(WB_Rs),  .d(MEM_Rs), .clk(clk), .rst(rst));
+dff En_IF_ID (.q(ID_MemEnable),  .d(MemEnable),     .clk(clk), .rst(rst));
+dff En_ID_EX (.q(EX_MemEnable),  .d(ID_MemEnable),  .clk(clk), .rst(rst));
+dff En_EX_MEM(.q(MEM_MemEnable), .d(EX_MemEnable),  .clk(clk), .rst(rst));
+dff En_MEM_WB(.q(WB_MemEnable),  .d(MEM_MemEnable), .clk(clk), .rst(rst));
 // might be overkill on number of cases, but better safe than sorry
-// compare "addresses" in each stage to new addrs to determine NOP
-assign MemHazDet =
- (((Imm == ID_Imm)  & (ID_Rs == IF_Rs))  & ID_valid_n)  |
- (((Imm == EX_Imm)  & (EX_Rs == IF_Rs))  & EX_valid_n)  |
- (((Imm == MEM_Imm) & (MEM_Rs == IF_Rs)) & MEM_valid_n) |
- (((Imm == WB_Imm)  & (WB_Rs == IF_Rs))  & WB_valid_n);
-// if the Imm and Register are the same the memaddr may be the same
-// currenlty can't read the data from Rs, so only have address to work with.
+// compare addresses in each stage to new addrs to determine NOP
+assign MemHazDet = 
+// If Mem is being accessed in this instruction, and mem was accessed in one of these previous instructions
+((MemEnable == 1 ) &
+ (ID_MemEnable  == MemEnable) |
+ (EX_MemEnable  == MemEnable) |
+ (Mem_MemEnable == MemEnable) |
+ (WB_MemEnable  == MemEnable))
+&
+// AND the Memory accessed is the same memory accessed before
+(((ID_MemAddr  == MemAddr)  & ID_valid_n)  |
+ ((EX_MemAddr  == MemAddr)  & EX_valid_n)  |
+ ((MEM_MemAddr == MemAddr)  & MEM_valid_n) |
+ ((WB_MemAddr  == MemAddr)  & WB_valid_n));
 
 assign NOP = (RegHazDet | MemHazDet ) ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet) ? 1'b1 : 1'b0;
