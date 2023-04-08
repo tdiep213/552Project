@@ -29,6 +29,7 @@ lbi r2, 2
 nop
 nop
 nop
+nop
 lbi r3, 3
 nop
 nop
