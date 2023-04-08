@@ -2,6 +2,8 @@
 // run the same instruction repeatedly 
 // with decreasing NOPS, to determine where Hazards
 // are not being stalled away.
+// As of writing,  one nop and zero nops are not enough space between instructions.
+// We must find the source of instruction delay.
 lbi r0, 0
 nop
 nop
