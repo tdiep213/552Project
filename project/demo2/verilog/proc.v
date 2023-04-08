@@ -81,8 +81,7 @@ module proc (/*AUTOARG*/
     fetch F(
         // outputs
             .Instr_C(IF_Instr), 
-            .PC(IF_PC), 
-            .Rs(ID_Rs), 
+            .PC(IF_PC),  
             .RegWrite(RegWrite), 
             .WriteRegAddr(IF_WriteRegAddr),
             .MemEnable(MemEnable), 
@@ -95,8 +94,8 @@ module proc (/*AUTOARG*/
             .b_flag(b_flag),
             .Halt(Halt), 
         // inputs
-            .Imm(ID_ImmExt), .BrnchAddr(ID_ImmExt), .RegJmp(RegJmp), 
-             .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst));
+            .Imm(IF_ImmExt), .BrnchAddr(ID_ImmExt), .RegJmp(RegJmp), 
+             .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst), .Rs(ID_Rs));
 
  
     /*---------------*/
@@ -113,7 +112,7 @@ module proc (/*AUTOARG*/
         .Val2RegOut(ID_Val2Reg), .RegWriteOut(ID_RegWrite),                     //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
-        .InstrIn(IF_Instr), .ImmExtIn(ID_ImmExt), .PcIn(IF_PC),                 //Data in 
+        .InstrIn(IF_Instr), .ImmExtIn(IF_ImmExt), .PcIn(IF_PC),                 //Data in 
         .LinkRegIn(LinkReg), .WriteRegAddrIn(IF_WriteRegAddr), .b_flagIn(b_flag),                        //Execute control//Control in (Decode)
         .ALUSelIn(ALUSel),                                                      //Control in (Execute)
         .MemEnableIn(MemEnable), .MemWrIn(MemWr), .HaltIn(Halt),                //Control in (Memory)
@@ -200,7 +199,7 @@ module proc (/*AUTOARG*/
     /*---------------*/
 
     /*-----CONTROL-----*/
-    sign_ext EXT(.out(ID_ImmExt), .err(ext_err), .in(IF_Instr), .zero_ext(ImmSel));
+    sign_ext EXT(.out(IF_ImmExt), .err(ext_err), .in(IF_Instr), .zero_ext(ImmSel));
 
 
     always@* begin

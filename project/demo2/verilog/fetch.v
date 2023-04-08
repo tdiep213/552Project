@@ -51,7 +51,7 @@
     wire[1:0] DestRegSel;
     wire HazNOP, PCStall, valid_n, PCStall_prev, PCStall_now, HazNOP_prev;
 
-    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(Imm), .BrnchImm(BrnchAddr) , .Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall_now), .SIIC(SIIC), .clk(clk), .rst(rst));
+    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(Imm), .BrnchImm(BrnchAddr) , .Rs(HDU_Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall_now), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                         .createdump(), .clk(clk), .rst(rst));
 
