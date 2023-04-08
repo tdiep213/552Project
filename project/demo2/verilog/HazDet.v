@@ -64,11 +64,11 @@ dff_16 MEM_EX_MEM(.q(MEM_MemAddr), .err(), .d(EX_MemAddr), .clk(clk), .rst(rst))
 dff_16 MEM_MEM_WB(.q(WB_MemAddr), .err(), .d(MEM_MemAddr), .clk(clk), .rst(rst));
 
 // compare addresses in each stage to new addrs to determine NOP
-assign MemHazDet =  1'b0;
-    (MemAddr == ID_MemAddr) |
-    (MemAddr == EX_MemAddr) |
-    (MemAddr == MEMEM_MemAddrM_chk)|
-    (MemAddr == WB_MemAddr) ;
+assign MemHazDet = 
+    ((MemAddr == ID_MemAddr) & ID_valid_n)|
+    ((MemAddr == EX_MemAddr) & EX_valid_n)|
+    ((MemAddr == MEMEM_MemAddrM_chk) & MEM_valid_n)|
+    ((MemAddr == WB_MemAddr) & WB_valid_n);
 
 assign NOP = (RegHazDet | MemHazDet ) ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet) ? 1'b1 : 1'b0;
