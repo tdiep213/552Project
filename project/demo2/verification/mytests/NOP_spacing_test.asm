@@ -51,7 +51,7 @@ nop
 nop
 lbi r1, 101
 lbi r2, 102
-lbi r3, 103
+lbi r3, 103 // chains of instr longer than 3 are 
 lbi r4, 104
 nop
 lbi r5, 105
