@@ -52,21 +52,23 @@ assign RegHazDet =
 
 /*-----MEM RAW Hazard Check-----*/
 
-// wire[15:0] chk, ID_chk, EX_chk, MEM_chk, WB_chk;
-// wire MemHazDet;
+wire[15:0] chk, ID_chk, EX_chk, MEM_chk, WB_chk;
+wire MemHazDet;
 
-// cla16b RtImm(.sum(chk), .cOut(), .inA(), .inB(Imm), .cIn(1'b0));
+cla16b RtImm(.sum(chk), .cOut(), .inA(ID_Rs), .inB(Imm), .cIn(1'b0));   // Determine memory address
 
-// dff_16 MEM_IF_ID(.q(ID_chk), .err(), .d(chk), .clk(clk), .rst(rst));
-// dff_16 MEM_ID_EX(.q(EX_chk), .err(), .d(ID_chk), .clk(clk), .rst(rst));
-// dff_16 MEM_EX_MEM(.q(MEM_chk), .err(), .d(EX_chk), .clk(clk), .rst(rst));
-// dff_16 MEM_MEM_WB(.q(WB_chk), .err(), .d(WB_chk), .clk(clk), .rst(rst));
+// Update addresses used in other stages
+dff_16 MEM_IF_ID(.q(ID_chk), .err(), .d(chk), .clk(clk), .rst(rst));
+dff_16 MEM_ID_EX(.q(EX_chk), .err(), .d(ID_chk), .clk(clk), .rst(rst));
+dff_16 MEM_EX_MEM(.q(MEM_chk), .err(), .d(EX_chk), .clk(clk), .rst(rst));
+dff_16 MEM_MEM_WB(.q(WB_chk), .err(), .d(WB_chk), .clk(clk), .rst(rst));
 
+// compare addresses in each stage to new addrs to determine NOP
 assign MemHazDet =  1'b0;
-    // (chk == ID_chk) |
-    // (chk == EX_chk) |
-    // (chk == MEM_chk)|
-    // (chk == WB_chk) ;
+    (chk == ID_chk) |
+    (chk == EX_chk) |
+    (chk == MEM_chk)|
+    (chk == WB_chk) ;
 
 assign NOP = (RegHazDet | MemHazDet ) ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet) ? 1'b1 : 1'b0;
