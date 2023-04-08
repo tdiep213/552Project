@@ -203,6 +203,10 @@ module proc (/*AUTOARG*/
     sign_ext EXT(.out(IF_ImmExt), .err(ext_err), .in(IF_Instr), .zero_ext(ImmSel));
 
 
+    /*------HAZ-DET------*/
+    HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(IF_Instr), .valid_n(valid_n), .Rd(IF_WriteRegAddr), .Imm(IF_ImmExt), .clk(clk), .rst(rst));
+
+
     always@* begin
         case({ctrlErr, ext_err})
         default: err =0; //ctrlErr | ext_err;

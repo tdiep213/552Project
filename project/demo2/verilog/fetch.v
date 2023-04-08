@@ -20,6 +20,7 @@
     LinkReg, 
     ctrlErr, 
     b_flag,
+    valid_n,
     Halt,
     // inputs
     BrnchAddr,
@@ -27,12 +28,13 @@
     Rs,     RegJmp, 
     SIIC,
     PcSel,
+    HazNOP,
     clk, 
     rst);
     // TODO: Your code here
     output wire[15:0] Instr_C, PC; 
     output wire RegWrite, MemEnable, 
-                MemWr, Val2Reg, ctrlErr, ALUSel, b_flag;
+                MemWr, Val2Reg, ctrlErr, ALUSel, b_flag, valid_n;
 
     output wire [1:0] LinkReg;
     output reg [2:0] WriteRegAddr;
@@ -41,17 +43,15 @@
 
     input wire[15:0] Imm, Rs;
     input wire[15:0] BrnchAddr;
-    input wire PcSel;
+    input wire PcSel, HazNOP;
 
     input wire clk, rst;
 
     wire[15:0] PcAddr, Instr;
-    wire [15:0] Instr_A;
     wire[15:0] Instr_B;
     wire[1:0] DestRegSel;
-    wire HazNOP, PCStall, valid_n;
 
-    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(Imm), .BrnchImm(BrnchAddr) , .Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall), .SIIC(SIIC), .clk(clk), .rst(rst));
+    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(Imm), .BrnchImm(BrnchAddr) , .Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                         .createdump(), .clk(clk), .rst(rst));
 
@@ -64,10 +64,8 @@
          default: WriteRegAddr = Instr[4:2];
       endcase
    end
-   // might be easier to have in proc instead, with more access to stage specific registers and specific signals?
-    HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(Instr_B), .valid_n(valid_n), .Rd(WriteRegAddr), .Imm(Imm), .clk(clk), .rst(rst));
-    assign Instr_B = HazNOP ? 16'h0800 : Instr;
-    // dff_16 crying(.q(Instr_B), .err(), .d(Instr_A), .clk(clk), .rst(rst));
+   
+   assign Instr_B = HazNOP ? 16'h0800 : Instr;
 
 
     control CNTRL(
@@ -91,7 +89,6 @@
     //Input(s)
     .Instr(Instr_B[15:11]));
 
-    assign Instr_C[10:0] = Instr_B[10:0];
     
     endmodule
     `default_nettype wire
