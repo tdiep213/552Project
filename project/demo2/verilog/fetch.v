@@ -80,7 +80,7 @@
     assign HDU_Rs        = HazNOP_prev ? 16'h0000 : Rs;
     assign HDU_MemEnable = HazNOP_prev ?     1'b0 : MemEnable;
     assign HDU_WrRegAddr = HazNOP_prev ?   3'b000 : WriteRegAddr;
-    assign HDU_Imm       = HazNOP_prev ? 16'h0000 : Imm;
+    //assign HDU_Imm       = HazNOP_prev ? 16'h0000 : Imm;
 
 
     control CNTRL(
