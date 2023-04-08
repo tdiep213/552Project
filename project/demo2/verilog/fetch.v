@@ -46,7 +46,7 @@
     input wire clk, rst;
 
     wire[15:0] PcAddr, Instr;
-    wire [15:0] Instr_A;
+    wire [15:0] HazDet_Instr;
     wire[15:0] Instr_B;
     wire[1:0] DestRegSel;
     wire HazNOP, PCStall, valid_n, PCStall_prev;
