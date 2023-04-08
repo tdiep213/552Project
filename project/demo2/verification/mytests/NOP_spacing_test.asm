@@ -25,12 +25,12 @@ nop
 nop
 nop
 nop
-lbi r2, 2
+lbi r2, 2   // for some reason 4 nops needed after this
 nop
 nop
 nop
 nop
-lbi r3, 3
+lbi r3, 3  // but remaining nop spacing fine for this trial
 nop
 nop
 lbi r4, 4
