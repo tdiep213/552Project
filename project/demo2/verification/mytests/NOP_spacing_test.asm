@@ -21,9 +21,19 @@ nop
 nop
 nop
 lbi r1, 1
+nop
+nop
+nop
+nop
 lbi r2, 2
+nop
+nop
+nop
 lbi r3, 3
+nop
+nop
 lbi r4, 4
+nop
 lbi r5, 5
 lbi r6, 6
 nop
@@ -31,6 +41,21 @@ nop
 nop
 nop
 nop
+
+lbi r0, 100
+nop
+nop
+nop
+nop
+nop
+lbi r1, 101
+lbi r2, 102
+lbi r3, 103
+lbi r4, 104
+nop
+lbi r5, 105
+lbi r6, 106
+
 addi r0, r0, 7
 nop
 nop
