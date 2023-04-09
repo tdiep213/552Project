@@ -15,10 +15,11 @@ assign IF_Rt = Instr[7:5];
 
 /*------Branch/Jump NOP-----*/
 reg JBNOP;
+wire prevJBNOP;
 always @* begin
-    case(Instr[15:11])
-        5'b111??: JBNOP = 1'b1; //JUMP
-        5'b011??: JBNOP = 1'b1; //BRANCH
+    case(Instr[15:13])
+        3'b001: JBNOP = 1'b1; //JUMP
+        3'b011: JBNOP = 1'b1; //BRANCH
         default: JBNOP = 1'b0;
     endcase
 end
@@ -84,7 +85,10 @@ assign MemHazDet =
  ((MEM_MemAddr == MemAddr)  & MEM_valid_n) |
  ((WB_MemAddr  == MemAddr)  & WB_valid_n));
 
-assign NOP = (RegHazDet | MemHazDet ) ? 1'b1 : 1'b0;
-assign PcStall = (RegHazDet | MemHazDet) ? 1'b1 : 1'b0;
+wire JBNOP_n;
+assign NOP = (RegHazDet | MemHazDet | prevJBNOP) ? 1'b1 : 1'b0;
+assign PcStall = (RegHazDet | MemHazDet ) ? 1'b1 : 1'b0;
+
+dff BrnchJmp(.q(prevJBNOP), .d(JBNOP), .clk(clk), .rst(rst));
 
 endmodule

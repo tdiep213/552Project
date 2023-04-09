@@ -88,10 +88,7 @@
     assign HDU_Imm       = HazNOP_prev ? 16'h0000 : Imm;
    //===============================================================//
 
-   /* Current problem is that At the time of a ST instr coming into fetch, we have ID_Rs = 0 most likely (or other garbage)
-      So we need to make sure that if we have a ST, we use the correct Rs (ie from the current instr) 
-      to calculate the mem_addr we need.
-   */
+
     control CNTRL(
     //Output(s)
     .RegWrite(RegWrite), 
