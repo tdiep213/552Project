@@ -82,7 +82,7 @@ module control(
                 ALUcntrl[4:0]   = Instr[4:0];  // Do pass opcode to ALU
                 SIIC            = 1'b0;
                 b_flag            = 1'b0;
-                valid_n = 1'b0;
+                valid_n = 1'b1;
                 case(Instr[1])
                     1'b0: ImmSel[2:0] = 3'b100;   // Do use sign extension (specific to I-format 1!!)
                     1'b1: ImmSel[2:0] = 3'b000;   // Do use zero extension
