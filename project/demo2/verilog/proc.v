@@ -177,7 +177,7 @@ module proc (/*AUTOARG*/
 
     /*-----MEMORY-----*/
     memory M (.data_out(MEM_MEMout), .data_in(MEM_Rt), .addr(MEM_ALUout), .enable(MEM_MemEnable), .wr(MEM_MemWr), 
-              .createdump(), .Halt(Halt), .clk(clk), .rst(rst));
+              .createdump(), .Halt(MEM_Halt), .clk(clk), .rst(rst));
     /*---------------*/
 
     /*-----MEM/WB-----*/
