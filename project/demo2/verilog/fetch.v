@@ -72,6 +72,7 @@
     assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
     HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(HazDet_Instr), .valid_n(valid_n), .MemEnable(HDU_MemEnable), .Rd(HDU_WrRegAddr), .Imm(HDU_Imm), .Reg1Data(HDU_Rs), .clk(clk), .rst(rst));
     
+    // This is the stuff that got things moving again, your crying dff was a good lead//
     assign Instr_B = HazNOP ? 16'h0800 : Instr;
     assign PCStall_now = (HazNOP & PCStall);
     
@@ -81,8 +82,12 @@
     assign HDU_MemEnable = HazNOP_prev ?     1'b0 : MemEnable;
     assign HDU_WrRegAddr = HazNOP_prev ?   3'b000 : WriteRegAddr;
     assign HDU_Imm       = HazNOP_prev ? 16'h0000 : Imm;
+   //===============================================================//
 
-
+   /* Current problem is that At the time of a ST instr coming into fetch, we have ID_Rs = 0 most likely (or other garbage)
+      So we need to make sure that if we have a ST, we use the correct Rs (ie from the current instr) 
+      to calculate the mem_addr we need.
+   */
     control CNTRL(
     //Output(s)
     .RegWrite(RegWrite), 
