@@ -45,12 +45,16 @@ module alu(out, opcode, funct, Ain, Bin);
             3'b001: begin //Jump NOT USED
                 case(opcode[1:0])
                     2'b00: begin //PC+DISP (J)
+                        out = sum;
                      end
                     2'b01: begin //R + Imm (JR)
+                        out = sum;
                     end 
                     2'b10: begin //JAL
+                        out = sum;
                     end
                     2'b11: begin //JALR
+                        out = sum;
                     end
                 endcase
             end
