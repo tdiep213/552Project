@@ -83,7 +83,7 @@ module proc (/*AUTOARG*/
             .Instr_C(IF_Instr), 
             .PC(IF_PC),  
             .RegWrite(RegWrite), 
-            .WriteRegAddr(IF_WriteRegAddr),
+            .WriteRegAddr(ID_WriteRegAddr),
             .MemEnable(MemEnable), 
             .MemWr(MemWr),
             .Val2Reg(Val2Reg), 
@@ -113,7 +113,7 @@ module proc (/*AUTOARG*/
 
         /*-----PIPELINE IN-----*/
         .InstrIn(IF_Instr), .ImmExtIn(IF_ImmExt), .PcIn(IF_PC),                 //Data in 
-        .LinkRegIn(LinkReg), .WriteRegAddrIn(IF_WriteRegAddr), .b_flagIn(b_flag),                        //Execute control//Control in (Decode)
+        .LinkRegIn(LinkReg), .WriteRegAddrIn(ID_WriteRegAddr), .b_flagIn(b_flag),                        //Execute control//Control in (Decode)
         .ALUSelIn(ALUSel),                                                      //Control in (Execute)
         .MemEnableIn(MemEnable), .MemWrIn(MemWr), .HaltIn(Halt),                //Control in (Memory)
         .Val2RegIn(Val2Reg), .RegWriteIn(RegWrite),                             //Control in (Writeback)
