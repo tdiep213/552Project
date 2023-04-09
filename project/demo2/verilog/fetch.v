@@ -20,7 +20,7 @@
     LinkReg, 
     ctrlErr, 
     b_flag,
-    j_falg,
+    j_flag,
     Halt,
     // inputs
     BrnchAddr,

@@ -1,6 +1,6 @@
 module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
-        LinkRegOut, WriteRegAddrOut, RegWriteOut, b_flagOut, //Decode control
-        LinkRegIn, WriteRegAddrIn, RegWriteIn, b_flagIn,
+        LinkRegOut, WriteRegAddrOut, RegWriteOut, b_flagOut, j_flagOut, //Decode control
+        LinkRegIn, WriteRegAddrIn, RegWriteIn, b_flagIn, j_flagIn,
         ALUSelOut, //Execute control
         ALUSelIn,
         MemEnableOut, MemWrOut, HaltOut, // Memory control
