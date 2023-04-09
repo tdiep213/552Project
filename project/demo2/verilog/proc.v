@@ -93,7 +93,7 @@ module proc (/*AUTOARG*/
             .LinkReg(LinkReg), 
             .ctrlErr(ctrlErr),
             .b_flag(b_flag),
-            .j_flag(.j_flag),
+            .j_flag(j_flag),
             .Halt(Halt), 
         // inputs
             .Imm(IF_ImmExt), .BrnchAddr(ID_ImmExt), .RegJmp(RegJmp), 
