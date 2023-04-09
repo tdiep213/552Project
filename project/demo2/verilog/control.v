@@ -101,7 +101,7 @@ module control(
                 ALUcntrl[4:0]   = 5'b01000;    // Do act like performing ADDI
                 ImmSel[2:0]     = 3'b100;      // Do sign extend 5 bits
                 b_flag            = 1'b0;
-                valid_n = 1'b0;
+                valid_n = 1'b1;
                 case(Instr[0])
                     1'b0: begin // ST Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd
                         Val2Reg = 1'b0;          // Do transmit ALU output

@@ -51,17 +51,20 @@
     wire[1:0] DestRegSel;
     wire HazNOP, PCStall, valid_n, PCStall_prev, PCStall_now, HazNOP_prev;
 
+   wire [1:0] ChkRegSel;
+   reg [2:0] ChkRegAddr;
+
     pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr) , .Rs(HDU_Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall_now), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                         .createdump(), .clk(clk), .rst(rst));
 
     always@* begin
       case(DestRegSel)
-         2'b00: WriteRegAddr = Instr[10:8];   // Rs
-         2'b01: WriteRegAddr = Instr[4:2];    // Rd-R
+         2'b00: WriteRegAddr = Instr_C[10:8];   // Rs
+         2'b01: WriteRegAddr = Instr_C[4:2];    // Rd-R
          2'b10: WriteRegAddr = 3'b111;           // R7
-         2'b11: WriteRegAddr = Instr[7:5];    // Rd-I
-         default: WriteRegAddr = Instr[4:2];
+         2'b11: WriteRegAddr = Instr_C[7:5];    // Rd-I
+         default: WriteRegAddr = Instr_C[4:2];
       endcase
     end
 
@@ -70,7 +73,8 @@
     wire [2:0]  HDU_WrRegAddr;
 
     assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
-    HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(HazDet_Instr), .valid_n(valid_n), .MemEnable(HDU_MemEnable), .Rd(WriteRegAddr), .Imm(HDU_Imm), .Reg1Data(HDU_Rs), .clk(clk), .rst(rst));
+    HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(HazDet_Instr), .valid_n(valid_n), .MemEnable(HDU_MemEnable), 
+               .Rd(ChkRegAddr), .Imm(HDU_Imm), .Reg1Data(HDU_Rs), .clk(clk), .rst(rst));
     
     // This is the stuff that got things moving again, your crying dff was a good lead//
     assign Instr_B = HazNOP ? 16'h0800 : Instr;
@@ -111,5 +115,37 @@
 
     assign Instr_C[10:0] = Instr_B[10:0];
     
+
+   always@* begin
+      case(ChkRegSel)
+         2'b00: ChkRegAddr = Instr[10:8];   // Rs
+         2'b01: ChkRegAddr = Instr[4:2];    // Rd-R
+         2'b10: ChkRegAddr = 3'b111;           // R7
+         2'b11: ChkRegAddr = Instr[7:5];    // Rd-I
+         default: ChkRegAddr = Instr[4:2];
+      endcase
+    end
+
+   control chk(
+    //Output(s)
+    .RegWrite(), 
+    .DestRegSel(ChkRegSel),
+    .PcSel(), 
+    .RegJmp(), 
+    .MemEnable(), 
+    .MemWr(),
+    .ALUcntrl(),
+    .Val2Reg(), 
+    .ALUSel(), 
+    .ImmSel(), 
+    .Halt(), 
+    .LinkReg(), 
+    .ctrlErr(),
+    .SIIC(),
+    .b_flag(),
+    .valid_n(),   
+    //Input(s)
+    .Instr(Instr[15:11]));
+
     endmodule
     `default_nettype wire
