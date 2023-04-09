@@ -129,7 +129,7 @@ module proc_hier_pbench();
    // names on the right hand side
     
    assign PC = DUT.p0.F.PC;
-   assign Inst = DUT.p0.F.Instr_C;
+   assign Inst = DUT.p0.F.Instr;
    
    assign RegWrite = DUT.p0.D.RegisterMem.en;
    // Is register being written, one bit signal (1 means yes, 0 means no)
