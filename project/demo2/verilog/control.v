@@ -154,7 +154,7 @@ module control(
                 MemWr           = 1'b0;        // Do Not write to memory
                 MemEnable       = 1'b0;        // Do Not enable mem access
                 b_flag            = 1'b0;
-                valid_n = 1'b0;
+                valid_n = 1'b1;
             end
 //========================================================//
 
