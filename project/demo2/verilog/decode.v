@@ -27,7 +27,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
 
     //Write Register Data logic
     wire [15:0] WriteData, PcSum2, ImmSel;
-    wire Zflag, Sflag;
+    wire Zflag, Sflag, branch_flag;
 
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(16'h0002), .cIn(1'b0));
     assign ImmSel = LBI ? Imm : Writeback;
