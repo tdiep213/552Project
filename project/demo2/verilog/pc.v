@@ -20,7 +20,7 @@ module pc(
     assign zero = 0;
 
     cla16b PcInc(.sum(Inc2), .cOut(), .inA(PcQ), .inB(16'h0002), .cIn(zero));
-    cla16b PImm(.sum(PcImm), .cOut(), .inA(PcQ), .inB(BrnchImm), .cIn(zero));
+    cla16b PImm(.sum(PcImm), .cOut(), .inA(Inc), .inB(BrnchImm), .cIn(zero));
     cla16b RImm(.sum(RsImm), .cOut(), .inA(Rs), .inB(Imm), .cIn(zero));
     
     assign PC = PcQ;
