@@ -98,7 +98,7 @@ module control(
                 Halt            = 1'b0;        // Do Not
                 LinkReg[1:0]    = 2'b00;       // Do Not Link, Do Not LBI
                 DestRegSel[1:0] = 2'b11;       // Do use Rd-I
-                ALUcntrl[4:0]   = 5'b01000;    // Do act like performing ADDI
+                ALUcntrl[4:0]   = Instr[4:0];    // Do act like performing ADDI
                 ImmSel[2:0]     = 3'b100;      // Do sign extend 5 bits
                 b_flag            = 1'b0;
                 valid_n = 1'b1;
@@ -127,7 +127,7 @@ module control(
                 Halt            = 1'b0;    // Do Not halt
                 LinkReg[1:0]    = 2'b00;   // Do Not Link, Do Not LBI
                 DestRegSel[1:0] = 2'b00;   // Do use Rs
-                ALUcntrl[4:0]   = 5'b01000;// Do act like performing ADDI
+                ALUcntrl[4:0]   = Instr[4:0];// Do act like performing ADDI
                 ImmSel[2:0]     = 3'b100;  // Do sign extend 5 bits.
                 RegWrite        = 1'b1;    // Do write to register
                 MemWr           = 1'b1;    // Do write to memory
