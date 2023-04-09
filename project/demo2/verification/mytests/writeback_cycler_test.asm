@@ -15,6 +15,6 @@ jal r1, .JLOC   // jump and store PC+2 in R7
 stu r3, r0, 64  // use Rd as a source, and save mem address at Rs
 halt            // true end
 
-.JLOC
+.JLOC:
 jr r7, 0        // return the value we just saved
 halt

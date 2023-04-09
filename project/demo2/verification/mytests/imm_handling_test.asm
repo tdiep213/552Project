@@ -16,7 +16,7 @@ xori r2, r1, 10     // zero-ext 5 bit imm
 st r2, r1, 15       // memory access with sign-ext 5 bit imm
 beqz r0, .BLOC      // signed 8 bit branch
 
-.JLOC
+.JLOC:
 halt                // True end
 
 .BLOC:
