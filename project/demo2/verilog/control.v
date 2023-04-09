@@ -212,6 +212,7 @@ module control(
                 MemWr           = 1'b0;        // Do Not write to memory
                 // b_flag            = 1'b0;
                 valid_n = 1'b1;
+                j_flag = 1'b1;
                 case(Instr[0])
 //---------------------- J Format ------------------------//
                     1'b0:  begin 
