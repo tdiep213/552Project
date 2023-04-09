@@ -8,6 +8,6 @@ addi r0, r0, -9
 addi r1, r1, 10
 j 2
 halt
-beqz r0, -4
-addi r1, -9
+beqz r0, r0, -4
+addi r1, r0, -9
 j -3
