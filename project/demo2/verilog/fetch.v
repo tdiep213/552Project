@@ -20,6 +20,7 @@
     LinkReg, 
     ctrlErr, 
     b_flag,
+    j_falg,
     Halt,
     // inputs
     BrnchAddr,
@@ -32,7 +33,7 @@
     // TODO: Your code here
     output wire[15:0] Instr_C, PC; 
     output wire RegWrite, MemEnable, 
-                MemWr, Val2Reg, ctrlErr, ALUSel, b_flag;
+                MemWr, Val2Reg, ctrlErr, ALUSel, b_flag, j_flag;
 
     output wire [1:0] LinkReg;
     output reg [2:0] WriteRegAddr;
@@ -106,7 +107,8 @@
     .ctrlErr(ctrlErr),
     .SIIC(SIIC),
     .b_flag(b_flag),
-    .valid_n(valid_n),   
+    .valid_n(valid_n),
+    .j_flag(j_flag),   
     //Input(s)
     .Instr(Instr_B[15:11]));
 
@@ -140,7 +142,8 @@
     .ctrlErr(),
     .SIIC(),
     .b_flag(),
-    .valid_n(),   
+    .valid_n(),
+    .j_flag(),   
     //Input(s)
     .Instr(Instr[15:11]));
 

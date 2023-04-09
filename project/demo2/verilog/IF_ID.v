@@ -15,14 +15,14 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
 
     input wire[1:0] LinkRegIn;
     input wire[2:0] WriteRegAddrIn;
-    input wire RegWriteIn, b_flagIn;                          //DECODE
+    input wire RegWriteIn, b_flagIn, j_flagIn;                          //DECODE
     input wire ALUSelIn;                            //EXECUTE
     input wire MemEnableIn, MemWrIn, HaltIn;        //MEMORY
     input wire Val2RegIn;                           //Writeback
 
     output wire[1:0] LinkRegOut;
     output wire[2:0] WriteRegAddrOut;
-    output wire  RegWriteOut, b_flagOut; //Decode control
+    output wire  RegWriteOut, b_flagOut, j_flagOut; //Decode control
     output wire ALUSelOut; //Execute control
     output wire MemEnableOut, MemWrOut, HaltOut; // Memory control
     output wire Val2RegOut; // Writeback control
@@ -34,7 +34,7 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
     dff_16 Immediate(.q(ImmExtOut), .err(), .d(ImmExtIn), .clk(clk), .rst(rst));
     dff_16 ProgCnt(.q(PcOut), .err(), .d(PcIn), .clk(clk), .rst(rst));
     
-    dff ID_cntrl[6:0](.q({LinkRegOut, WriteRegAddrOut, RegWriteOut, b_flagOut}),  .d({LinkRegIn, WriteRegAddrIn, RegWriteIn, b_flagIn}), .clk(clk) , .rst(rst));
+    dff ID_cntrl[7:0](.q({LinkRegOut, WriteRegAddrOut, RegWriteOut, b_flagOut, j_flagOut}),  .d({LinkRegIn, WriteRegAddrIn, RegWriteIn, b_flagIn, j_flagIn}), .clk(clk) , .rst(rst));
     dff EX_cntrl(.q(ALUSelOut),  .d(ALUSelIn), .clk(clk), .rst(rst));
     dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk), .rst(rst));
     dff WB_cntrl(.q(Val2RegOut),  .d(Val2RegIn), .clk(clk), .rst(rst));

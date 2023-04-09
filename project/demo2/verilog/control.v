@@ -17,10 +17,11 @@ module control(
     SIIC,       // SIIC
     b_flag,     // whomst? :P
     valid_n,    // whomst? :P
+    j_flag,
     //Input(s)
     Instr     // 5 msb of instruction
 );
-    output reg RegWrite, PcSel, RegJmp, MemEnable, MemWr, Val2Reg, ALUSel, Halt, ctrlErr, SIIC, b_flag, valid_n;
+    output reg RegWrite, PcSel, RegJmp, MemEnable, MemWr, Val2Reg, ALUSel, Halt, ctrlErr, SIIC, b_flag, valid_n, j_flag;
     output reg [1:0] LinkReg, DestRegSel; // TODO
     output reg [2:0] ImmSel;
     output reg[4:0] ALUcntrl;

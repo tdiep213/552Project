@@ -44,6 +44,7 @@ module proc (/*AUTOARG*/
     wire Val2Reg;              //WRITEBACK
     wire ctrlErr, ext_err;     //ERRORs
     wire b_flag; 
+    wire j_flag;
     wire[2:0] IF_WriteRegAddr;
     wire HazNOP;
     /*-----ID WIRES-----*/
@@ -51,7 +52,7 @@ module proc (/*AUTOARG*/
     wire[2:0] ID_WriteRegAddr;
     wire[1:0] ID_LinkReg, ID_DestRegSel;
     wire ID_RegWrite;
-    wire ID_PcSel, ID_b_flag;
+    wire ID_PcSel, ID_b_flag, ID_j_flag;
     wire ID_ALUSel, ID_MemEnable, ID_MemWr, ID_Halt, ID_Val2Reg;     
 
     /*-----EX WIRES-----*/
@@ -92,6 +93,7 @@ module proc (/*AUTOARG*/
             .LinkReg(LinkReg), 
             .ctrlErr(ctrlErr),
             .b_flag(b_flag),
+            .j_flag(.j_flag),
             .Halt(Halt), 
         // inputs
             .Imm(IF_ImmExt), .BrnchAddr(ID_ImmExt), .RegJmp(RegJmp), 
@@ -106,14 +108,14 @@ module proc (/*AUTOARG*/
     if_id IF_ID_PIPE(
         /*-----PIPELINE OUT-----*/
         .InstrOut(ID_Instr), .ImmExtOut(ID_ImmExt), .PcOut(ID_PC),              //Data out
-        .LinkRegOut(ID_LinkReg), .WriteRegAddrOut(ID_WriteRegAddr), .b_flagOut(ID_b_flag),                 //Control out (Decode)
+        .LinkRegOut(ID_LinkReg), .WriteRegAddrOut(ID_WriteRegAddr), .b_flagOut(ID_b_flag),  .j_flagOut(ID_j_flag),               //Control out (Decode)
         .ALUSelOut(ID_ALUSel),                                                  //Control out (Execute)
         .MemEnableOut(ID_MemEnable), .MemWrOut(ID_MemWr), .HaltOut(ID_Halt), //Control out (Memory)
         .Val2RegOut(ID_Val2Reg), .RegWriteOut(ID_RegWrite),                     //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
         .InstrIn(IF_Instr), .ImmExtIn(IF_ImmExt), .PcIn(IF_PC),                 //Data in 
-        .LinkRegIn(LinkReg), .WriteRegAddrIn(IF_WriteRegAddr), .b_flagIn(b_flag),                        //Execute control//Control in (Decode)
+        .LinkRegIn(LinkReg), .WriteRegAddrIn(IF_WriteRegAddr), .b_flagIn(b_flag), .j_flagIn(j_flag),                       //Execute control//Control in (Decode)
         .ALUSelIn(ALUSel),                                                      //Control in (Execute)
         .MemEnableIn(MemEnable), .MemWrIn(MemWr), .HaltIn(Halt),                //Control in (Memory)
         .Val2RegIn(Val2Reg), .RegWriteIn(RegWrite),                             //Control in (Writeback)
