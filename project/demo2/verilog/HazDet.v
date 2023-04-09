@@ -87,7 +87,7 @@ assign MemHazDet =
 
 wire JBNOP_n;
 assign NOP = (RegHazDet | MemHazDet | prevJBNOP) ? 1'b1 : 1'b0;
-assign PcStall = (RegHazDet | MemHazDet | prevJBNOP) ? 1'b1 : 1'b0;
+assign PcStall = (RegHazDet | MemHazDet | JBNOP) ? 1'b1 : 1'b0;
 
 dff BrnchJmp(.q(prevJBNOP), .d(JBNOP), .clk(clk), .rst(rst));
 
