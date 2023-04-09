@@ -85,6 +85,7 @@ assign MemHazDet =
  ((MEM_MemAddr == MemAddr)  & MEM_valid_n) |
  ((WB_MemAddr  == MemAddr)  & WB_valid_n));
 
+wire JBNOP_n;
 assign NOP = (RegHazDet | MemHazDet | prevJBNOP) ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet | prevJBNOP) ? 1'b1 : 1'b0;
 
