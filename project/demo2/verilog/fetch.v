@@ -45,7 +45,7 @@
 
     input wire clk, rst;
 
-    wire[15:0] PcAddr, Instr, HDU_Rs;
+    wire[15:0] PcAddr, Instr, HDU_Rs, HDU_Imm;
     wire[15:0] HazDet_Instr;
     wire[15:0] Instr_B;
     wire[1:0] DestRegSel;
@@ -66,7 +66,7 @@
     end
 
     wire HDU_MemEnable;
-    wire [15:0] HDU_Imm;
+    
     wire [2:0]  HDU_WrRegAddr;
 
     assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
