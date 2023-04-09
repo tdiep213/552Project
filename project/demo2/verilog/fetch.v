@@ -51,7 +51,7 @@
     wire[1:0] DestRegSel;
     wire HazNOP, PCStall, valid_n, PCStall_prev, PCStall_now, HazNOP_prev;
 
-    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr) , .Rs(HDU_Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall_now), .SIIC(SIIC), .clk(clk), .rst(rst));
+    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr) , .Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall_now), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                         .createdump(), .clk(clk), .rst(rst));
 
@@ -70,7 +70,7 @@
     wire [2:0]  HDU_WrRegAddr;
 
     assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
-    HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(HazDet_Instr), .valid_n(valid_n), .MemEnable(HDU_MemEnable), .Rd(HDU_WrRegAddr), .Imm(HDU_Imm), .Reg1Data(HDU_Rs), .clk(clk), .rst(rst));
+    HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(HazDet_Instr), .valid_n(valid_n), .MemEnable(HDU_MemEnable), .Rd(HDU_WrRegAddr), .Imm(HDU_Imm), .Reg1Data(Rs), .clk(clk), .rst(rst));
     
     // This is the stuff that got things moving again, your crying dff was a good lead//
     assign Instr_B = HazNOP ? 16'h0800 : Instr;
