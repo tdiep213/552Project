@@ -207,7 +207,7 @@ module control(
                 Val2Reg         = 1'b0;        // Sometimes Care // Do transmit ALU output
                 ALUSel          = 1'b1;        // Sometimes Care // Do use the Immediate value in ALU
                 Halt            = 1'b0;        // Do Not halt
-                DestRegSel[1:0] = 2'b00;       // Semi Care. Do use Rs // Default
+                DestRegSel[1:0] = 2'b10;       // Do use R7
                 ALUcntrl[4:0]   = 5'b01000;    // Pass ADDI Opcode
                 MemWr           = 1'b0;        // Do Not write to memory
                 // b_flag            = 1'b0;
@@ -224,8 +224,7 @@ module control(
                                 RegWrite = 1'b0;        // Do Not write to register
                                 MemEnable= 1'b0;        // Do Not enable mem acces
                             end
-                            1'b1: begin // JAL displacement R7 <- PC + 2 and PC <- PC + 2 + D(sign ext.) // why are you saving instead of jumping?
-                                DestRegSel[1:0] = 2'b10;       // Do use R7
+                            1'b1: begin // JAL displacement R7 <- PC + 2 and PC <- PC + 2 + D(sign ext.)
                                 LinkReg[1:0]= 2'b10;    // Do LINK, Do Not LBI
                                 b_flag    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b1;        // Do write to register
@@ -246,7 +245,6 @@ module control(
                                 MemEnable= 1'b0;        // Do Not enable mem access
                             end
                             1'b1: begin // JALR Rs, immediate R7 <- PC + 2 and PC <- Rs + I(sign ext.)
-                                DestRegSel[1:0] = 2'b10;       // Do use R7
                                 LinkReg[1:0]= 2'b10;    // Do Link, Do Not LBI
                                 b_flag    = 1'b0;        // Do Not add Imm to PC + 2
                                 RegWrite = 1'b1;        // Do write to register
