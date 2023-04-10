@@ -17,7 +17,7 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, Writeback, PC, PC
    input wire clk, rst;
 
    
-   wire[2:0] Rs, Rt, WrAddr, read1RegSel, WriteData;
+   wire[2:0] Rs, Rt, WrAddr, read1RegSel;
    reg branch, jl_flag;
    wire EX_JL, MEM_JL, WB_JL; 
    //wire NOP_det;
@@ -42,7 +42,7 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, Writeback, PC, PC
    assign read1RegSel = (Instr[15:11] == 5'b00110 & (jl_flag | EX_JL)) ? 3'b111 : Rs;
 
     //Write Register Data logic
-    wire [15:0] PcSum2, ImmSel, PC_instr;
+    wire [15:0] PcSum2, ImmSel, PC_instr, WriteData;
     wire Zflag, Sflag, branch_flag;
 
    /* bad
