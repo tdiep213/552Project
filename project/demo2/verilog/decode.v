@@ -45,7 +45,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
 
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PCNOW), .inB(16'h0002), .cIn(1'b0));
     assign ImmSel = LBI ? Imm : Writeback;
-    assign WriteData = (Link | jr_flag) ? PcSum2 : ImmSel;      
+    assign WriteData = (Link | EX_JR) ? PcSum2 : ImmSel;      
 
    assign WrAddr = jr_flag ? 3'b111 : WriteRegAddr;
 
