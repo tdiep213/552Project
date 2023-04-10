@@ -75,7 +75,7 @@
     
     wire [2:0]  HDU_WrRegAddr;
 
-    assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
+    assign HazDet_Instr = HazNOP_prev ? 16'h0800 : Instr;
     HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(HazDet_Instr), .valid_n(valid_n), .MemEnable(/*HDU_*/MemEnable), 
                .Rd(ChkRegAddr), .Imm(/*HDU_*/Imm), .Reg1Data(HDU_Rs), .clk(clk), .rst(rst));
     
