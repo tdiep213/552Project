@@ -17,15 +17,21 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
    input wire clk, rst;
 
    
-   wire[2:0] Rs, Rt, WrAddr;
+   wire[2:0] Rs, Rt, WrAddr, read1RegSel;
    reg branch, jl_flag;
    wire EX_JL, MEM_JL, WB_JL; 
    
    always @* begin
       case(Instr[15:11])
-         5'b00110: jl_flag = 1'b1;
+         5'b00110: begin
+            jl_flag = 1'b1;
+            read1RegSel = 3'b111;
+         end
          5'b00111: jl_flag = 1'b1;
-         default jl_flag = 1'b0;
+         default begin
+            jl_flag = 1'b0;
+            read1RegSel = Rs;
+         end
       endcase
    end
    dff EX_JRDFF (.q(EX_JL),  .d(jl_flag), .clk(clk), .rst(rst));
@@ -50,7 +56,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
    assign WrAddr = jl_flag ? 3'b111 : WriteRegAddr;
 
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
-                     .ReadReg1(Rs), .ReadReg2(Rt),.WriteReg(WrAddr), .WriteData(WriteData), 
+                     .ReadReg1(read1RegSel), .ReadReg2(Rt),.WriteReg(WrAddr), .WriteData(WriteData), 
    //                 //Rs                    //Rd                 //Rt
                      .en((en & ~WB_JL) | jl_flag), .clk(clk), .rst(rst));
    /* enable priorities: 
