@@ -96,6 +96,6 @@ assign MemHazDet =
 assign NOP = (RegHazDet | MemHazDet | prevJBNOP) & ~NOPchk ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet ) & ~NOPchk? 1'b1 : 1'b0;
 
-dff BrnchJmp(.q(prevJBNOP), .d(JBNOP), .clk(clk), .rst(rst));
+dff BrnchJmp(.q(prevJBNOP), .d((JBNOP & ~RegHazDet & ~MemHazDet)), .clk(clk), .rst(rst));
 
 endmodule
