@@ -26,12 +26,17 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
 
 
     //Write Register Data logic
-    wire [15:0] WriteData, PcSum2, ImmSel;
+    wire [15:0] WriteData, PcSum2, ImmSel, PC_instr;
     wire Zflag, Sflag, branch_flag;
 
-    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(16'h0002), .cIn(1'b0));
+   // PC_instr is the PC value of the instruction currently in Decode (earlier than current PC because stages)
+   dff_16 PCDFF(.q(PC_instr), .err(), .d(PC), .clk(clk), .rst(rst));
+
+    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC_instr), .inB(16'h0002), .cIn(1'b0));
     assign ImmSel = LBI ? Imm : Writeback;
     assign WriteData = Link ? PcSum2 : ImmSel;      
+
+   
 
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
                      .ReadReg1(Rs), .ReadReg2(Rt),.WriteReg(WriteRegAddr), .WriteData(WriteData), 
