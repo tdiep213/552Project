@@ -18,9 +18,9 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
 
    
    wire[2:0] Rs, Rt;
-   reg branch; 
+   reg branch, jr_flag; 
    
-   wire jr_flag;
+   
    assign Rs = Instr[10:8];
    assign Rt = Instr[7:5];
 
