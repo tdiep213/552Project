@@ -9,8 +9,7 @@
     module fetch (
     // outputs
     Instr_C, 
-    PC,
-    PreCInc, 
+    PC, 
     RegWrite, 
     WriteRegAddr,
     MemEnable, 
@@ -32,7 +31,7 @@
     clk, 
     rst);
     // TODO: Your code here
-    output wire[15:0] Instr_C, PC, PreCInc; 
+    output wire[15:0] Instr_C, PC; 
     output wire RegWrite, MemEnable, 
                 MemWr, Val2Reg, ctrlErr, ALUSel, b_flag, j_flag;
 
@@ -56,10 +55,11 @@
    wire [1:0] ChkRegSel;
    reg [2:0] ChkRegAddr;
 
-    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .PreCInc(PreCInc), .Imm(HDU_Imm), .BrnchImm(BrnchAddr) , .Rs(HDU_Rs),.PcSel(PcSel),.RegJmp(RegJmp),
+    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr) , .Rs(HDU_Rs),.PcSel(PcSel),.RegJmp(RegJmp),
     .Halt(Halt), .PcStall(HazNOP), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                         .createdump(), .clk(clk), .rst(rst));
+
     always@* begin
       case(DestRegSel)
          2'b00: WriteRegAddr = Instr_C[10:8];   // Rs

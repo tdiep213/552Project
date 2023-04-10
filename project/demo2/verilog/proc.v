@@ -82,8 +82,7 @@ module proc (/*AUTOARG*/
     fetch F(
         // outputs
             .Instr_C(IF_Instr), 
-            .PC(), 
-            .PreCInc(IF_PC), 
+            .PC(IF_PC),  
             .RegWrite(RegWrite), 
             .WriteRegAddr(IF_WriteRegAddr),
             .MemEnable(MemEnable), 
