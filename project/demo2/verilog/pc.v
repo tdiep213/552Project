@@ -15,13 +15,15 @@ module pc(
     output reg[15:0] PcAddr; //Next Instruction 
     output wire[15:0]  PC;   // PC used on the outside
     
-    wire [15:0] Inc2, PcImm, RsImm, PcQ;
+    wire [15:0] Inc2, PcImm, RsImm, PcQ, Rs_prev;
     wire zero;
     assign zero = 0;
 
+    dff_16 RSDFF(.q(Rs_prev), .err(), .d(Rs), .clk(clk), .rst(rst));
+
     cla16b PcInc(.sum(Inc2), .cOut(), .inA(PcQ), .inB(16'h0002), .cIn(zero));
     cla16b PImm(.sum(PcImm), .cOut(), .inA(PcQ), .inB(BrnchImm), .cIn(zero));
-    cla16b RImm(.sum(RsImm), .cOut(), .inA(Rs), .inB(Imm), .cIn(zero));
+    cla16b RImm(.sum(RsImm), .cOut(), .inA(Rs_prev), .inB(Imm), .cIn(zero));
     
     assign PC = PcQ;
     dff_16 PcReg(.q(PcQ), .err(), .d(PcAddr), .clk(clk), .rst(rst));
