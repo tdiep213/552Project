@@ -224,19 +224,21 @@ module control(
                         RegJmp        = 1'b0;           // Do Not Jmp from Rs
                         j_flag         = 1'b1;
                         ImmSel[2:0]   = 3'b110;         // Do sign extend 11 bits.
-                        valid_n = 1'b0;
+                        
                         case(Instr[1]) // J-format
                             1'b0: begin // J displacement PC <- PC + 2 + D(sign ext.)
                                 LinkReg[1:0]= 2'b00;    // Do Not Link, Do Not LBI
                                 b_flag    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b0;        // Do Not write to register
                                 MemEnable= 1'b0;        // Do Not enable mem acces
+                                valid_n = 1'b0;
                             end
                             1'b1: begin // JAL displacement R7 <- PC + 2 and PC <- PC + 2 + D(sign ext.)
                                 LinkReg[1:0]= 2'b10;    // Do LINK, Do Not LBI
                                 b_flag    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b1;        // Do write to register
                                 MemEnable= 1'b0;        // Do enable mem access
+                                valid_n = 1'b1;
                             end
                             default: ctrlErr = 1'b1;  
                         endcase
@@ -246,19 +248,21 @@ module control(
                         j_flag         =1'b0;
                         RegJmp        = 1'b1;           // Do Jmp from Rs
                         ImmSel[2:0]   = 3'b101;         // Do sign extend 8 bits.
-                        valid_n = 1'b0;
+                        
                         case(Instr[1])
                             1'b0: begin // JR Rs, immediate PC <- Rs + I(sign ext.)
                                 LinkReg[1:0]= 2'b00;    // Do Not Link, Do Not LBI
                                 b_flag    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b0;        // Do Not write to register
                                 MemEnable= 1'b0;        // Do Not enable mem access
+                                valid_n = 1'b0;
                             end
                             1'b1: begin // JALR Rs, immediate R7 <- PC + 2 and PC <- Rs + I(sign ext.)
                                 LinkReg[1:0]= 2'b10;    // Do Link, Do Not LBI
                                 b_flag    = 1'b0;        // Do Not add Imm to PC + 2
                                 RegWrite = 1'b1;        // Do write to register
                                 MemEnable= 1'b0;        // Do enable mem access
+                                valid_n = 1'b1;
                             end
                             default: ctrlErr = 1'b1; 
                         endcase
