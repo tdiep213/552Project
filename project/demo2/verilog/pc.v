@@ -21,7 +21,7 @@ module pc(
 
     cla16b PcInc(.sum(Inc2), .cOut(), .inA(PcQ), .inB(16'h0002), .cIn(zero));
     cla16b PImm(.sum(PcImm), .cOut(), .inA(PcQ), .inB(BrnchImm), .cIn(zero));
-    cla16b RImm(.sum(RsImm), .cOut(), .inA(jmpPC), .inB(Imm), .cIn(zero));
+    cla16b RImm(.sum(RsImm), .cOut(), .inA(PC), .inB(Imm), .cIn(zero));
     
     assign PC = PcQ;
     dff_16 PcReg(.q(PcQ), .err(), .d(PcAddr), .clk(clk), .rst(rst));
