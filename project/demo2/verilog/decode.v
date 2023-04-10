@@ -24,15 +24,9 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
    
    always @* begin
       case(Instr[15:11])
-         5'b00110: begin
-            jl_flag = 1'b1;
-            read1RegSel = 3'b111;
-         end
+         5'b00110: jl_flag = 1'b1;
          5'b00111: jl_flag = 1'b1;
-         default begin
-            jl_flag = 1'b0;
-            read1RegSel = Rs;
-         end
+         default jl_flag = 1'b0;
       endcase
    end
    dff EX_JRDFF (.q(EX_JL),  .d(jl_flag), .clk(clk), .rst(rst));
@@ -41,6 +35,8 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
    assign Rs = Instr[10:8];
    assign Rt = Instr[7:5];
 
+
+   assign read1RegSel = (Instr[15:11] == 5'b00110 & (jl_flag | EX_JL)) ? 3'b111 : Rs;
 
     //Write Register Data logic
     wire [15:0] WriteData, PcSum2, ImmSel, PC_instr;
