@@ -10,7 +10,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
    output wire[15:0] Reg1Data, Reg2Data; 
    output wire PcSel;
 
-   input wire[15:0] Instr, Imm, PC;
+   input wire[15:0] Instr, Imm, PC, PCNOW;
    input wire[15:0] Writeback;
    input wire[2:0] WriteRegAddr;
    input wire LBI, Link, en, b_flag, j_flag, Halt;
@@ -29,7 +29,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
     wire [15:0] WriteData, PcSum2, ImmSel;
     wire Zflag, Sflag, branch_flag;
 
-    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(16'h0002), .cIn(1'b0));
+    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PCNOW), .inB(16'h0002), .cIn(1'b0));
     assign ImmSel = LBI ? Imm : Writeback;
     assign WriteData = Link ? PcSum2 : ImmSel;      
 
