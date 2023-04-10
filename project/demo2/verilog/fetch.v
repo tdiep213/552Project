@@ -77,7 +77,7 @@
 
     assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
     HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(/*HazDet_*/Instr), .valid_n(valid_n), .MemEnable(/*HDU_*/MemEnable), 
-               .Rd(ChkRegAddr), .Imm(/*HDU_*/Imm), .Reg1Data(HDU_Rs), .WB_Rs(WB_Rs), .clk(clk), .rst(rst));
+               .Rd(ChkRegAddr), .Imm(/*HDU_*/Imm), .Reg1Data(HDU_Rs), .clk(clk), .rst(rst));
     
     // This is the stuff that got things moving again, your crying dff was a good lead//
     assign Instr_B = HazNOP ? 16'h0800 : Instr;
