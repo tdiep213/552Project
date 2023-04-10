@@ -5,9 +5,9 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag, Halt,  WriteRegAddr, en, clk, rst );
+module decode (Reg1Data, Reg2Data, WriteData, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag, Halt,  WriteRegAddr, en, clk, rst );
    // TODO: Your code here
-   output wire[15:0] Reg1Data, Reg2Data; 
+   output wire[15:0] Reg1Data, Reg2Data, WriteData; 
    output wire PcSel;
 
    input wire[15:0] Instr, Imm, PC, PCNOW;
@@ -38,7 +38,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
    assign read1RegSel = (Instr[15:11] == 5'b00110 & (jl_flag | EX_JL)) ? 3'b111 : Rs;
 
     //Write Register Data logic
-    wire [15:0] WriteData, PcSum2, ImmSel, PC_instr;
+    wire [15:0] PcSum2, ImmSel, PC_instr;
     wire Zflag, Sflag, branch_flag;
 
    /* bad
