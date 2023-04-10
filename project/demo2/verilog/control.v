@@ -233,7 +233,6 @@ module control(
                                 MemEnable= 1'b0;        // Do Not enable mem acces
                             end
                             1'b1: begin // JAL displacement R7 <- PC + 2 and PC <- PC + 2 + D(sign ext.)
-                                j_flag = 1'b1;
                                 LinkReg[1:0]= 2'b10;    // Do LINK, Do Not LBI
                                 b_flag    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b1;        // Do write to register
@@ -256,7 +255,6 @@ module control(
                                 MemEnable= 1'b0;        // Do Not enable mem access
                             end
                             1'b1: begin // JALR Rs, immediate R7 <- PC + 2 and PC <- Rs + I(sign ext.)
-                                j_flag = 1'b1;
                                 LinkReg[1:0]= 2'b10;    // Do Link, Do Not LBI
                                 b_flag    = 1'b0;        // Do Not add Imm to PC + 2
                                 RegWrite = 1'b1;        // Do write to register
