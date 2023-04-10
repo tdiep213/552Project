@@ -14,7 +14,7 @@ module pc(
     input wire[15:0] Imm, Rs, BrnchImm;
     output reg[15:0] PcAddr; //Next Instruction 
     output wire[15:0]  PC;   // PC used on the outside
-    output wire[15:0] PreCInc
+    output wire[15:0] PreCInc;
     
     wire [15:0] Inc2, PcImm, RsImm, PcQ;
     wire zero;
