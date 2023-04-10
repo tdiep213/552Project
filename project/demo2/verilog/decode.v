@@ -45,7 +45,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
    // PC_instr is the PC value of the instruction currently in Decode (earlier than current PC because stages)
    //dff_16 PCDFF(.q(PC_instr), .err(), .d(PC), .clk(clk), .rst(rst));
 
-    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PCNOW), .inB(16'h0004), .cIn(1'b0));
+    cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PCNOW), .inB(16'h0002), .cIn(1'b0));
     assign ImmSel = LBI ? Imm : Writeback;
     assign WriteData = (Link | jl_flag | EX_JL) ? PcSum2 : ImmSel;      
 
