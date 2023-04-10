@@ -47,6 +47,7 @@
     input wire clk, rst;
 
     wire[15:0] PcAddr, Instr, HDU_Rs, HDU_Imm;
+    wire [15:0] EX_Rs, MEM_Rs, WB_Rs;
     wire[15:0] HazDet_Instr;
     wire[15:0] Instr_B;
     wire[1:0] DestRegSel;
@@ -90,7 +91,7 @@
     assign HDU_WrRegAddr = /*HazNOP_prev ?   3'b000 :*/ WriteRegAddr;
     assign HDU_Imm       = /*HazNOP_prev ? 16'h0000 :*/ Imm;
    //===============================================================//
-   wire [15:0] EX_Rs, MEM_Rs, WB_Rs;
+   
    dff_16 EX_RS(.q(EX_Rs), .err(), .d(Rs), .clk(clk), .rst(rst));
    dff_16 MEM_RS(.q(MEM_Rs), .err(), .d(EX_Rs), .clk(clk), .rst(rst));
    dff_16 WB_RS(.q(WB_Rs), .err(), .d(MEM_Rs), .clk(clk), .rst(rst));
