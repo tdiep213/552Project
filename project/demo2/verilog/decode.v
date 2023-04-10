@@ -18,7 +18,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
 
    
    wire[2:0] Rs, Rt;
-   reg branch, jump; 
+   reg branch; 
    
   
    assign Rs = Instr[10:8];
@@ -42,14 +42,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
     assign Zflag = &(Reg1Data == 16'h0000);
    
    assign branch_flag = ((Instr[15:13] == 3'b011) | b_flag) ? 1'b1 : 1'b0;
-   assign PcSel = (branch_flag & ~Halt) ? (branch| jump) : 1'b0; 
-
-   always @* begin
-      case(Instr[15:13)
-         3'b001: jump = 1'b1;
-         default: jump = 1'b0;
-      endcase
-   end
+   assign PcSel = (branch_flag & ~Halt) ? (branch | j_flag) : 1'b0; 
 
    always @* begin
       case(Instr[12:11])
