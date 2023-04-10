@@ -97,7 +97,7 @@ module proc (/*AUTOARG*/
             .Halt(Halt), 
         // inputs
             .Imm(IF_ImmExt), .BrnchAddr(ID_ImmExt), .RegJmp(RegJmp), 
-             .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst), .Rs(ID_Rs), .jmpPC(WB_Rs));
+             .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst), .Rs(ID_Rs), .jmpPC(WB_PC));
 
  
     /*---------------*/
