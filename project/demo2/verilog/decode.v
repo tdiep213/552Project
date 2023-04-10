@@ -17,8 +17,9 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
    input wire clk, rst;
 
    
-   wire[2:0] Rs, Rt, WrAddr, read1RegSel;
+   wire[2:0] Rs, Rt, WrAddr;
    reg branch, jl_flag;
+   reg [2:0] read1RegSel;
    wire EX_JL, MEM_JL, WB_JL; 
    
    always @* begin
