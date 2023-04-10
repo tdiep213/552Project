@@ -246,7 +246,7 @@ module control(
                         j_flag         =1'b0;
                         RegJmp        = 1'b1;           // Do Jmp from Rs
                         ImmSel[2:0]   = 3'b101;         // Do sign extend 8 bits.
-                        valid_n = 1'b1;
+                        valid_n = 1'b0;
                         case(Instr[1])
                             1'b0: begin // JR Rs, immediate PC <- Rs + I(sign ext.)
                                 LinkReg[1:0]= 2'b00;    // Do Not Link, Do Not LBI
