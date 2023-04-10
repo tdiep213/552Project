@@ -28,7 +28,7 @@ module pc(
     assign PC = PcQ;
     dff_16 PcReg(.q(PcQ), .err(), .d(PcAddr), .clk(clk), .rst(rst));
 
-    assign jalrImm = (RsAddr ~= 3'b111) ? RsImm : R7Imm;
+    assign jalrImm = (RsAddr != 3'b111) ? RsImm : R7Imm;
 
     always @* begin 
         casex({PcSel, RegJmp, Halt, SIIC})
