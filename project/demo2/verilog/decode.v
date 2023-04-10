@@ -26,9 +26,9 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
          default jr_flag = 1'b0;
       endcase
    end
-   dff JRDFF(.q(EX_JR), .d(jr_flag), .clk(clk), .rst(rst));
-   dff JRDFF(.q(MEM_JR), .d(EX_JR), .clk(clk), .rst(rst));
-   dff JRDFF(.q(WB_JR), .d(MEM_JR), .clk(clk), .rst(rst));
+   dff EX_JRDFF (.q(EX_JR),  .d(jr_flag), .clk(clk), .rst(rst));
+   dff MEM_JRDFF(.q(MEM_JR), .d(EX_JR),   .clk(clk), .rst(rst));
+   dff WB_JRDFF (.q(WB_JR),  .d(MEM_JR),  .clk(clk), .rst(rst));
    assign Rs = Instr[10:8];
    assign Rt = Instr[7:5];
 
