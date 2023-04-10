@@ -18,8 +18,14 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
 
    
    wire[2:0] Rs, Rt;
-   reg branch; 
+   reg branch, jr_flag; 
    
+   always @* begin
+      case(Instr[15:11])
+         5'b00110, 5'b00111: jr_flag = 1'b;
+         default jr_flag = 1'b0;
+      endcase
+   end
   
    assign Rs = Instr[10:8];
    assign Rt = Instr[7:5];
@@ -34,7 +40,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
 
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PC), .inB(16'h0002), .cIn(1'b0));
     assign ImmSel = LBI ? Imm : Writeback;
-    assign WriteData = Link ? PcSum2 : ImmSel;      
+    assign WriteData = (Link | jr_flag) ? PcSum2 : ImmSel;      
 
    
 
