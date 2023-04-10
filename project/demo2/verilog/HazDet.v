@@ -13,6 +13,14 @@ assign IF_Rs = Instr[10:8];
 assign IF_Rt = Instr[7:5];
 
 wire NOPchk;
+reg jr_flag;
+
+always @* begin
+    case(Instr[15:11])
+        5'b00101, 5'b00111: jr_flag = 1'b1;
+        default: jr_flag = 1'b0;
+    endcase
+end
 
 assign NOPchk = Instr[15:11] == 5'b00001;
 
@@ -93,7 +101,7 @@ assign MemHazDet =
 // & EX_valid_n
 // & MEM_valid_n
 // & WB_valid_n
-assign NOP = (RegHazDet | MemHazDet | prevJBNOP) & ~NOPchk ? 1'b1 : 1'b0;
+assign NOP = (RegHazDet | MemHazDet | prevJBNOP | jr_flag) & ~NOPchk ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet ) & ~NOPchk? 1'b1 : 1'b0;
 
 dff BrnchJmp(.q(prevJBNOP), .d((JBNOP & ~RegHazDet & ~MemHazDet)), .clk(clk), .rst(rst));
