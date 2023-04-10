@@ -5,9 +5,9 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (Reg1Data, Reg2Data, WriteData, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag, Halt,  WriteRegAddr, en, clk, rst );
+module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag, Halt,  WriteRegAddr, en, clk, rst );
    // TODO: Your code here
-   output wire[15:0] Reg1Data, Reg2Data, WriteData; 
+   output wire[15:0] Reg1Data, Reg2Data, JmpData; 
    output wire PcSel;
 
    input wire[15:0] Instr, Imm, PC, PCNOW;
@@ -29,6 +29,9 @@ module decode (Reg1Data, Reg2Data, WriteData, PcSel, Instr, Imm, Writeback, PC, 
          default jl_flag = 1'b0;
       endcase
    end
+   assign JmpData = (~jl_flag) ? JmpData : WriteData;
+   //dff_16 JMPDFF(.q(JmpData), .err(), .d(JmpData), .clk(clk), .rst(rst));
+
    dff EX_JRDFF (.q(EX_JL),  .d(jl_flag), .clk(clk), .rst(rst));
    dff MEM_JRDFF(.q(MEM_JL), .d(EX_JL),   .clk(clk), .rst(rst));
    dff WB_JRDFF (.q(WB_JL),  .d(MEM_JL),  .clk(clk), .rst(rst));
