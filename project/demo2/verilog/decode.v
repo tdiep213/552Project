@@ -17,7 +17,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
    input wire clk, rst;
 
    
-   wire[2:0] Rs, Rt;
+   wire[2:0] Rs, Rt, WrAddr;
    reg branch, jr_flag; 
    
    always @* begin
@@ -42,12 +42,12 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
     assign ImmSel = LBI ? Imm : Writeback;
     assign WriteData = (Link | jr_flag) ? PcSum2 : ImmSel;      
 
-   
+   assign WrAddr = jr_flag ? 3'b111 : WriteRegAddr;
 
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
                      .ReadReg1(Rs), .ReadReg2(Rt),.WriteReg(WriteRegAddr), .WriteData(WriteData), 
    //                 //Rs                    //Rd                 //Rt
-                     .en(en), .clk(clk), .rst(rst));
+                     .en(en | jr_flag), .clk(clk), .rst(rst));
     
     assign Sflag = Reg1Data[15];
     assign Zflag = &(Reg1Data == 16'h0000);
