@@ -243,20 +243,18 @@ module control(
                     end
 //--------------------------------------------------------//
                     1'b1: begin
-                        
+                        j_flag         =1'b0;
                         RegJmp        = 1'b1;           // Do Jmp from Rs
                         ImmSel[2:0]   = 3'b101;         // Do sign extend 8 bits.
                         valid_n = 1'b1;
                         case(Instr[1])
                             1'b0: begin // JR Rs, immediate PC <- Rs + I(sign ext.)
-                                j_flag         =1'b0;
                                 LinkReg[1:0]= 2'b00;    // Do Not Link, Do Not LBI
                                 b_flag    = 1'b1;        // Do add Imm to PC + 2
                                 RegWrite = 1'b0;        // Do Not write to register
                                 MemEnable= 1'b0;        // Do Not enable mem access
                             end
                             1'b1: begin // JALR Rs, immediate R7 <- PC + 2 and PC <- Rs + I(sign ext.)
-                                j_flag         =1'b1;
                                 LinkReg[1:0]= 2'b10;    // Do Link, Do Not LBI
                                 b_flag    = 1'b0;        // Do Not add Imm to PC + 2
                                 RegWrite = 1'b1;        // Do write to register
