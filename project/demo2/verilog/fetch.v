@@ -76,14 +76,15 @@
 
     assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
     HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(/*HazDet_*/Instr), .valid_n(valid_n), .MemEnable(/*HDU_*/MemEnable), 
-               .Rd(ChkRegAddr), .Imm(/*HDU_*/Imm), .Reg1Data(HDU_Rs), .clk(clk), .rst(rst));
+               .Rd(ChkRegAddr), .Imm(/*HDU_*/Imm), .Reg1Data(Rs_prev), .clk(clk), .rst(rst));
     
     // This is the stuff that got things moving again, your crying dff was a good lead//
     assign Instr_B = HazNOP ? 16'h0800 : Instr;
     assign PCStall_now = (HazNOP & PCStall);
     
-    dff crying(.q(PCStall_prev), .d(PCStall_now), .clk(clk), .rst(rst));
-    dff NOPDFF(.q(HazNOP_prev),  .d(HazNOP),      .clk(clk), .rst(rst));
+    dff crying  (.q(PCStall_prev),    .d(PCStall_now), .clk(clk), .rst(rst));
+    dff NOPDFF  (.q(HazNOP_prev),     .d(HazNOP),      .clk(clk), .rst(rst));
+    dff_16 RSDFF(.q(Rs_prev), .err(), .d(Rs),          .clk(clk), .rst(rst));
     assign HDU_Rs        = /*HazNOP_prev ? 16'h0000 :*/ Rs;
     assign HDU_MemEnable = /*HazNOP_prev ?     1'b0 :*/ MemEnable;
     assign HDU_WrRegAddr = /*HazNOP_prev ?   3'b000 :*/ WriteRegAddr;
