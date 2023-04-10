@@ -10,7 +10,7 @@
     // outputs
     Instr_C, 
     PC,
-    Inst_PC_inc, 
+    PreCInc, 
     RegWrite, 
     WriteRegAddr,
     MemEnable, 
