@@ -56,7 +56,7 @@
    wire [1:0] ChkRegSel;
    reg [2:0] ChkRegAddr;
 
-    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr), .Rs(Rs), .jmpPC(jmpPC), .PcSel(PcSel),.RegJmp(RegJmp),
+    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr), .RsAddr(Instr[10:8]), .Rs(Rs), .jmpPC(jmpPC), .PcSel(PcSel),.RegJmp(RegJmp),
     .Halt(Halt), .PcStall(HazNOP), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                         .createdump(), .clk(clk), .rst(rst));
