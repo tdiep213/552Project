@@ -20,8 +20,8 @@ module decode (Reg1Data, Reg2Data, WriteData, PcSel, Instr, Imm, Writeback, PC, 
    wire[2:0] Rs, Rt, WrAddr, read1RegSel;
    reg branch, jl_flag;
    wire EX_JL, MEM_JL, WB_JL; 
-   wire NOP_det;
-   assign NOP_det = (Instr[15:11] == 5'b00001) ? 1'b1 : 1'b0;
+   //wire NOP_det;
+   //assign NOP_det = (Instr[15:11] == 5'b00001) ? 1'b1 : 1'b0;
    always @* begin
       case(Instr[15:11])
          5'b00110: jl_flag = 1'b1;
@@ -57,7 +57,7 @@ module decode (Reg1Data, Reg2Data, WriteData, PcSel, Instr, Imm, Writeback, PC, 
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
                      .ReadReg1(read1RegSel), .ReadReg2(Rt),.WriteReg(WrAddr), .WriteData(WriteData), 
    //                 //Rs                    //Rd                 //Rt
-                     .en(~NOP_det & ((en & ~WB_JL) | jl_flag)), .clk(clk), .rst(rst));
+                     .en(& ((en & ~WB_JL & ~EX_JL & ~MEM_JL) | jl_flag), .clk(clk), .rst(rst));
    /* enable priorities: 
       jr_flag: write jump and link info ASAP
       en/~WB_JR: if the wb instr requires a write reg, do so, unless that wb instr was a jump and link
