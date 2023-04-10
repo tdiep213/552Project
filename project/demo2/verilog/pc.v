@@ -30,7 +30,7 @@ module pc(
     always @* begin 
         casex({PcSel, RegJmp, Halt, SIIC})
             4'b0000: PcAddr = PcStall ? PcQ : Inc2 ; //PC+2
-            4'b?100: PcAddr = RsImm;//JR JALR        
+            4'b?100: PcAddr = PcStall ? PcQ : RsImm;//JR JALR        
             4'b1000: PcAddr = PcImm;//J JAL Branch
             4'b???1: PcAddr = 2;    //Exception Handler
             default: PcAddr = PcQ; //Halt
