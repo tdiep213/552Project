@@ -17,7 +17,7 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, Writeback, PC, PC
    input wire clk, rst;
 
    
-   wire[2:0] Rs, Rt, WrAddr, read1RegSel;
+   wire[2:0] Rs, Rt, WrAddr, read1RegSel, WriteData;
    reg branch, jl_flag;
    wire EX_JL, MEM_JL, WB_JL; 
    //wire NOP_det;
