@@ -55,7 +55,7 @@
    wire [1:0] ChkRegSel;
    reg [2:0] ChkRegAddr;
 
-    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr) , .Rs(Rs),.PcSel(PcSel),.RegJmp(RegJmp),
+    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr) , .Rs(WB_Rs),.PcSel(PcSel),.RegJmp(RegJmp),
     .Halt(Halt), .PcStall(HazNOP), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                         .createdump(), .clk(clk), .rst(rst));
@@ -76,7 +76,7 @@
 
     assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
     HazDet HDU(.NOP(HazNOP), .PcStall(PCStall), .Instr(/*HazDet_*/Instr), .valid_n(valid_n), .MemEnable(/*HDU_*/MemEnable), 
-               .Rd(ChkRegAddr), .Imm(/*HDU_*/Imm), .Reg1Data(HDU_Rs), .clk(clk), .rst(rst));
+               .Rd(ChkRegAddr), .Imm(/*HDU_*/Imm), .Reg1Data(HDU_Rs), .WB_Rs(WB_Rs), .clk(clk), .rst(rst));
     
     // This is the stuff that got things moving again, your crying dff was a good lead//
     assign Instr_B = HazNOP ? 16'h0800 : Instr;
@@ -84,11 +84,16 @@
     
     dff crying(.q(PCStall_prev), .d(PCStall_now), .clk(clk), .rst(rst));
     dff NOPDFF(.q(HazNOP_prev),  .d(HazNOP),      .clk(clk), .rst(rst));
+    
     assign HDU_Rs        = /*HazNOP_prev ? 16'h0000 :*/ Rs;
     assign HDU_MemEnable = /*HazNOP_prev ?     1'b0 :*/ MemEnable;
     assign HDU_WrRegAddr = /*HazNOP_prev ?   3'b000 :*/ WriteRegAddr;
     assign HDU_Imm       = /*HazNOP_prev ? 16'h0000 :*/ Imm;
    //===============================================================//
+   wire [15:0] EX_Rs, MEM_Rs, WB_Rs;
+   dff_16 EX_RS(.q(EX_Rs), .err(), .d(Rs), .clk(clk), .rst(rst));
+   dff_16 MEM_RS(.q(MEM_Rs), .err(), .d(EX_Rs), .clk(clk), .rst(rst));
+   dff_16 WB_RS(.q(WB_Rs), .err(), .d(MEM_Rs), .clk(clk), .rst(rst));
 
 
     control CNTRL(
