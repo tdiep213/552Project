@@ -89,17 +89,12 @@ assign MemHazDet =
  ((MEM_MemAddr == MemAddr)  ) |
  ((WB_MemAddr  == MemAddr)  ));
 
-<<<<<<< HEAD
-assign NOP = (RegHazDet | MemHazDet | prevJBNOP) ? 1'b1 : 1'b0;
-assign PcStall = (RegHazDet | MemHazDet) ? 1'b1 : 1'b0;
-=======
 // & ID_valid_n
 // & EX_valid_n
 // & MEM_valid_n
 // & WB_valid_n
 assign NOP = (RegHazDet | MemHazDet | prevJBNOP) & ~NOPchk ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet ) & ~NOPchk? 1'b1 : 1'b0;
->>>>>>> e5885fca91b290ea9e960082a331726f2cc6425f
 
 dff BrnchJmp(.q(prevJBNOP), .d((JBNOP & ~RegHazDet & ~MemHazDet)), .clk(clk), .rst(rst));
 
