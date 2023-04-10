@@ -46,7 +46,7 @@
 
     input wire clk, rst;
 
-    wire[15:0] PcAddr, Instr, HDU_Rs, HDU_Imm, WriteData;
+    wire[15:0] PcAddr, Instr, HDU_Rs, HDU_Imm;
     wire [15:0] EX_Rs, MEM_Rs, WB_Rs;
     wire[15:0] HazDet_Instr;
     wire[15:0] Instr_B;
@@ -56,7 +56,7 @@
    wire [1:0] ChkRegSel;
    reg [2:0] ChkRegAddr;
 
-    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr), .Rs(Rs), .jmpPC(WriteData), .PcSel(PcSel),.RegJmp(RegJmp),
+    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr), .Rs(Rs), .jmpPC(jmpPC), .PcSel(PcSel),.RegJmp(RegJmp),
     .Halt(Halt), .PcStall(HazNOP), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                         .createdump(), .clk(clk), .rst(rst));
