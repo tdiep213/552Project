@@ -17,16 +17,11 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
    input wire clk, rst;
 
    
-   wire[2:0] Rt;
+   wire[2:0] Rs, Rt;
    reg branch; 
-   reg [2:0]Rs;
    
-   always @* begin
-      casex(Instr[15:11])
-         5'b0011?: Rs = 3'b111;
-         default: Rs = Instr[10:8];
-      endcase
-   end
+  
+   assign Rs = Instr[10:8];
    assign Rt = Instr[7:5];
 
 
