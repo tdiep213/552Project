@@ -41,16 +41,18 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
     wire [15:0] WriteData, PcSum2, ImmSel, PC_instr;
     wire Zflag, Sflag, branch_flag;
 
-   // bad
+   /* bad
    // PC_instr is the PC value of the instruction currently in Decode (earlier than current PC because stages)
    //dff_16 PCDFF(.q(PC_instr), .err(), .d(PC), .clk(clk), .rst(rst));
-
+   */
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PCNOW), .inB(16'h0002), .cIn(1'b0));
     assign ImmSel = LBI ? Imm : Writeback;
     assign WriteData = (Link | jl_flag | EX_JL) ? PcSum2 : ImmSel;      
 
    assign WrAddr = jl_flag ? 3'b111 : WriteRegAddr;
-
+   // popssibly add another output to decode that contains WriteData,
+   // so we can forward that to fetch and use the data one stage earlier if we need to (like for JALR and JR)
+   // by passing it into the jmpPC port on fetch!!
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
                      .ReadReg1(read1RegSel), .ReadReg2(Rt),.WriteReg(WrAddr), .WriteData(WriteData), 
    //                 //Rs                    //Rd                 //Rt
