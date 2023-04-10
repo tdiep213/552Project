@@ -39,7 +39,8 @@ dff REG_ID_EX [3:0](.q({EX_Rd, EX_valid_n}), .d({ID_Rd, ID_valid_n}), .clk(clk),
 dff REG_EX_MEM[3:0](.q({MEM_Rd, MEM_valid_n}), .d({EX_Rd, EX_valid_n}), .clk(clk), .rst(rst));
 dff REG_MEM_WB[3:0](.q({WB_Rd, WB_valid_n}), .d({MEM_Rd, MEM_valid_n}), .clk(clk), .rst(rst));
 
-assign RegHazDet = 
+assign RegHazDet =
+
     ((ID_Rd == IF_Rs) & ID_valid_n) |
     ((EX_Rd == IF_Rs) & EX_valid_n) |
     ((MEM_Rd== IF_Rs) & MEM_valid_n) |
@@ -73,18 +74,22 @@ dff En_MEM_WB(.q(WB_MemEnable),  .d(MEM_MemEnable), .clk(clk), .rst(rst));
 // compare addresses in each stage to new addrs to determine NOP
 assign MemHazDet = 
 // If Mem is being accessed in this instruction, and mem was accessed in one of these previous instructions
-((MemEnable == 1 ) &
- (ID_MemEnable  == MemEnable) |
- (EX_MemEnable  == MemEnable) |
- (MEM_MemEnable == MemEnable) |
- (WB_MemEnable  == MemEnable))
+((MemEnable == 1'b1 ) &(
+ (ID_MemEnable  == 1'b1) |
+ (EX_MemEnable  == 1'b1) |
+ (MEM_MemEnable == 1'b1) |
+ (WB_MemEnable  == 1'b1)))
 &
 // AND the Memory accessed is the same memory accessed before
-(((ID_MemAddr  == MemAddr)  & ID_valid_n)  |
- ((EX_MemAddr  == MemAddr)  & EX_valid_n)  |
- ((MEM_MemAddr == MemAddr)  & MEM_valid_n) |
- ((WB_MemAddr  == MemAddr)  & WB_valid_n));
+(((ID_MemAddr  == MemAddr)  )  |
+ ((EX_MemAddr  == MemAddr)  )  |
+ ((MEM_MemAddr == MemAddr)  ) |
+ ((WB_MemAddr  == MemAddr)  ));
 
+// & ID_valid_n
+// & EX_valid_n
+// & MEM_valid_n
+// & WB_valid_n
 assign NOP = (RegHazDet | MemHazDet | prevJBNOP) ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet ) ? 1'b1 : 1'b0;
 
