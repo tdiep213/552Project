@@ -5,13 +5,13 @@ module pc(
     PC,
     //Inputs
     Imm,BrnchImm,
-    Rs,
+    Rs, jmpPC,
     PcSel,RegJmp,Halt,SIIC, PcStall,//Control Signals
     clk, rst
 );
     input wire PcSel, RegJmp, Halt, SIIC, PcStall;
     input wire clk, rst;
-    input wire[15:0] Imm, Rs, BrnchImm;
+    input wire[15:0] Imm, Rs, BrnchImm, jmpPC;
     output reg[15:0] PcAddr; //Next Instruction 
     output wire[15:0]  PC;   // PC used on the outside
     
@@ -21,7 +21,7 @@ module pc(
 
     cla16b PcInc(.sum(Inc2), .cOut(), .inA(PcQ), .inB(16'h0002), .cIn(zero));
     cla16b PImm(.sum(PcImm), .cOut(), .inA(PcQ), .inB(BrnchImm), .cIn(zero));
-    cla16b RImm(.sum(RsImm), .cOut(), .inA(Rs), .inB(Imm), .cIn(zero));
+    cla16b RImm(.sum(RsImm), .cOut(), .inA(jmpPC), .inB(Imm), .cIn(zero));
     
     assign PC = PcQ;
     dff_16 PcReg(.q(PcQ), .err(), .d(PcAddr), .clk(clk), .rst(rst));

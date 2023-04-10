@@ -25,7 +25,7 @@
     // inputs
     BrnchAddr,
     Imm, 
-    Rs,     RegJmp, 
+    Rs,     RegJmp, jmpPC,
     SIIC,
     PcSel,
     clk, 
@@ -40,7 +40,7 @@
     output wire [2:0] ImmSel;
     output wire RegJmp, Halt, SIIC;
 
-    input wire[15:0] Imm, Rs;
+    input wire[15:0] Imm, Rs, jmpPC;
     input wire[15:0] BrnchAddr;
     input wire PcSel;
 
@@ -56,7 +56,7 @@
    wire [1:0] ChkRegSel;
    reg [2:0] ChkRegAddr;
 
-    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr) , .Rs(EX_Rs),.PcSel(PcSel),.RegJmp(RegJmp),
+    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(BrnchAddr), .Rs(Rs), .jmpPC(jmpPC), .PcSel(PcSel),.RegJmp(RegJmp),
     .Halt(Halt), .PcStall(HazNOP), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                         .createdump(), .clk(clk), .rst(rst));

@@ -123,7 +123,7 @@ module control(
             end   
             5'b10011: begin // STU Rd, Rs, immediate Mem[Rs + I(sign ext.)] <- Rd and //  Rs <- Rs + I(sign ext.)
                 SIIC            = 1'b0;
-                j_flag  = 1'b0;
+                j_flag          = 1'b0;
                 PcSel           = 1'b0;    // Do Not add Imm to PC + 2
                 RegJmp          = 1'b0;    // Do Not Jmp from Rs
                 Val2Reg         = 1'b0;    // Do transmit ALU output
