@@ -108,7 +108,7 @@ module proc (/*AUTOARG*/
     if_id IF_ID_PIPE(
         /*-----PIPELINE OUT-----*/
         .InstrOut(ID_Instr), .ImmExtOut(ID_ImmExt), .PcOut(ID_PC),              //Data out
-        .LinkRegOut(ID_LinkReg), .WriteRegAddrOut(ID_WriteRegAddr), .b_flagOut(ID_b_flag),  .j_flagOut(ID_j_flag),               //Control out (Decode)
+        .LinkRegOut(ID_LinkReg), .WriteRegAddrOut(ID_WriteRegAddr), .b_flagOut(ID_b_flag),  .j_flagOut(/*ID_j_flag*/),               //Control out (Decode)
         .ALUSelOut(ID_ALUSel),                                                  //Control out (Execute)
         .MemEnableOut(ID_MemEnable), .MemWrOut(ID_MemWr), .HaltOut(ID_Halt), //Control out (Memory)
         .Val2RegOut(ID_Val2Reg), .RegWriteOut(ID_RegWrite),                     //Control out (Writeback)
