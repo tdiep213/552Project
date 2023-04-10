@@ -3,6 +3,7 @@ module pc(
     //Outputs
     PcAddr,
     PC,
+    PreCInc,
     //Inputs
     Imm,BrnchImm,
     Rs,
