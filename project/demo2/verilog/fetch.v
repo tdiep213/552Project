@@ -108,7 +108,7 @@
     .ctrlErr(ctrlErr),
     .SIIC(SIIC),
     .b_flag(b_flag),
-    .valid_n(),
+    .valid_n(valid_n),
     .j_flag(j_flag),   
     //Input(s)
     .Instr(Instr_B[15:11]));
