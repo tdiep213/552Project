@@ -30,7 +30,7 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, Writeback, PC, PC
          default jl_flag = 1'b0;
       endcase
    end
-   assign JmpData = (~jl_flag) ? JmpData : WriteData;
+   assign JmpData = (jl_flag) ? WriteData : JmpData;
    //dff_16 JMPDFF(.q(JmpData), .err(), .d(JmpData), .clk(clk), .rst(rst));
 
    dff EX_JRDFF (.q(EX_JL),  .d(jl_flag), .clk(clk), .rst(rst));
