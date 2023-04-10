@@ -12,6 +12,9 @@ wire[2:0] IF_Rs, IF_Rt;
 assign IF_Rs = Instr[10:8];
 assign IF_Rt = Instr[7:5];
 
+wire NOPchk;
+
+assign NOPchk = Instr[15:11] == 5'b00001;
 
 /*------Branch/Jump NOP-----*/
 reg JBNOP;
@@ -39,7 +42,8 @@ dff REG_ID_EX [3:0](.q({EX_Rd, EX_valid_n}), .d({ID_Rd, ID_valid_n}), .clk(clk),
 dff REG_EX_MEM[3:0](.q({MEM_Rd, MEM_valid_n}), .d({EX_Rd, EX_valid_n}), .clk(clk), .rst(rst));
 dff REG_MEM_WB[3:0](.q({WB_Rd, WB_valid_n}), .d({MEM_Rd, MEM_valid_n}), .clk(clk), .rst(rst));
 
-assign RegHazDet = 
+assign RegHazDet =
+
     ((ID_Rd == IF_Rs) & ID_valid_n) |
     ((EX_Rd == IF_Rs) & EX_valid_n) |
     ((MEM_Rd== IF_Rs) & MEM_valid_n) |
@@ -73,21 +77,30 @@ dff En_MEM_WB(.q(WB_MemEnable),  .d(MEM_MemEnable), .clk(clk), .rst(rst));
 // compare addresses in each stage to new addrs to determine NOP
 assign MemHazDet = 
 // If Mem is being accessed in this instruction, and mem was accessed in one of these previous instructions
-((MemEnable == 1 ) &
- (ID_MemEnable  == MemEnable) |
- (EX_MemEnable  == MemEnable) |
- (MEM_MemEnable == MemEnable) |
- (WB_MemEnable  == MemEnable))
+((MemEnable == 1'b1 ) &(
+ (ID_MemEnable  == 1'b1) |
+ (EX_MemEnable  == 1'b1) |
+ (MEM_MemEnable == 1'b1) |
+ (WB_MemEnable  == 1'b1)))
 &
 // AND the Memory accessed is the same memory accessed before
-(((ID_MemAddr  == MemAddr)  & ID_valid_n)  |
- ((EX_MemAddr  == MemAddr)  & EX_valid_n)  |
- ((MEM_MemAddr == MemAddr)  & MEM_valid_n) |
- ((WB_MemAddr  == MemAddr)  & WB_valid_n));
+(((ID_MemAddr  == MemAddr)  )  |
+ ((EX_MemAddr  == MemAddr)  )  |
+ ((MEM_MemAddr == MemAddr)  ) |
+ ((WB_MemAddr  == MemAddr)  ));
 
+<<<<<<< HEAD
 assign NOP = (RegHazDet | MemHazDet | prevJBNOP) ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet) ? 1'b1 : 1'b0;
+=======
+// & ID_valid_n
+// & EX_valid_n
+// & MEM_valid_n
+// & WB_valid_n
+assign NOP = (RegHazDet | MemHazDet | prevJBNOP) & ~NOPchk ? 1'b1 : 1'b0;
+assign PcStall = (RegHazDet | MemHazDet ) & ~NOPchk? 1'b1 : 1'b0;
+>>>>>>> e5885fca91b290ea9e960082a331726f2cc6425f
 
-dff BrnchJmp(.q(prevJBNOP), .d(JBNOP), .clk(clk), .rst(rst));
+dff BrnchJmp(.q(prevJBNOP), .d((JBNOP & ~RegHazDet & ~MemHazDet)), .clk(clk), .rst(rst));
 
 endmodule

@@ -42,7 +42,7 @@ module control(
                   MemWr             = 1'b0;    // Do Not write to memory
                   MemEnable         = 1'b0;    // Do Not enable mem access
                   SIIC              = 1'b0;
-                  b_flag            = 1'b1;
+                  b_flag            = 1'b0;
                   valid_n = 1'b0;
                 case(Instr[1:0])
                     2'b00: begin
@@ -134,7 +134,7 @@ module control(
                 MemWr           = 1'b1;    // Do write to memory
                 MemEnable       = 1'b1;    // Do enable mem access
                 b_flag            = 1'b0;
-                valid_n = 1'b0;
+                valid_n = 1'b1;
             end
 //========================================================//
 
@@ -173,7 +173,7 @@ module control(
                 RegWrite        = 1'b0;        // Do Not write to register
                 MemWr           = 1'b0;        // Do Not write to memory
                 MemEnable       = 1'b0;        // Do Not enable mem access
-                b_flag            = 1'b1;
+                b_flag            = 1'b0;
                 valid_n = 1'b1;
             end
             5'b11000, 5'b10010: begin // LBI and SLBI
@@ -211,12 +211,13 @@ module control(
                 ALUcntrl[4:0]   = Instr[4:0];    // Pass ADDI Opcode
                 MemWr           = 1'b0;        // Do Not write to memory
                 // b_flag            = 1'b0;
-                valid_n = 1'b1;
+                
                 case(Instr[0])
 //---------------------- J Format ------------------------//
                     1'b0:  begin 
                         RegJmp        = 1'b0;           // Do Not Jmp from Rs
                         ImmSel[2:0]   = 3'b110;         // Do sign extend 11 bits.
+                        valid_n = 1'b0;
                         case(Instr[1]) // J-format
                             1'b0: begin // J displacement PC <- PC + 2 + D(sign ext.)
                                 LinkReg[1:0]= 2'b00;    // Do Not Link, Do Not LBI
@@ -237,6 +238,7 @@ module control(
                     1'b1: begin
                         RegJmp        = 1'b1;           // Do Jmp from Rs
                         ImmSel[2:0]   = 3'b101;         // Do sign extend 8 bits.
+                        valid_n = 1'b1;
                         case(Instr[1])
                             1'b0: begin // JR Rs, immediate PC <- Rs + I(sign ext.)
                                 LinkReg[1:0]= 2'b00;    // Do Not Link, Do Not LBI
