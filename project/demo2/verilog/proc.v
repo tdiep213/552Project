@@ -131,7 +131,7 @@ module proc (/*AUTOARG*/
 
 
     decode D( .PcSel(ID_PcSel), .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .Instr(ID_Instr), .Imm(WB_ImmExt), .Writeback(Writeback),
-                .PC(WB_PC), .PCNOW(IF_PC), .LBI(WB_LinkReg[0]), .Link(LinkReg[1]), .b_flag(ID_b_flag), .j_flag(ID_j_flag),
+                .PC(WB_PC), .PCNOW(IF_PC), .LBI(WB_LinkReg[0]), .Link(ID_LinkReg[1]), .b_flag(ID_b_flag), .j_flag(ID_j_flag),
                 .Halt(Halt), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .clk(clk), .rst(rst) );
     /*---------------*/
 
