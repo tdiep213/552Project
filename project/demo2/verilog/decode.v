@@ -20,8 +20,12 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
    wire[2:0] Rs, Rt;
    reg branch; 
    
-  
-   assign Rs = Instr[10:8];
+   always @* begin
+      case(Instr[15:11])
+         5'b0011?: Rs = 3'b111;
+         default: Rs = Insr[10:8];
+      endcase
+   end
    assign Rt = Instr[7:5];
 
 
