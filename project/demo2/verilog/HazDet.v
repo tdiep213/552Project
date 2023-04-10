@@ -12,6 +12,9 @@ wire[2:0] IF_Rs, IF_Rt;
 assign IF_Rs = Instr[10:8];
 assign IF_Rt = Instr[7:5];
 
+wire NOPchk;
+
+assign NOPchk = Instr[15:11] == 5'b00001;
 
 /*------Branch/Jump NOP-----*/
 reg JBNOP;
@@ -90,8 +93,8 @@ assign MemHazDet =
 // & EX_valid_n
 // & MEM_valid_n
 // & WB_valid_n
-assign NOP = (RegHazDet | MemHazDet | prevJBNOP) ? 1'b1 : 1'b0;
-assign PcStall = (RegHazDet | MemHazDet ) ? 1'b1 : 1'b0;
+assign NOP = (RegHazDet | MemHazDet | prevJBNOP) & ~NOPchk ? 1'b1 : 1'b0;
+assign PcStall = (RegHazDet | MemHazDet ) & ~NOPchk? 1'b1 : 1'b0;
 
 dff BrnchJmp(.q(prevJBNOP), .d(JBNOP), .clk(clk), .rst(rst));
 

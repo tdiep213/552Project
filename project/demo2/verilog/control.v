@@ -42,7 +42,7 @@ module control(
                   MemWr             = 1'b0;    // Do Not write to memory
                   MemEnable         = 1'b0;    // Do Not enable mem access
                   SIIC              = 1'b0;
-                  b_flag            = 1'b1;
+                  b_flag            = 1'b0;
                   valid_n = 1'b0;
                 case(Instr[1:0])
                     2'b00: begin
@@ -173,7 +173,7 @@ module control(
                 RegWrite        = 1'b0;        // Do Not write to register
                 MemWr           = 1'b0;        // Do Not write to memory
                 MemEnable       = 1'b0;        // Do Not enable mem access
-                b_flag            = 1'b1;
+                b_flag            = 1'b0;
                 valid_n = 1'b1;
             end
             5'b11000, 5'b10010: begin // LBI and SLBI
