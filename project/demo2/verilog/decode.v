@@ -18,19 +18,19 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
 
    
    wire[2:0] Rs, Rt, WrAddr;
-   reg branch, jr_flag;
+   reg branch, jl_flag;
    wire EX_JR, MEM_JR, WB_JR; 
    
    always @* begin
       case(Instr[15:11])
-         5'b00110: jr_flag = 1'b1;
-         5'b00111: jr_flag = 1'b1;
-         default jr_flag = 1'b0;
+         5'b00110: jl_flag = 1'b1;
+         5'b00111: jl_flag = 1'b1;
+         default jl_flag = 1'b0;
       endcase
    end
-   dff EX_JRDFF (.q(EX_JR),  .d(jr_flag), .clk(clk), .rst(rst));
-   dff MEM_JRDFF(.q(MEM_JR), .d(EX_JR),   .clk(clk), .rst(rst));
-   dff WB_JRDFF (.q(WB_JR),  .d(MEM_JR),  .clk(clk), .rst(rst));
+   dff EX_JRDFF (.q(EX_JL),  .d(jl_flag), .clk(clk), .rst(rst));
+   dff MEM_JRDFF(.q(MEM_JL), .d(EX_JL),   .clk(clk), .rst(rst));
+   dff WB_JRDFF (.q(WB_JL),  .d(MEM_JL),  .clk(clk), .rst(rst));
    assign Rs = Instr[10:8];
    assign Rt = Instr[7:5];
 
@@ -45,14 +45,14 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
 
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PCNOW), .inB(16'h0002), .cIn(1'b0));
     assign ImmSel = LBI ? Imm : Writeback;
-    assign WriteData = (Link | jr_flag) ? PcSum2 : ImmSel;      
+    assign WriteData = (Link | jl_flag) ? PcSum2 : ImmSel;      
 
-   assign WrAddr = jr_flag ? 3'b111 : WriteRegAddr;
+   assign WrAddr = jl_flag ? 3'b111 : WriteRegAddr;
 
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
                      .ReadReg1(Rs), .ReadReg2(Rt),.WriteReg(WrAddr), .WriteData(WriteData), 
    //                 //Rs                    //Rd                 //Rt
-                     .en((en | ~WB_JR) | jr_flag), .clk(clk), .rst(rst));
+                     .en((en & ~WB_JL) | jl_flag), .clk(clk), .rst(rst));
    /* enable priorities: 
       jr_flag: write jump and link info ASAP
       en/~WB_JR: if the wb instr requires a write reg, do so, unless that wb instr was a jump and link
