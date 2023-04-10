@@ -13,7 +13,8 @@ module pc(
     input wire clk, rst;
     input wire[15:0] Imm, Rs, BrnchImm;
     output reg[15:0] PcAddr; //Next Instruction 
-    output wire[15:0]  PC;     //Previous Instruction + 2
+    output wire[15:0]  PC;   // PC used on the outside
+    output wire[15:0] PreCInc
     
     wire [15:0] Inc2, PcImm, RsImm, PcQ;
     wire zero;
@@ -24,6 +25,7 @@ module pc(
     cla16b RImm(.sum(RsImm), .cOut(), .inA(Rs), .inB(Imm), .cIn(zero));
     
     assign PC = PcQ;
+    assign PreCInc = Inc2;
     dff_16 PcReg(.q(PcQ), .err(), .d(PcAddr), .clk(clk), .rst(rst));
 
 
