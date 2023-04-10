@@ -62,11 +62,11 @@
 
     always@* begin
       case(DestRegSel)
-         2'b00: WriteRegAddr = Instr_C[10:8];   // Rs
-         2'b01: WriteRegAddr = Instr_C[4:2];    // Rd-R
+         2'b00: WriteRegAddr = Instr[10:8];   // Rs
+         2'b01: WriteRegAddr = Instr[4:2];    // Rd-R
          2'b10: WriteRegAddr = 3'b111;           // R7
-         2'b11: WriteRegAddr = Instr_C[7:5];    // Rd-I
-         default: WriteRegAddr = Instr_C[4:2];
+         2'b11: WriteRegAddr = Instr[7:5];    // Rd-I
+         default: WriteRegAddr = Instr[4:2];
       endcase
     end
 
