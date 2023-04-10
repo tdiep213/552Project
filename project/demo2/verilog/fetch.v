@@ -50,12 +50,12 @@
     wire[15:0] HazDet_Instr;
     wire[15:0] Instr_B;
     wire[1:0] DestRegSel;
-    wire HazNOP, PCStall, valid_n, PCStall_prev, PCStall_now, HazNOP_prev;
+    wire HazNOP, PCStall, valid_n, PCStall_prev, PCStall_now, HazNOP_prev, HDU_BrnchAddr;
 
    wire [1:0] ChkRegSel;
    reg [2:0] ChkRegAddr;
 
-    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(Imm), .BrnchImm(BrnchAddr) , .Rs(HDU_Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall_now), .SIIC(SIIC), .clk(clk), .rst(rst));
+    pc ProgCnt(.PcAddr(PcAddr),.PC(PC), .Imm(HDU_Imm), .BrnchImm(HDU_BrnchAddr) , .Rs(HDU_Rs),.PcSel(PcSel),.RegJmp(RegJmp),.Halt(Halt|PCStall_now), .SIIC(SIIC), .clk(clk), .rst(rst));
     memory2c InstrMem(.data_out(Instr), .data_in(), .addr(PC), .enable(1'b1), .wr(1'b0), 
                         .createdump(), .clk(clk), .rst(rst));
 
@@ -87,6 +87,7 @@
     assign HDU_MemEnable = HazNOP_prev ?     1'b0 : MemEnable;
     assign HDU_WrRegAddr = HazNOP_prev ?   3'b000 : WriteRegAddr;
     assign HDU_Imm       = HazNOP_prev ? 16'h0000 : Imm;
+    assign HDU_BrnchAddr = HazNOP_prev ? 16'h0000 : BrnchAddr;
    //===============================================================//
 
 
