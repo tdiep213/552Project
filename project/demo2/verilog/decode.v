@@ -20,7 +20,7 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, Writeback, PC, PC
    wire[2:0] Rs, Rt, WrAddr, read1RegSel;
    reg branch, jl_flag;
    wire EX_JL, MEM_JL, WB_JL; 
-   wire [15:0] PcSum2, ImmSel, PC_instr, WriteData;
+   wire [15:0] PcSum2, ImmSel, PC_instr, WriteData, JmpDataIn;
    //wire NOP_det;
    //assign NOP_det = (Instr[15:11] == 5'b00001) ? 1'b1 : 1'b0;
    always @* begin
@@ -30,8 +30,8 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, Writeback, PC, PC
          default jl_flag = 1'b0;
       endcase
    end
-   assign JmpData = (jl_flag) ? WriteData : JmpData;
-   //dff_16 JMPDFF(.q(JmpData), .err(), .d(JmpData), .clk(clk), .rst(rst));
+   assign JmpDataIn = (~jl_flag) ? JmpData : WriteData;
+   dff_16 JMPDFF(.q(JmpData), .err(), .d(JmpDataIn), .clk(clk), .rst(rst));
 
    dff EX_JRDFF (.q(EX_JL),  .d(jl_flag), .clk(clk), .rst(rst));
    dff MEM_JRDFF(.q(MEM_JL), .d(EX_JL),   .clk(clk), .rst(rst));
