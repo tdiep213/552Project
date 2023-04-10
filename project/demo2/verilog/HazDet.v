@@ -84,18 +84,15 @@ assign MemHazDet =
  (WB_MemEnable  == 1'b1)))
 &
 // AND the Memory accessed is the same memory accessed before
-(((ID_MemAddr  == MemAddr)  )  |
- ((EX_MemAddr  == MemAddr)  )  |
- ((MEM_MemAddr == MemAddr)  ) |
- ((WB_MemAddr  == MemAddr)  ));
 
-// & ID_valid_n
-// & EX_valid_n
-// & MEM_valid_n
-// & WB_valid_n
-assign NOP = (RegHazDet | MemHazDet | prevJBNOP) & ~NOPchk ? 1'b1 : 1'b0;
-assign PcStall = (RegHazDet | MemHazDet ) & ~NOPchk? 1'b1 : 1'b0;
+(((ID_MemAddr  == MemAddr)  & ID_valid_n)  |
+ ((EX_MemAddr  == MemAddr)  & EX_valid_n)  |
+ ((MEM_MemAddr == MemAddr)  & MEM_valid_n) |
+ ((WB_MemAddr  == MemAddr)  & WB_valid_n));
 
-dff BrnchJmp(.q(prevJBNOP), .d((JBNOP & ~RegHazDet & ~MemHazDet)), .clk(clk), .rst(rst));
+assign NOP = (RegHazDet | MemHazDet | prevJBNOP) ? 1'b1 : 1'b0;
+assign PcStall = (RegHazDet | MemHazDet) ? 1'b1 : 1'b0;
+
+dff BrnchJmp(.q(prevJBNOP), .d(JBNOP), .clk(clk), .rst(rst));
 
 endmodule

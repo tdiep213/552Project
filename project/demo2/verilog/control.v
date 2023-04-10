@@ -208,7 +208,7 @@ module control(
                 ALUSel          = 1'b1;        // Sometimes Care // Do use the Immediate value in ALU
                 Halt            = 1'b0;        // Do Not halt
                 DestRegSel[1:0] = 2'b10;       // Do use R7
-                ALUcntrl[4:0]   = 5'b01000;    // Pass ADDI Opcode
+                ALUcntrl[4:0]   = Instr[4:0];    // Pass ADDI Opcode
                 MemWr           = 1'b0;        // Do Not write to memory
                 // b_flag            = 1'b0;
                 
