@@ -45,7 +45,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
    assign WrAddr = jr_flag ? 3'b111 : WriteRegAddr;
 
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
-                     .ReadReg1(Rs), .ReadReg2(Rt),.WriteReg(WriteRegAddr), .WriteData(WriteData), 
+                     .ReadReg1(Rs), .ReadReg2(Rt),.WriteReg(WrAddr), .WriteData(WriteData), 
    //                 //Rs                    //Rd                 //Rt
                      .en(en | jr_flag), .clk(clk), .rst(rst));
     
