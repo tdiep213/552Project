@@ -247,7 +247,7 @@ module control(
                                 MemEnable= 1'b0;        // Do Not enable mem access
                             end
                             1'b1: begin // JALR Rs, immediate R7 <- PC + 2 and PC <- Rs + I(sign ext.)
-                                LinkReg[1:0]= 2'b10;    // Do Link, Do Not LBI
+                                LinkReg[1:0]= 2'b00;    // Do Link, Do Not LBI
                                 b_flag    = 1'b0;        // Do Not add Imm to PC + 2
                                 RegWrite = 1'b1;        // Do write to register
                                 MemEnable= 1'b0;        // Do enable mem access
