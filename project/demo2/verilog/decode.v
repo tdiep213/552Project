@@ -17,8 +17,9 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
    input wire clk, rst;
 
    
-   wire[2:0] Rs, Rt;
+   wire[2:0] Rt;
    reg branch; 
+   reg Rs;
    
    always @* begin
       case(Instr[15:11])
