@@ -45,14 +45,14 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
 
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PCNOW), .inB(16'h0002), .cIn(1'b0));
     assign ImmSel = LBI ? Imm : Writeback;
-    assign WriteData = (Link | jr_flag | EX_JR) ? PcSum2 : ImmSel;      
+    assign WriteData = (Link | jr_flag) ? PcSum2 : ImmSel;      
 
-   assign WrAddr = EX_JR | jr_flag ? 3'b111 : WriteRegAddr;
+   assign WrAddr = jr_flag ? 3'b111 : WriteRegAddr;
 
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
                      .ReadReg1(Rs), .ReadReg2(Rt),.WriteReg(WrAddr), .WriteData(WriteData), 
    //                 //Rs                    //Rd                 //Rt
-                     .en((en & ~WB_JR) | jr_flag | EX_JR), .clk(clk), .rst(rst));
+                     .en((en & ~WB_JR) | jr_flag), .clk(clk), .rst(rst));
    /* enable priorities: 
       jr_flag: write jump and link info ASAP
       en/~WB_JR: if the wb instr requires a write reg, do so, unless that wb instr was a jump and link
