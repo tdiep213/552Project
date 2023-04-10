@@ -23,7 +23,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, LBI, Link, 
    always @* begin
       case(Instr[15:11])
          5'b0011?: Rs = 3'b111;
-         default: Rs = Insr[10:8];
+         default: Rs = Instr[10:8];
       endcase
    end
    assign Rt = Instr[7:5];
