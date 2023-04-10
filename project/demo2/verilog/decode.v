@@ -22,7 +22,7 @@ module decode (Reg1Data, Reg2Data, PcSel, Instr, Imm, Writeback, PC, PCNOW, LBI,
    
    always @* begin
       case(Instr[15:11])
-         5'b00110, 5'b00111: jr_flag = 1'b;
+         5'b00110, 5'b00111: jr_flag = 1'b1;
          default jr_flag = 1'b0;
       endcase
    end
