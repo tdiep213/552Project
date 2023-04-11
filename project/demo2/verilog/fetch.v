@@ -4,9 +4,9 @@
     Filename        : fetch.v
     Description     : This is the module for the overall fetch stage of the processor.
     */
-    `default_nettype none
+`default_nettype none
     //PC + Instruction Memory
-    module fetch (
+module fetch (
     // outputs
     Instr_C, 
     PC, 
@@ -156,5 +156,5 @@
     .Instr(Instr[15:11]));
    assign valid_n = valid & ~HazNOP;
 
-    endmodule
-    `default_nettype wire
+endmodule
+`default_nettype wire
