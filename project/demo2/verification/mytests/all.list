@@ -1,0 +1,3 @@
+../verification/mytests/imm_handling_test.asm
+../verification/mytests/NOP_spacing_test.asm
+../verification/mytests/writeback_cycler_test.asm

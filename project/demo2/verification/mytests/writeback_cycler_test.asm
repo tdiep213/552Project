@@ -13,8 +13,8 @@ subi r4, r4, 16
 subi r4, r4, 16
 st r1, r0, 0    // test Rd used as a value loc and Rs as part of an address
 
-jal .JLOC   // jump and store PC+2 in R7
-stu r3, r0, 0  // use Rd as a source, and save mem address at Rs
+jal .JLOC   	// jump and store PC+2 in R7
+stu r3, r0, 0  	// use Rd as a source, and save mem address at Rs
 halt            // true end
 
 .JLOC:
