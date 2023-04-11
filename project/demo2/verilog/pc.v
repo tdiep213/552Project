@@ -16,7 +16,7 @@ module pc(
     output reg[15:0] PcAddr; //Next Instruction 
     output wire[15:0]  PC;   // PC used on the outside
     
-    wire [15:0] Inc2, PcImm, RsImm, PcQ, jalrImm;
+    wire [15:0] Inc2, PcImm, RsImm, PcQ, jalrImm, R7Imm;
     wire zero;
     assign zero = 0;
     
