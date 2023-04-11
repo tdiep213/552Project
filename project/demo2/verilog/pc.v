@@ -12,11 +12,11 @@ module pc(
     input wire PcSel, RegJmp, Halt, SIIC, PcStall;
     input wire clk, rst;
     input wire [2:0] RsAddr;
-    input wire[15:0] Imm, Rs, BrnchImm, jmpPC, jalrImm;
+    input wire[15:0] Imm, Rs, BrnchImm, jmpPC;;
     output reg[15:0] PcAddr; //Next Instruction 
     output wire[15:0]  PC;   // PC used on the outside
     
-    wire [15:0] Inc2, PcImm, RsImm, PcQ;
+    wire [15:0] Inc2, PcImm, RsImm, PcQ, jalrImm;
     wire zero;
     assign zero = 0;
     
