@@ -48,7 +48,7 @@ module proc (/*AUTOARG*/
     wire[2:0] IF_WriteRegAddr;
     wire HazNOP;
     /*-----ID WIRES-----*/
-    wire[15:0] ID_Instr, ID_PC, ID_ImmExt, ID_Rs, ID_Rt;
+    wire[15:0] ID_Instr, ID_PC, ID_ImmExt, ID_Rs, ID_Rt, JmpData;
     wire[2:0] ID_WriteRegAddr;
     wire[1:0] ID_LinkReg, ID_DestRegSel;
     wire ID_RegWrite;
@@ -97,7 +97,7 @@ module proc (/*AUTOARG*/
             .Halt(Halt), 
         // inputs
             .Imm(IF_ImmExt), .BrnchAddr(ID_ImmExt), .RegJmp(RegJmp), 
-             .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst), .Rs(ID_Rs));
+             .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst), .Rs(ID_Rs), .jmpPC(JmpData));
 
  
     /*---------------*/
@@ -130,8 +130,8 @@ module proc (/*AUTOARG*/
     
 
 
-    decode D( .PcSel(ID_PcSel), .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .Instr(ID_Instr), .Imm(WB_ImmExt), .Writeback(Writeback),
-                .PC(WB_PC), .LBI(WB_LinkReg[0]), .Link(WB_LinkReg[1]), .b_flag(ID_b_flag), .j_flag(ID_j_flag),
+    decode D( .PcSel(ID_PcSel), .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .JmpData(JmpData), .Instr(ID_Instr), .Imm(WB_ImmExt), .Writeback(Writeback),
+                .PC(WB_PC), .PCNOW(ID_PC), .LBI(WB_LinkReg[0]), .Link(WB_LinkReg[1]), .b_flag(ID_b_flag), .j_flag(ID_j_flag),
                 .Halt(Halt), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .clk(clk), .rst(rst) );
     /*---------------*/
 
