@@ -30,10 +30,18 @@ module mem_system(/*AUTOARG*/
 
    wire mem_rd, mem_wr; 
    wire[15:0] mem_addr, mem_data_out;
-   wire[15:0] cache_data_out; 
+
+   wire cache_en, write, valid_in, comp;
+   wire[15:0] cache_data_out, cache_data_in;
+   wire[7:0] cache_index;
+   wire[2:0] offset; 
+
 
    dm_fsm f0(  // Outputs
-            .mem_addr(mem_addr), .mem_wr(mem_wr), .mem_rd(mem_rd)
+            .mem_addr(mem_addr), .mem_wr(mem_wr), .mem_rd(mem_rd),
+            .cache_en(cache_en), .cache_tag(cache_tag), .cache_index(cache_index),
+            .offset(offset), .cache_data(cache_data_in), cache_wr(write),
+            .comp(comp), .valid_in(valid_in),
             // Inputs
                //PROC
             .addr    (Addr),
@@ -58,17 +66,17 @@ module mem_system(/*AUTOARG*/
                           .valid                (valid),
                           .err                  (err),
                           // Inputs
-                          .enable               (),
+                          .enable               (cache_en),
                           .clk                  (clk),
                           .rst                  (rst),
                           .createdump           (),
-                          .tag_in               (),
-                          .index                (),
-                          .offset               (),
-                          .data_in              (),
-                          .comp                 (),
-                          .write                (),
-                          .valid_in             ());
+                          .tag_in               (cache_tag),
+                          .index                (cache_index),
+                          .offset               (offset),
+                          .data_in              (cache_data_in),
+                          .comp                 (comp),
+                          .write                (write),
+                          .valid_in             (valid_in));
 
    four_bank_mem mem(// Outputs
                      .data_out          (mem_data_out),
