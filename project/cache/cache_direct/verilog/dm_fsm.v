@@ -87,7 +87,8 @@ module dm_fsm(  // Outputs
     10          = DIRTY| Write cache to memory
     11          =    
 
-    20          = Check
+    20          = Check cache
+    21          = Write to cache
     */
     always @* begin 
 
@@ -95,6 +96,7 @@ module dm_fsm(  // Outputs
         cache_en = 1'b0;        // Cache disabled
         cache_wr = 1'b0;        // Don't write to cache
         comp = 1'b0;            // Don't do cache tag comparison
+        cache_data_wr = data;   // Data passthrough
         offset = addr[2:0];     // Default read offset
          
 
@@ -213,14 +215,17 @@ module dm_fsm(  // Outputs
                 cache_en = 1'b1;
                 comp = 1'b1;
 
-                nxt_state = hit ? 16'd21 : /* WRITE CACHE MISS */;
+                nxt_state = hit ? 16'd21 : 16'd9/* WRITE CACHE MISS */;
             end
 
             16'd21: begin // Write to cache
-                //Write to default offset and index
+                //Write data to default offset and index
                 cache_en = 1'b1;
                 cache_wr = 1'b1;
                 
+            end
+
+            16'd22: begin // Cache miss, check dirty bit 
             end
 
         endcase 
