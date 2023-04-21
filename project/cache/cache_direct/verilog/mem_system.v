@@ -43,7 +43,7 @@ module mem_system(/*AUTOARG*/
    dm_fsm f0(  // Outputs
             .mem_addr(mem_addr), .mem_wr(mem_wr), .mem_rd(mem_rd),
             .cache_en(cache_en), .cache_tag(cache_tag), .cache_index(cache_index),
-            .offset(offset), .cache_data(cache_data_in), .cache_wr(write),
+            .offset(offset), .cache_data_wr(cache_data_in), .cache_wr(write),
             .comp(comp), .valid_in(valid_in), .sel(sel),
             // Inputs
                //PROC
