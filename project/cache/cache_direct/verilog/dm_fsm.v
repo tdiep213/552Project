@@ -91,63 +91,71 @@ module dm_fsm(  // Outputs
         stall_inc = 16'h0000;
         case(state)
             default: begin // Default/Idle case
-                nxt_state = rd  ?  4'h1 : (wr ? 4'h0/*TODO write stage */: 4'h0);
+                nxt_state = rd  ?  16'd1 : (wr ? 16'd0/*TODO write stage */: 16'd0);
             end
             
             /* CACHE READ FSM */
-                4'h1: begin // Check cache  
+                16'd1: begin // Check cache  
                     cache_en = 1'b1;
                     comp = 1'b1;
                     
 
-                    nxt_state = hit ? 4'h2 : /* miss case*/;
+                    nxt_state = hit ? 16'd2 : /* miss case*/;
                 end
 
-                4'h2: begin // Cache hit
-                   nxt_state = 4'h0;    //Reset FSM
+                16'd2: begin // Cache hit
+                   nxt_state = 16'd0;    //Reset FSM
                 end
+
+
+                /* DIRTY BIT MEMORY WRITEBACK */
+                16'd8 : begin   //Check dirty bit
+                    nxt_state = dirty ? 16'd9: 16'd3;
+                end
+
+                /*WRITE CACHE LINE TO MEMORY*/
 
                 /*PULL CACHE LINE FROM MEMORY*/
-                4'h3 : begin // Cache Miss, read index, work 
+                16'd3 : begin // Cache Miss, read index, work 
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[0];
                     offset = 3'b000;
 
                     stall_inc = 16'h0001;
-                    nxt_state = 4'h4;
+                    nxt_state = 16'd4;
                 end
 
-                4'h4: begin // Miss stalls
+                16'd4: begin // Miss stalls
                     offset = 3'b000;
                     
                     nxt_state = stalling; 
                 end
 
-                4'h5: begin // Miss Stall 0 offset 1
+                16'd5: begin // Miss Stall 0 offset 1
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[1];
                     offset = 3'b010;
 
                     stall_inc = 16'h0002;
-                    nxt_state = 4'h4;//Stall 
+                    nxt_state = 16'd4;//Stall 
                 end
 
-                4'h6: begin // Miss Stall 0 offset 2
+                16'd6: begin // Miss Stall 0 offset 2
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[2];
                     offset = 3'b100;
 
                     stall_inc = 16'h0003;
-                    nxt_state = 4'h4; //Stall 
+                    nxt_state = 16'd4; //Stall 
                 end
 
-                4'h7: begin // Miss Stall 0 offset 3
+                16'd7: begin // Miss Stall 0 offset 3
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[3];
                     offset = 3'b110;
 
                     stall_inc = 16'h0004;
-                    nxt_state = 4'h4; //Stall 
+                    nxt_state = 16'd4; //Stall 
                 end
 
 
