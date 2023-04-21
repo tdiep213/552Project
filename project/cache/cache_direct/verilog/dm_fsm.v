@@ -89,9 +89,11 @@ module dm_fsm(  // Outputs
 
         sel = 1'b0;             // Output from cache 
         stall_inc = 16'h0000;
+
+        nxt_state = 16'd0;      // Loop default state
         case(state)
             default: begin // Default/Idle case
-                nxt_state = rd  ?  16'd1 : (wr ? 16'd0/*TODO write stage */: 16'd0);
+                nxt_state = rd  ?  16'd1 : (wr ? 16'd20: 16'd0);
             end
             
             /* CACHE READ FSM */
@@ -99,7 +101,7 @@ module dm_fsm(  // Outputs
                     cache_en = 1'b1;
                     comp = 1'b1;
                     
-                    nxt_state = hit ? 16'd2 : /* miss case*/;
+                    nxt_state = hit ? 16'd2 : 16'd10;
                 end
 
                 16'd2: begin // Cache hit
@@ -109,11 +111,13 @@ module dm_fsm(  // Outputs
 
 
                 /* DIRTY BIT MEMORY WRITEBACK */
-                16'd : begin   //Check dirty bit
+                16'd10 : begin   //Check dirty bit
                     nxt_state = dirty ? 16'd9: 16'd3;
                 end
 
                 /*WRITE CACHE LINE TO MEMORY*/
+                /* TODO */ 
+                /* Also done as part of write to cache*/
                 16'd: begin  
                     cache_en = 1'b1;
                     offset = 3'b000;
@@ -129,46 +133,52 @@ module dm_fsm(  // Outputs
                 16'd3 : begin // Cache Miss, read index 0 
                     cache_en = 1'b1;
                     cache_wr = 1'b1;
+                    offset = 3'b000;
 
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[0];
-                    offset = 3'b000;
-
+                    
                     stall_inc = 16'h0001;
                     nxt_state = 16'd4;
                 end
 
                 16'd5: begin // Miss Offset 1
+                    //Write to offset 0
                     cache_en = 1'b1;
                     cache_wr = 1'b1;
+                    offset = 3'b000;
 
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[1];
-                    offset = 3'b000;
+                    
 
                     stall_inc = 16'h0002;
                     nxt_state = 16'd4;//Stall 
                 end
 
                 16'd6: begin // Miss  Offset 2
+                    //Write to offset 1
                     cache_en = 1'b1;
                     cache_wr = 1'b1;
+                    offset = 3'b010;
 
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[2];
-                    offset = 3'b010;
+                    
 
                     stall_inc = 16'h0003;
                     nxt_state = 16'd4; //Stall 
                 end
 
                 16'd7: begin // Miss Offset 3
+                    //Write to offset 2
                     cache_en = 1'b1;
                     cache_wr = 1'b1;
+                    offset = 3'b100;
 
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[3];
-                    offset = 3'b100;
+                    
 
                     stall_inc = 16'h0004;
                     nxt_state = 16'd4; //Stall 
@@ -183,6 +193,20 @@ module dm_fsm(  // Outputs
                 end
 
             /* CACHE WRITE SM*/
+
+            16'd20: begin // Check cache
+                cache_en = 1'b1;
+                comp = 1'b1;
+
+                nxt_state = hit ? 16'd21 : /* WRITE CACHE MISS */;
+            end
+
+            16'd21: begin // Write to cache
+                //Write to default offset and index
+                cache_en = 1'b1;
+                cache_wr = 1'b1;
+                
+            end
 
         endcase 
     end 
