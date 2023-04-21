@@ -59,17 +59,19 @@ module dm_fsm(  // Outputs
 
     assign mem_addr_offset[4] = {cache_tag, cache_index, addr[2:0]};
 
+    
     /*
     offset
     110 100 010 000 
 
     */
-    reg [3:0] state, nxt_state;
+    reg[15:0] state, nxt_state;
+    reg[15:0] stalling, stall_inc;
     /* State list
     0x0/default = rst/idle state
     0x1 = Check cache
     0x2 = Cache hit
-
+    
 
     */
     always @* begin 
@@ -86,7 +88,7 @@ module dm_fsm(  // Outputs
         mem_addr = mem_addr_offset[4];  //Default memory read/write address
 
         sel = 1'b0;             // Output from cache 
-        
+        stall_inc = 16'h0000;
         case(state)
             default: begin // Default/Idle case
                 nxt_state = rd  ?  4'h1 : (wr ? 4'h0/*TODO write stage */: 4'h0);
@@ -105,26 +107,56 @@ module dm_fsm(  // Outputs
                    nxt_state = 4'h0;    //Reset FSM
                 end
 
+                /*PULL CACHE LINE FROM MEMORY*/
                 4'h3 : begin // Cache Miss, read index, work 
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[0];
                     offset = 3'b000;
 
+                    stall_inc = 16'h0001;
                     nxt_state = 4'h4;
                 end
-                4'h4: begin // Miss Stall 0 cycle 1
+
+                4'h4: begin // Miss stalls
                     offset = 3'b000;
-                    nxt_state= 4'h5;
+                    
+                    nxt_state = stalling; 
                 end
 
-                4'h5: begin // Miss Stall 0 cycle 1
-                    offset = 3'b000;
+                4'h5: begin // Miss Stall 0 offset 1
+                    mem_rd = 1'b1;
+                    mem_addr = mem_addr_offset[1];
+                    offset = 3'b010;
+
+                    stall_inc = 16'h0002;
+                    nxt_state = 4'h4;//Stall 
                 end
+
+                4'h6: begin // Miss Stall 0 offset 2
+                    mem_rd = 1'b1;
+                    mem_addr = mem_addr_offset[2];
+                    offset = 3'b100;
+
+                    stall_inc = 16'h0003;
+                    nxt_state = 4'h4; //Stall 
+                end
+
+                4'h7: begin // Miss Stall 0 offset 3
+                    mem_rd = 1'b1;
+                    mem_addr = mem_addr_offset[3];
+                    offset = 3'b110;
+
+                    stall_inc = 16'h0004;
+                    nxt_state = 4'h4; //Stall 
+                end
+
 
             /* CACHE WRITE SM*/
 
         endcase 
     end 
 
+    cla16b stallInc(.sum(stalling), .cOut(), .inA(nxt_state), .inB(stall_inc), .cIn(1'b0));
     dff stateReg(.q(state), d(nxt_state), clk(clk), rst(rst));
+
 endmodule
