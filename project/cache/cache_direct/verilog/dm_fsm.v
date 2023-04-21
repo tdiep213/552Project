@@ -68,11 +68,26 @@ module dm_fsm(  // Outputs
     reg[15:0] state, nxt_state;
     reg[15:0] stalling, stall_inc;
     /* State list
-    0x0/default = rst/idle state
-    0x1 = Check cache
-    0x2 = Cache hit
-    
 
+    1 -> 19 Read
+    20 ->
+
+    0/default   = rst/idle state
+
+    1           = Check cache
+    2           = Cache hit
+    3           = Read memory index w/ offset 0
+    4           = R/W stall  
+    5           = Read memory index w/ offset 1 | Write Cache w/ offset 0
+    6           = Read memory index w/ offset 2 | Write Cache w/ offset 1
+    7           = Read memory index w/ offset 3 | Write Cache w/ offset 2
+    8           = Write Cache w/ offset 3
+
+    9           = Check dirty bit for READ
+    10          = DIRTY| Write cache to memory
+    11          =    
+
+    20          = Check
     */
     always @* begin 
 
@@ -111,14 +126,14 @@ module dm_fsm(  // Outputs
 
 
                 /* DIRTY BIT MEMORY WRITEBACK */
-                16'd10 : begin   //Check dirty bit
-                    nxt_state = dirty ? 16'd9: 16'd3;
+                16'd9: begin   //Check dirty bit
+                    nxt_state = dirty ? 16'd10: 16'd3;
                 end
 
                 /*WRITE CACHE LINE TO MEMORY*/
                 /* TODO */ 
                 /* Also done as part of write to cache*/
-                16'd: begin  
+                16'd10: begin  
                     cache_en = 1'b1;
                     offset = 3'b000;
                 end
@@ -131,9 +146,9 @@ module dm_fsm(  // Outputs
                 end
 
                 16'd3 : begin // Cache Miss, read index 0 
-                    cache_en = 1'b1;
-                    cache_wr = 1'b1;
-                    offset = 3'b000;
+                    // cache_en = 1'b1;
+                    // cache_wr = 1'b1;
+                    // offset = 3'b000;
 
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[0];
