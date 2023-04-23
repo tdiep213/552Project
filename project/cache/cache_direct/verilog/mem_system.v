@@ -19,9 +19,9 @@ module mem_system(/*AUTOARG*/
    input wire        rst;
    
    output wire [15:0] DataOut;
-   output reg        Done;
+   output wire        Done;
    output wire        Stall;
-   output reg        CacheHit;
+   output wire        CacheHit;
    output reg        err;
 
    /* data_mem = 1, inst_mem = 0 *
@@ -31,6 +31,7 @@ module mem_system(/*AUTOARG*/
    wire mem_rd, mem_wr;
    wire[3:0] busy; 
    wire[15:0] mem_addr, mem_data_out;
+   wire mem_stall;
 
    wire cache_en, write, valid_in, comp;
    wire[15:0] cache_data_out, cache_data_in;
@@ -40,14 +41,14 @@ module mem_system(/*AUTOARG*/
    wire[2:0] offset; 
    wire hit, dirty, valid;
 
-
    wire sel;
 
    dm_fsm f0(  // Outputs
             .mem_addr(mem_addr), .mem_wr(mem_wr), .mem_rd(mem_rd),
             .cache_en(cache_en), .cache_tag(cache_tag), .cache_index(cache_index),
             .offset(offset), .cache_data_wr(cache_data_in), .cache_wr(write),
-            .comp(comp), .valid_in(valid_in), .sel(sel),
+            .comp(comp), .valid_in(valid_in), .sel(sel), .CacheHit(CacheHit),
+            .done(Done), .stall_out(Stall),
             // Inputs
                //PROC
             .addr(Addr),
@@ -55,14 +56,14 @@ module mem_system(/*AUTOARG*/
             .rd(Rd),
             .wr(Wr),
                //MEM
-            .stall   (Stall),
+            .stall   (mem_stall),
             .busy    (busy),
                //CACHE
             .tag_in(tag),
             .hit(hit),
             .dirty(dirty),
-            .valid(valid)
-            );
+            .valid(valid),
+            .clk(clk), .rst(rst));
 
 
    cache #(0 + memtype) c0(// Outputs
@@ -87,7 +88,7 @@ module mem_system(/*AUTOARG*/
 
    four_bank_mem mem(// Outputs
                      .data_out          (mem_data_out),
-                     .stall             (Stall),
+                     .stall             (mem_stall),
                      .busy              (busy),
                      .err               (),
                      // Inputs
