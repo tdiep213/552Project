@@ -18,9 +18,9 @@ module mem_system(/*AUTOARG*/
    input wire        clk;
    input wire        rst;
    
-   output reg [15:0] DataOut;
+   output wire [15:0] DataOut;
    output reg        Done;
-   output reg        Stall;
+   output wire        Stall;
    output reg        CacheHit;
    output reg        err;
 
@@ -28,15 +28,18 @@ module mem_system(/*AUTOARG*/
     * needed for cache parameter */
    parameter memtype = 0;
 
-   wire mem_rd, mem_wr, busy; 
+   wire mem_rd, mem_wr;
+   wire[3:0] busy; 
    wire[15:0] mem_addr, mem_data_out;
 
    wire cache_en, write, valid_in, comp;
    wire[15:0] cache_data_out, cache_data_in;
 
    wire[7:0] cache_index;
-   wire[4:0] cache_tag;
+   wire[4:0] cache_tag, tag;
    wire[2:0] offset; 
+   wire hit, dirty, valid;
+
 
    wire sel;
 
@@ -55,6 +58,7 @@ module mem_system(/*AUTOARG*/
             .stall   (Stall),
             .busy    (busy),
                //CACHE
+            .tag_in(tag),
             .hit(hit),
             .dirty(dirty),
             .valid(valid)
@@ -67,7 +71,7 @@ module mem_system(/*AUTOARG*/
                           .hit                  (hit),
                           .dirty                (dirty),
                           .valid                (valid),
-                          .err                  (err),
+                          .err                  (),
                           // Inputs
                           .enable               (cache_en),
                           .clk                  (clk),
@@ -97,7 +101,7 @@ module mem_system(/*AUTOARG*/
    
    // your code here
 
-   assign dataOut = sel ? mem_data_out : cache_data_out;
+   assign DataOut = sel ? mem_data_out : cache_data_out;
    
 endmodule // mem_system
 `default_nettype wire
