@@ -16,6 +16,7 @@ module dm_fsm(  // Outputs
             hit,
             dirty,
             valid,
+            write_sel,
 
             clk, rst
             );
@@ -35,6 +36,7 @@ module dm_fsm(  // Outputs
                 mem_rd,
                 done,
                 CacheHit,
+                write_sel,
                 stall_out;
 
     input wire [15:0] addr,
@@ -73,8 +75,9 @@ module dm_fsm(  // Outputs
     assign mem_addr_wb[2] = {tag_in, cache_index, 3'b100}; 
     assign mem_addr_wb[3] = {tag_in, cache_index, 3'b110}; 
 
-    wire[15:0] data_out;
-    assign data_out = wr|rd ? data : cache_data_wr;
+    // wire[15:0] data_out;
+    assign cache_data_wr = data;
+
     /*
     offset
     110 100 010 000 
@@ -122,13 +125,15 @@ module dm_fsm(  // Outputs
         sel = 1'b0;             // Output from cache 
         stall_inc = 16'h0000;
         stall_out= 1'b0;
-
+        
+        write_sel = 1'b1;
         done = 1'b0;
         nxt_state = 16'd0;      // Loop default state
         case(state)
             default: begin // Default/Idle case
                 nxt_state = wr  ?  16'd20 : ((rd & ~hit & valid )? 16'd1: 16'd0);
 
+                stall_out = wr|rd ? 1'b1: 1'b0;
                 comp = 1'b1;
                 cache_en = rd ? 1'b1 : 1'b0;
                 done = (rd & (hit | ~valid)) ? 1'b1 : 1'b0;
@@ -141,14 +146,14 @@ module dm_fsm(  // Outputs
                 comp = 1'b1;
                 
                 stall_out = 1'b1;
-                nxt_state = (hit | ~valid) ? 16'd0 : 16'd10;
+                nxt_state = (hit | ~valid) ? 16'd0 : 16'd11;
                 done = (hit | ~valid) ? 1'b1 : 1'b0;
             end
 
-            /* Unused */
-            16'd2: begin // Cache hit
+            16'd2: begin // Cache miss fsm reset
+                cache_en = 1'b1;
                 nxt_state = 16'd0;    //Reset FSM
-
+                CacheHit = hit;
                 done = 1'b1;                
             end
 
@@ -165,13 +170,13 @@ module dm_fsm(  // Outputs
                 stall_out = (hit & valid) ? 1'b0 : 1'b1;
             end
 
-
-            /* Unused */
             16'd21: begin // Write to cache
                 //Write data to default offset and index
                 cache_en = 1'b1;
                 cache_wr = 1'b1;
+                comp = 1'b1;
 
+                stall_out = 1'b1;
                 valid_in = 1'b1;
                 done = 1'b1;
             end
@@ -179,6 +184,8 @@ module dm_fsm(  // Outputs
 
                 /* DIRTY BIT MEMORY CHECK */
                 16'd9: begin   //Check dirty bit
+                    comp = 1'b1;
+                    cache_en = 1'b1;
                     nxt_state = dirty ? 16'd11: 16'd3;
                     stall_out = 1'b1;
                 end
@@ -196,11 +203,11 @@ module dm_fsm(  // Outputs
                     offset = 3'b000;
 
                     mem_addr = mem_addr_wb[0];
-                    mem_wr = 1'b1;
+                    mem_wr = |busy ? 1'b0 : 1'b1;
 
                     stall_inc = 16'd1;
                     stall_out = 1'b1;
-                    nxt_state = stall ? 16'd10: 16'd12 ;/*stall*/
+                    nxt_state = |busy ? 16'd11: 16'd12;/*stall*/
                 end
 
                 16'd12: begin  //Write offset 1
@@ -208,11 +215,11 @@ module dm_fsm(  // Outputs
                     offset = 3'b010;
 
                     mem_addr = mem_addr_wb[1];
-                    mem_wr = 1'b1;
+                    mem_wr = |busy ? 1'b0 : 1'b1;
 
                     stall_out = 1'b1;
                     stall_inc = 16'd2;
-                    nxt_state = stall ? 16'd10: 16'd13;/*stall*/
+                    nxt_state = |busy ? 16'd12: 16'd13;/*stall*/
                 end
 
                 16'd13: begin  //Write offset 2
@@ -220,11 +227,11 @@ module dm_fsm(  // Outputs
                     offset = 3'b100;
 
                     mem_addr = mem_addr_wb[2];
-                    mem_wr = 1'b1;
+                    mem_wr = |busy ? 1'b0 : 1'b1;
 
                     stall_out = 1'b1;
                     stall_inc = 16'd3;
-                    nxt_state = stall ? 16'd10: 16'd14;/*stall*/
+                    nxt_state = |busy ? 16'd13: 16'd14;/*stall*/
                 end
 
                 16'd14: begin  //Write offset 3
@@ -232,16 +239,17 @@ module dm_fsm(  // Outputs
                     offset = 3'b110;
 
                     mem_addr = mem_addr_wb[3];
-                    mem_wr = 1'b1;
+                    mem_wr = |busy ? 1'b0 : 1'b1;
 
                     stall_out = 1'b1;
                     stall_inc = 16'd4;
-                    nxt_state = stall ? 16'd10 : 16'd3;
+                    nxt_state = |busy ? 16'd14 : 16'd3;
                 end
 
                 /* WRITE MEMORY TO CACHE LINE */
                 16'd4: begin // Miss stalls
                     offset = 3'b000;
+                    write_sel = 1'b0;
 
                     stall_out = 1'b1;
                     nxt_state = stalling; 
@@ -255,6 +263,7 @@ module dm_fsm(  // Outputs
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[0];
                     
+                    write_sel = 1'b0;
                     stall_out = 1'b1;
                     nxt_state = 16'd4;
                     stall_inc = 16'h0001;
@@ -269,6 +278,7 @@ module dm_fsm(  // Outputs
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[1];
 
+                    write_sel = 1'b0;
                     stall_out = 1'b1;
                     nxt_state = 16'd4;//Stall 
                     stall_inc = 16'h0002;
@@ -283,6 +293,7 @@ module dm_fsm(  // Outputs
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[2];
                     
+                    write_sel = 1'b0;
                     stall_out = 1'b1;
                     nxt_state = 16'd4; //Stall 
                     stall_inc = 16'h0003;
@@ -297,6 +308,7 @@ module dm_fsm(  // Outputs
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[3];
                     
+                    write_sel = 1'b0;
                     stall_out = 1'b1;
                     nxt_state = 16'd4; //Stall 
                     stall_inc = 16'h0004;
@@ -309,17 +321,16 @@ module dm_fsm(  // Outputs
 
                     // If we're reading, we can return to reset/idle
                     // If we're writing, we write to new cache line
+                    write_sel = 1'b0;
                     stall_out = 1'b1;
                     nxt_state = rd ? 16'd2 : 16'd21; //Output data and reset statemachine 
                 end
-
-
 
         endcase 
     end 
 
     cla16b stallInc(.sum(stalling), .cOut(), .inA(nxt_state), .inB(stall_inc), .cIn(1'b0));
     dff_16 stateReg(.q(state), .err(), .d(nxt_state), .clk(clk), .rst(rst));
-    dff_16 dataFF(.q(cache_data_wr), .err(), .d(data_out), .clk(clk), .rst(rst));
+
 
 endmodule

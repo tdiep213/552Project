@@ -42,13 +42,15 @@ module mem_system(/*AUTOARG*/
    wire hit, dirty, valid;
 
    wire sel;
+   wire[15:0] write_cache_data;
+   wire write_sel;
 
    dm_fsm f0(  // Outputs
             .mem_addr(mem_addr), .mem_wr(mem_wr), .mem_rd(mem_rd),
             .cache_en(cache_en), .cache_tag(cache_tag), .cache_index(cache_index),
             .offset(offset), .cache_data_wr(cache_data_in), .cache_wr(write),
             .comp(comp), .valid_in(valid_in), .sel(sel), .CacheHit(CacheHit),
-            .done(Done), .stall_out(Stall),
+            .done(Done), .stall_out(Stall), .write_sel(write_sel),
             // Inputs
                //PROC
             .addr(Addr),
@@ -65,7 +67,8 @@ module mem_system(/*AUTOARG*/
             .valid(valid),
             .clk(clk), .rst(rst));
 
-
+   
+   assign write_cache_data = write_sel ? cache_data_in : mem_data_out;
    cache #(0 + memtype) c0(// Outputs
                           .tag_out              (tag),
                           .data_out             (cache_data_out),
@@ -81,7 +84,7 @@ module mem_system(/*AUTOARG*/
                           .tag_in               (cache_tag),
                           .index                (cache_index),
                           .offset               (offset),
-                          .data_in              (cache_data_in),
+                          .data_in              (write_cache_data),
                           .comp                 (comp),
                           .write                (write),
                           .valid_in             (valid_in));
