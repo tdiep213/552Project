@@ -1,6 +1,6 @@
 module HazDet(NOP, PcStall, Instr, valid_n, MemEnable, Rd, Imm, Reg1Data, rst, clk);
 output wire NOP, PcStall; 
-
+output wire [3:0] Forwards;
 
 input wire[15:0] Instr, Imm, Reg1Data;
 input wire[2:0] Rd;
@@ -49,6 +49,15 @@ dff REG_IF_ID [3:0](.q({ID_Rd, ID_valid_n}), .d({Rd, valid_n}), .clk(clk), .rst(
 dff REG_ID_EX [3:0](.q({EX_Rd, EX_valid_n}), .d({ID_Rd, ID_valid_n}), .clk(clk), .rst(rst));
 dff REG_EX_MEM[3:0](.q({MEM_Rd, MEM_valid_n}), .d({EX_Rd, EX_valid_n}), .clk(clk), .rst(rst));
 dff REG_MEM_WB[3:0](.q({WB_Rd, WB_valid_n}), .d({MEM_Rd, MEM_valid_n}), .clk(clk), .rst(rst));
+
+wire EXtoEX_FDRs, MEMtoEX_FDRs, EXtoEX_FDRt, MEMtoEX_FDRt;
+assign EXtoEX_FDRs = ID_Rd == IF_Rs;  // These signals travels with instruction, and opens forwarding path if true.
+assign MEMtoEX_FDRs = EX_Rd == IF_Rs;
+
+assign EXtoEX_FDRt = ID_Rd == IF_Rt; 
+assign MEMtoEX_FDRt = EX_Rd == IF_Rt;
+
+assign Forwards[3:0] = {EXtoEX_FDRs, MEMtoEX_FDRs, EXtoEX_FDRt, MEMtoEX_FDRt};
 
 assign RegHazDet =
 

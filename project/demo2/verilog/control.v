@@ -1,24 +1,37 @@
 //Commands other modules
 module control(
     //Output(s)
-    RegWrite,   // Whether or not we Write to RegFile/RegMem
-    DestRegSel, // Choose WriteRegister 00: Rs, 01: Rd-R, 10: R7, 11: Rd-I
+
+    // PC (Fetch?) signals
     PcSel,      // Choose False: PC incr, or True: PC incr + Imm
     RegJmp,     // Choose False: above, or True: Rs + sign_ext(Imm)
-    MemEnable,  // Whether or not DataMem can be read           //MOTE! Looks like the provided memory module used "enable" and "wr" 
+    b_flag,     // whomst? :P
+    j_flag,
+    ImmSel,     // Choose which extension to perform on which immediate size. (sign?, ImmSize[1:0]) (00: 5, 01: 8, 10: 11)
+
+    // Decode Signals
+    RegWrite,   // Whether or not we Write to RegFile/RegMem
+    DestRegSel, // Choose WriteRegister 00: Rs, 01: Rd-R, 10: R7, 11: Rd-I
+
+    // Memory Signals
+    MemEnable,  // Whether or not DataMem can be read           //NOTE! Looks like the provided memory module used "enable" and "wr" 
     MemWr,      // Whether or not DataMem can be written to     // instead of MemEnable/MemWr
+    
+    // Execute Signals
     ALUcntrl,   // Controls operations of ALU (Add, sub, addi, subi, rol, etc)
     Val2Reg,    // Choose which value we are sending to RegMem (either ALU out or DataMem out)
     ALUSel,     // AKA ALUSel possibly. Controls whether or not to use Immediate as ALU input.
-    ImmSel,     // Choose which extension to perform on which immediate size. (sign?, ImmSize[1:0]) (00: 5, 01: 8, 10: 11)
+    
+    // Special Signals
     Halt,       // Stop current and future instructions from executing
-    Link,       // Jump and Link instructions
-    LBI,        // Load byte immediate instructions
     ctrlErr,    // temporary err flag for phase 1.
     SIIC,       // SIIC
-    b_flag,     // whomst? :P
     valid_n,    // whomst? :P
-    j_flag,
+
+    // Writeback Signal
+    Link,       // Jump and Link instructions
+    LBI,        // Load byte immediate instructions
+
     //Input(s)
     Instr     // 5 msb of instruction
 );
