@@ -102,9 +102,12 @@ module dm_fsm(  // Outputs
     7           = Read memory index w/ offset 3 | Write Cache w/ offset 2
     8           = Write Cache w/ offset 3
 
-    9           = Check dirty bit for READ
+    9           = 
     10          = DIRTY | Write cache to memory
-    11          =    
+    11          = Write cache offset 0 to memory    
+    12          = Write cache offset 1 to memory
+    13          = write cache offset 2 to memory
+    14          = write cache offset 3 to memory
 
     20          = Check cache
     21          = Write to cache
@@ -161,7 +164,7 @@ module dm_fsm(  // Outputs
                 cache_en = 1'b1;
                 comp = 1'b1;
 
-                nxt_state = (hit & valid) ? 16'd0: 16'd9/* WRITE CACHE MISS */;
+                nxt_state = (hit & valid) ? 16'd0: 16'd10/* WRITE CACHE MISS */;
 
                 cache_wr = (hit & valid) ? 1'b1 : 1'b0;
                 done = (hit  & valid) ? 1'b1 : 1'b0;
@@ -180,15 +183,19 @@ module dm_fsm(  // Outputs
             end
 
 
-                /* DIRTY BIT MEMORY CHECK */
-                16'd9: begin   //Check dirty bit
+                /* MISSED | DIRTY BIT MEMORY CHECK */
+                16'd10: begin   //Check dirty bit
                     comp = 1'b1;
                     cache_en = 1'b1;
-                    nxt_state = dirty ? 16'd11: 16'd3;
                     stall_out = 1'b1;
+                    
+                    //Writes cache to memory if the line is dirty
+                    //Else overwrites cache from memory
+                    nxt_state = dirty ? 16'd11: 16'd3;
                 end
 
                 /* WRITE CACHE LINE TO MEMORY*/
+                /* 4 cycles per operation */
                 16'd11: begin  //Write offset 0
                     cache_en = 1'b1;
                     offset = 3'b000;
@@ -234,7 +241,8 @@ module dm_fsm(  // Outputs
                 end
 
                 /* WRITE MEMORY TO CACHE LINE */
-                16'd3 : begin // Cache Miss, read index 0 
+                /* 2 cycles per operation */ 
+                16'd3 : begin // Cache Miss, read offset 0 
                     cache_en = 1'b1;
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[0];
