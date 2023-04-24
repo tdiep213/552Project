@@ -83,8 +83,8 @@ module dm_fsm(  // Outputs
     110 100 010 000 
 
     */
-    wire[15:0] state, stalling;
-    reg[15:0]  stall_inc, nxt_state;
+    wire[15:0] state;
+    reg[15:0]  nxt_state;
     /* State list
 
     1 -> 19 Read
@@ -123,11 +123,10 @@ module dm_fsm(  // Outputs
         mem_addr = mem_addr_offset[4];  //Default memory read/write address
 
         sel = 1'b0;             // Output from cache 
-        stall_inc = 16'h0000;
-        stall_out= 1'b0;
+        stall_out= 1'b0;        // Don't tell the processor to stall
         
-        write_sel = 1'b1;
-        done = 1'b0;
+        write_sel = 1'b1;       // Write proc data to cache | 1'b0 = Write memory data to cache
+        done = 1'b0;            // Don't tell the processor that we're done with the operation
         nxt_state = 16'd0;      // Loop default state
         case(state)
             default: begin // Default/Idle case
@@ -156,7 +155,6 @@ module dm_fsm(  // Outputs
                 CacheHit = hit;
                 done = 1'b1;                
             end
-
 
             /* ----- CACHE WRITE ----- */
             16'd20: begin // Check cache
@@ -191,13 +189,6 @@ module dm_fsm(  // Outputs
                 end
 
                 /* WRITE CACHE LINE TO MEMORY*/
-                /* Also done as part of write to cache*/
-
-                16'd10: begin   //Stall
-                    nxt_state = |busy ? 16'd10 : stalling;
-                    stall_out = 1'b1;
-                end
-
                 16'd11: begin  //Write offset 0
                     cache_en = 1'b1;
                     offset = 3'b000;
@@ -205,7 +196,6 @@ module dm_fsm(  // Outputs
                     mem_addr = mem_addr_wb[0];
                     mem_wr = |busy ? 1'b0 : 1'b1;
 
-                    stall_inc = 16'd1;
                     stall_out = 1'b1;
                     nxt_state = |busy ? 16'd11: 16'd12;/*stall*/
                 end
@@ -218,7 +208,6 @@ module dm_fsm(  // Outputs
                     mem_wr = |busy ? 1'b0 : 1'b1;
 
                     stall_out = 1'b1;
-                    stall_inc = 16'd2;
                     nxt_state = |busy ? 16'd12: 16'd13;/*stall*/
                 end
 
@@ -230,7 +219,6 @@ module dm_fsm(  // Outputs
                     mem_wr = |busy ? 1'b0 : 1'b1;
 
                     stall_out = 1'b1;
-                    stall_inc = 16'd3;
                     nxt_state = |busy ? 16'd13: 16'd14;/*stall*/
                 end
 
@@ -242,34 +230,22 @@ module dm_fsm(  // Outputs
                     mem_wr = |busy ? 1'b0 : 1'b1;
 
                     stall_out = 1'b1;
-                    stall_inc = 16'd4;
                     nxt_state = |busy ? 16'd14 : 16'd3;
                 end
 
                 /* WRITE MEMORY TO CACHE LINE */
-                16'd4: begin // Miss stalls
-                    offset = 3'b000;
-                    write_sel = 1'b0;
-
-                    stall_out = 1'b1;
-                    nxt_state = stalling; 
-                end
-
                 16'd3 : begin // Cache Miss, read index 0 
                     cache_en = 1'b1;
-                    // cache_wr = 1'b1;
-                    // offset = 3'b000;
-
                     mem_rd = 1'b1;
                     mem_addr = mem_addr_offset[0];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = 16'd4;
-                    stall_inc = 16'h0001;
+                    nxt_state = |busy ? 16'd3 : 16'd5;
                 end
 
-                16'd5: begin // Miss Offset 1
+                16'd5: begin 
+                    //Read offset 1
                     //Write to offset 0
                     cache_en = 1'b1;
                     cache_wr = 1'b1;
@@ -280,11 +256,11 @@ module dm_fsm(  // Outputs
 
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = 16'd4;//Stall 
-                    stall_inc = 16'h0002;
+                    nxt_state = |busy ? 16'd5 : 16'd6;
                 end
 
-                16'd6: begin // Miss  Offset 2
+                16'd6: begin 
+                    //Read Offset 2
                     //Write to offset 1
                     cache_en = 1'b1;
                     cache_wr = 1'b1;
@@ -295,11 +271,11 @@ module dm_fsm(  // Outputs
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = 16'd4; //Stall 
-                    stall_inc = 16'h0003;
+                    nxt_state = |busy ? 16'd6 : 16'd7;
                 end
 
-                16'd7: begin // Miss Offset 3
+                16'd7: begin
+                    //Read offset 3
                     //Write to offset 2
                     cache_en = 1'b1;
                     cache_wr = 1'b1;
@@ -310,8 +286,7 @@ module dm_fsm(  // Outputs
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = 16'd4; //Stall 
-                    stall_inc = 16'h0004;
+                    nxt_state = |busy ? 16'd7 : 16'd8;
                 end
 
                 16'd8: begin // Write Offset 3
@@ -329,7 +304,6 @@ module dm_fsm(  // Outputs
         endcase 
     end 
 
-    cla16b stallInc(.sum(stalling), .cOut(), .inA(nxt_state), .inB(stall_inc), .cIn(1'b0));
     dff_16 stateReg(.q(state), .err(), .d(nxt_state), .clk(clk), .rst(rst));
 
 
