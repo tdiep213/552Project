@@ -86,17 +86,21 @@ module sa_fsm(   // Outputs
 
     assign mem_addr_offset[4] = {cache_tag, cache_index, addr[2:0]};
 
-    assign mem_addr_wb[0] = {tag_in, cache_index, 3'b000}; 
-    assign mem_addr_wb[1] = {tag_in, cache_index, 3'b010}; 
-    assign mem_addr_wb[2] = {tag_in, cache_index, 3'b100}; 
-    assign mem_addr_wb[3] = {tag_in, cache_index, 3'b110}; 
+    wire [4:0] tag;
+    assign mem_addr_wb[0] = {tag, cache_index, 3'b000}; 
+    assign mem_addr_wb[1] = {tag, cache_index, 3'b010}; 
+    assign mem_addr_wb[2] = {tag, cache_index, 3'b100}; 
+    assign mem_addr_wb[3] = {tag, cache_index, 3'b110}; 
 
+    
     // wire[15:0] data_out;
     assign cache_data_wr = data;
 
     wire victim, write_victim; // 0 - Cache1, 1 - Cache2
     reg  nxt_victim, set_victim;
     assign write_victim = set_victim ? nxt_victim : victim;
+
+    assign tag = victim ? tag2_in : tag1_in;
     /*
     offset
     110 100 010 000 
@@ -104,6 +108,9 @@ module sa_fsm(   // Outputs
     */
     wire[15:0] state, stalling;
     reg[15:0]  stall_inc, nxt_state;
+
+    wire dirty;
+    assign dirty = victim ? dirty2 : dirty1;
     /* State list
 
     1 -> 19 Read
@@ -147,7 +154,7 @@ module sa_fsm(   // Outputs
         stall_inc = 16'h0000;
         stall_out= 1'b0;
         
-        write_sel = 1'b1;
+        write_sel = 1'b1;       // Cache data in from processor
         done = 1'b0;
         nxt_state = 16'd0;      // Loop default state
         set_victim = 1'b0;
@@ -155,7 +162,6 @@ module sa_fsm(   // Outputs
             default: begin // Default/Idle case
                 nxt_state = wr  ?  16'd20 : (rd ? 16'd1: 16'd0);
                 stall_out = wr|rd ? 1'b1: 1'b0;
-                set_victim = 1'b1;
             end
             
             /* ----- CACHE READ FSM ----- */
@@ -165,14 +171,11 @@ module sa_fsm(   // Outputs
                 cache2_en = 1'b1;      
                 comp = 1'b1;
                 
-                // if hit1 -> cache 2 victim
-                // if hit2 -> cache 1 victim
-                // if neither -> whatever cache is being writen to -> ~victim
-                nxt_victim = hit1 ? 1'b1 : (hit2 ? 1'b0 : ~victim);
+                nxt_victim = ~victim;
 
                 sel = hit1 ? 1'b0 : 1'b1;
-                done = (rd & (hit1 | hit2)) ? 1'b1 : 1'b0;
-                CacheHit = (rd & (hit1 | hit2)) ? 1'b1: 1'b0; 
+                done = ((hit1 | hit2)) ? 1'b1 : 1'b0;
+                CacheHit = (hit1 & valid1) | (hit2 & valid2);
 
                 comp = 1'b1;
                 
@@ -182,36 +185,44 @@ module sa_fsm(   // Outputs
 
             16'd2: begin // Cache miss fsm reset
                 cache1_en = ~victim;
-                cache2_en = victim;;
+                cache2_en = victim;
                 nxt_state = 16'd0;    //Reset FSM
-                CacheHit = hit;
-                done = 1'b1;                
+                CacheHit = hit1|hit2;
+                done = 1'b1;           
+                set_victim = 1'b1;     
             end
 
 
             /* ----- CACHE WRITE ----- */
             16'd20: begin // Check cache
+                nxt_victim = ~victim;
+
                 cache1_en = ~victim;
-                cache2_en = victim;;
+                cache2_en = victim;
                 comp = 1'b1;
 
-                nxt_state = (hit & valid) ? 16'd0: 16'd9/* WRITE CACHE MISS */;
+                nxt_state = (hit1 & valid1) | (hit2 & valid2)  ? 16'd0: 16'd9/* WRITE CACHE MISS */;
 
-                cache_wr = (hit & valid) ? 1'b1 : 1'b0;
-                done = (hit  & valid) ? 1'b1 : 1'b0;
-                stall_out = (hit & valid) ? 1'b0 : 1'b1;
+                //Write to cache
+                CacheHit = (hit1 & valid1) | (hit2 & valid2);
+                cache1_wr = (hit1 & valid1)  ? 1'b1 : 1'b0;
+                cache2_wr = (hit2 & valid2)  ? 1'b1 : 1'b0;
+                done = (hit1 & valid1) | (hit2 & valid2) ? 1'b1 : 1'b0;
+                stall_out = (hit1 & valid1) | (hit2 & valid2)? 1'b0 : 1'b1;
             end
 
             16'd21: begin // Write to cache
                 //Write data to default offset and index
                 cache1_en = ~victim;
-                    cache2_en = victim;;
-                cache_wr = 1'b1;
+                cache2_en = victim;
+                cache1_wr = ~victim;
+                cache2_wr = victim;
                 comp = 1'b1;
 
                 stall_out = 1'b1;
                 valid_in = 1'b1;
                 done = 1'b1;
+                set_victim = 1'b1;
             end
 
 
@@ -246,8 +257,8 @@ module sa_fsm(   // Outputs
                 end
 
                 16'd12: begin  //Write offset 1
-                                        cache1_en = ~victim;
-                    cache2_en = victim;;
+                    cache1_en = ~victim;
+                    cache2_en = victim;
                     offset = 3'b010;
 
                     mem_addr = mem_addr_wb[1];
@@ -259,8 +270,8 @@ module sa_fsm(   // Outputs
                 end
 
                 16'd13: begin  //Write offset 2
-                                        cache1_en = ~victim;
-                    cache2_en = victim;;
+                    cache1_en = ~victim;
+                    cache2_en = victim;
                     offset = 3'b100;
 
                     mem_addr = mem_addr_wb[2];
@@ -272,8 +283,8 @@ module sa_fsm(   // Outputs
                 end
 
                 16'd14: begin  //Write offset 3
-                                        cache1_en = ~victim;
-                    cache2_en = victim;;
+                    cache1_en = ~victim;
+                    cache2_en = victim;
                     offset = 3'b110;
 
                     mem_addr = mem_addr_wb[3];
@@ -295,7 +306,7 @@ module sa_fsm(   // Outputs
 
                 16'd3 : begin // Cache Miss, read index 0 
                     cache1_en = ~victim;
-                    cache2_en = victim;;
+                    cache2_en = victim;
                     mem_rd = (addr[2:1] == 2'b00) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[0];
                     
@@ -308,8 +319,9 @@ module sa_fsm(   // Outputs
                 16'd5: begin // Read offset 1
                     //Write to offset 0
                     cache1_en = ~victim;
-                    cache2_en = victim;;
-                    cache_wr = 1'b1;
+                    cache2_en = victim;
+                    cache1_wr = ~victim;
+                    cache2_wr = victim;
                     offset = 3'b000;
 
                     mem_rd = (addr[2:1] == 2'b01) & wr? 1'b0 : 1'b1;
@@ -324,8 +336,9 @@ module sa_fsm(   // Outputs
                 16'd6: begin // Read offset 2
                     //Write to offset 1
                     cache1_en = ~victim;
-                    cache2_en = victim;;
-                    cache_wr = 1'b1;
+                    cache2_en = victim;
+                    cache1_wr = ~victim;
+                    cache2_wr = victim;
                     offset = 3'b010;
 
                     mem_rd = (addr[2:1] == 2'b10) & wr ? 1'b0 : 1'b1;
@@ -340,8 +353,9 @@ module sa_fsm(   // Outputs
                 16'd7: begin // Read offset 3
                     //Write to offset 2
                     cache1_en = ~victim;
-                    cache2_en = victim;;
-                    cache_wr = 1'b1;
+                    cache2_en = victim;
+                    cache1_wr = ~victim;
+                    cache2_wr = victim;
                     offset = 3'b100;
 
                     mem_rd = (addr[2:1] == 2'b11) & wr ? 1'b0 : 1'b1;
@@ -355,8 +369,9 @@ module sa_fsm(   // Outputs
 
                 16'd8: begin // Write offset 3
                     cache1_en = ~victim;
-                    cache2_en = victim;;
-                    cache_wr = 1'b1;
+                    cache2_en = victim;
+                    cache1_wr = ~victim;
+                    cache2_wr = victim;
                     offset = 3'b110;
 
                     // If we're reading, we can return to reset/idle
@@ -369,7 +384,7 @@ module sa_fsm(   // Outputs
         endcase 
     end 
 
-    dff vic(.q(victim), .d(nxt_victim & set_victim), .clk(clk), .rst(rst));
+    dff vic(.q(victim), .d(write_victim), .clk(clk), .rst(rst));
     cla16b stallInc(.sum(stalling), .cOut(), .inA(nxt_state), .inB(stall_inc), .cIn(1'b0));
     dff_16 stateReg(.q(state), .err(), .d(nxt_state), .clk(clk), .rst(rst));
 

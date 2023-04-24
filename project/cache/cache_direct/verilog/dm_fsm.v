@@ -54,12 +54,7 @@ module dm_fsm(  // Outputs
 
     assign cache_tag = addr[15:11];
     assign cache_index = addr[10:3];
-    //  assign offset = addr[2:0]; 
 
-    /* TODO 
-        I don't know if ararys of vectors like this work 
-        in verilog 2003, but it'll be an easy fix if it doesn't
-    */
     wire [15:0] mem_addr_offset[4:0];
     wire [15:0] mem_addr_wb[3:0];
 
@@ -257,64 +252,61 @@ module dm_fsm(  // Outputs
 
                 16'd3 : begin // Cache Miss, read index 0 
                     cache_en = 1'b1;
-                    // cache_wr = 1'b1;
-                    // offset = 3'b000;
-
-                    mem_rd = 1'b1;
+                    mem_rd = (addr[2:1] == 2'b00) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[0];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = 16'd4;
+                    nxt_state = (addr[2:1] == 2'b00) ? 16'd5 : 16'd4;
                     stall_inc = 16'h0001;
                 end
 
-                16'd5: begin // Miss Offset 1
+                16'd5: begin // Read offset 1
                     //Write to offset 0
                     cache_en = 1'b1;
                     cache_wr = 1'b1;
                     offset = 3'b000;
 
-                    mem_rd = 1'b1;
+                    mem_rd = (addr[2:1] == 2'b01) & wr? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[1];
 
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = 16'd4;//Stall 
+                    nxt_state = (addr[2:1] == 2'b01) & wr ? 16'd6 : 16'd4;//Stall 
                     stall_inc = 16'h0002;
                 end
 
-                16'd6: begin // Miss  Offset 2
+                16'd6: begin // Read offset 2
                     //Write to offset 1
                     cache_en = 1'b1;
                     cache_wr = 1'b1;
                     offset = 3'b010;
 
-                    mem_rd = 1'b1;
+                    mem_rd = (addr[2:1] == 2'b10) & wr ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[2];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = 16'd4; //Stall 
+                    nxt_state = (addr[2:1] == 2'b10) & wr? 16'd7 : 16'd4; //Stall 
                     stall_inc = 16'h0003;
                 end
 
-                16'd7: begin // Miss Offset 3
+                16'd7: begin // Read offset 3
                     //Write to offset 2
                     cache_en = 1'b1;
                     cache_wr = 1'b1;
                     offset = 3'b100;
 
-                    mem_rd = 1'b1;
+                    mem_rd = (addr[2:1] == 2'b11) & wr ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[3];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = 16'd4; //Stall 
+                    nxt_state = (addr[2:1] == 2'b11) & wr? 16'd8 : 16'd4; //Stall 
                     stall_inc = 16'h0004;
                 end
 
-                16'd8: begin // Write Offset 3
+                16'd8: begin // Write offset 3
                     cache_en = 1'b1;
                     cache_wr = 1'b1;
                     offset = 3'b110;
@@ -323,7 +315,7 @@ module dm_fsm(  // Outputs
                     // If we're writing, we write to new cache line
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = rd ? 16'd2 : 16'd21; //Output data and reset statemachine 
+                    nxt_state = rd ? 16'd2 : 16'd21; //reset statemachine 
                 end
 
         endcase 
