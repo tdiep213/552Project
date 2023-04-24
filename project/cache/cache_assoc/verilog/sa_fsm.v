@@ -197,8 +197,8 @@ module sa_fsm(   // Outputs
             16'd20: begin // Check cache
                 nxt_victim = ~victim;
 
-                cache1_en = ~victim;
-                cache2_en = victim;
+                cache1_en = 1'b1;
+                cache2_en = 1'b1;
                 comp = 1'b1;
 
                 nxt_state = (hit1 & valid1) | (hit2 & valid2)  ? 16'd0: 16'd9/* WRITE CACHE MISS */;
@@ -208,7 +208,8 @@ module sa_fsm(   // Outputs
                 cache1_wr = (hit1 & valid1)  ? 1'b1 : 1'b0;
                 cache2_wr = (hit2 & valid2)  ? 1'b1 : 1'b0;
                 done = (hit1 & valid1) | (hit2 & valid2) ? 1'b1 : 1'b0;
-                stall_out = (hit1 & valid1) | (hit2 & valid2)? 1'b0 : 1'b1;
+                CacheHit = (hit1 & valid1) | (hit2 & valid2) ? 1'b1 : 1'b0;
+                stall_out = 1'b1;
             end
 
             16'd21: begin // Write to cache
@@ -239,8 +240,9 @@ module sa_fsm(   // Outputs
                 /* Also done as part of write to cache*/
 
                 16'd10: begin   //Stall
-                    nxt_state = |busy ? 16'd10 : stalling;
+                    // nxt_state = |busy ? 16'd10 : stalling;
                     stall_out = 1'b1;
+                    nxt_state = |busy ? 16'd10 : 16'd3;
                 end
 
                 16'd11: begin  //Write offset 0
@@ -253,7 +255,7 @@ module sa_fsm(   // Outputs
 
                     stall_inc = 16'd1;
                     stall_out = 1'b1;
-                    nxt_state = |busy ? 16'd11: 16'd12;/*stall*/
+                    nxt_state = 16'd12;/*stall*/
                 end
 
                 16'd12: begin  //Write offset 1
@@ -266,7 +268,7 @@ module sa_fsm(   // Outputs
 
                     stall_out = 1'b1;
                     stall_inc = 16'd2;
-                    nxt_state = |busy ? 16'd12: 16'd13;/*stall*/
+                    nxt_state = 16'd13;/*stall*/
                 end
 
                 16'd13: begin  //Write offset 2
@@ -279,7 +281,7 @@ module sa_fsm(   // Outputs
 
                     stall_out = 1'b1;
                     stall_inc = 16'd3;
-                    nxt_state = |busy ? 16'd13: 16'd14;/*stall*/
+                    nxt_state = 16'd14;/*stall*/
                 end
 
                 16'd14: begin  //Write offset 3
@@ -292,7 +294,7 @@ module sa_fsm(   // Outputs
 
                     stall_out = 1'b1;
                     stall_inc = 16'd4;
-                    nxt_state = |busy ? 16'd14 : 16'd3;
+                    nxt_state = 16'd10;
                 end
 
                 /* WRITE MEMORY TO CACHE LINE */
