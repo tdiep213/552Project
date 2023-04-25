@@ -173,7 +173,7 @@ module sa_fsm(   // Outputs
                 
                 nxt_victim = ~victim;
 
-                sel = hit1 ? 1'b0 : 1'b1;
+                sel = (hit1 & valid1) ? 1'b0 : (hit2 & valid2) ? 1'b1 : victim;
                 done = ((hit1 & valid1) | (hit2 & valid2)) ? 1'b1 : 1'b0;
                 CacheHit = (hit1 & valid1) | (hit2 & valid2);
 
@@ -203,6 +203,7 @@ module sa_fsm(   // Outputs
                 cache2_en = 1'b1;
                 comp = 1'b1;
 
+                sel = (hit1 & valid1) ? 1'b0 : (hit2 & valid2) ? 1'b1 : victim;
                 nxt_state = (hit1 & valid1) | (hit2 & valid2)  ? 16'd0: 16'd9/* WRITE CACHE MISS */;
 
                 //Write to cache
