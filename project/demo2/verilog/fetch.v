@@ -55,13 +55,7 @@ module fetch (
    wire [1:0] ChkRegSel;
    reg [2:0] ChkRegAddr;
 
-   pc ProgCnt( .PcAddr(PcAddr), .PC(PC),
-               .Imm(Imm), .BrnchImm(BrnchAddr), 
-               .RsAddr(Instr[10:8]), .Rs(Rs), .jmpPC(jmpPC), 
-               .PcSel(PcSel),.RegJmp(RegJmp),
-               .PcStall(HazNOP), 
-               .Halt(Halt), .SIIC(SIIC), .clk(clk), .rst(rst));
-
+   pc ProgCnt(.PC(PC), .prevPC(prevPC), .newAddr(newAddr), .PcStall(PcStall), .clk(clk), .rst(rst));
 
    memory2c InstrMem(.data_out(Instr), 
                      .data_in(), 
@@ -80,12 +74,12 @@ module fetch (
    end
 
    //assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
-
-   HazDet HDU( .NOP(HazNOP), .PcStall(PCStall), 
-               .Instr(Instr), 
+   HazDet HDU( .NOP(HazNOP), .PcStall(PCStall), .Forwards(Forwards), 
                .valid_n(valid_n), .MemEnable(MemEnable), 
-               .Rd(ChkRegAddr), .Imm(Imm), .Reg1Data(Rs), .clk(clk), .rst(rst));
-    
+               .Rd(ChkRegAddr), .Imm(Imm), .Reg1Data(Rs), 
+               .Instr(Instr), 
+               .clk(clk), .rst(rst));
+
    // This is the stuff that got things moving again, your crying dff was a good lead//
    assign Instr_B = HazNOP ? 16'h0800 : Instr;
    assign PCStall_now = (HazNOP & PCStall);
