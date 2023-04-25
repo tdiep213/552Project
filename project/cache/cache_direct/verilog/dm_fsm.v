@@ -241,7 +241,7 @@ module dm_fsm(  // Outputs
 
                     stall_out = 1'b1;
                     stall_inc = 16'd4;
-                    nxt_state = 16'd10;//|busy ? 16'd14 : 16'd3;
+                    nxt_state = 16'd3;//|busy ? 16'd14 : 16'd3;
                 end
 
                 /* WRITE MEMORY TO CACHE LINE */
