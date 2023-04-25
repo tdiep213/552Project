@@ -1,43 +1,26 @@
 //program counter, increments by 2, Jump/branch logic
 module pc(
     //Outputs
-    PcAddr,
-    PC,
+    PC, prevPC,
     //Inputs
-    Imm,BrnchImm,
-    Rs, jmpPC, RsAddr,
-    PcSel,RegJmp,Halt,SIIC, PcStall,//Control Signals
+    newAddr,
+    PcStall,//Control Signals
     clk, rst
 );
-    input wire PcSel, RegJmp, Halt, SIIC, PcStall;
+
+    output reg [15:0] prevPC;   // Previous PC Instruction 
+    output wire[15:0] PC;       // PC used on the outside
+
+    input wire [15:0] newAddr; // Proposed next PC coming from Brancher
+    input wire PcStall;         // Control signal, 
     input wire clk, rst;
-    input wire [2:0] RsAddr;
-    input wire[15:0] Imm, Rs, BrnchImm, jmpPC;
-    output reg[15:0] PcAddr; //Next Instruction 
-    output wire[15:0]  PC;   // PC used on the outside
     
-    wire [15:0] Inc2, PcImm, RsImm, PcQ, jalrImm, R7Imm;
-    wire zero;
-    assign zero = 0;
-    
-    cla16b PcInc(.sum(Inc2), .cOut(), .inA(PcQ), .inB(16'h0002), .cIn(zero));
-    cla16b PCIMM(.sum(PcImm), .cOut(), .inA(PcQ), .inB(BrnchImm), .cIn(zero));
-    cla16b R7IMM(.sum(R7Imm), .cOut(), .inA(jmpPC), .inB(Imm), .cIn(zero));
-    cla16b RSIMM(.sum(RsImm), .cOut(), .inA(Rs), .inB(Imm), .cIn(zero));
-    
-    assign PC = PcQ;
-    dff_16 PcReg(.q(PcQ), .err(), .d(PcAddr), .clk(clk), .rst(rst));
+    wire [15:0] nextPC, savedNextPC;
 
-    assign jalrImm = (RsAddr != 3'b111) ? RsImm : R7Imm;
-
-    always @* begin 
-        casex({PcSel, RegJmp, Halt, SIIC})
-            4'b0000: PcAddr = PcStall ? PcQ : Inc2 ; //PC+2
-            4'b?100: PcAddr = PcStall ? PcQ : jalrImm;//JR JALR        
-            4'b1000: PcAddr = PcImm;//J JAL Branch
-            4'b???1: PcAddr = 2;    //Exception Handler
-            default: PcAddr = PcQ; //Halt
-        endcase
-    end
+    assign nextPC = PCStall ? savedNextPC : newAddr;
+    assign PC = PCStall ? prevPC : nextPC;    // If stalling, use the previous PC value, otherwise, listen to nextAddr
+    
+    dff_16 PcReg    (.q(prevPC),      .err(), .d(PC),     .clk(clk), .rst(rst));   // Keep track of last PC
+    dff_16 NextPcReg(.q(savedNextPC), .err(), .d(nextPC), .clk(clk), .rst(rst));   // Keep track of last new addr.
 
 endmodule
