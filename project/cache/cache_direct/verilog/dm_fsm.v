@@ -126,23 +126,22 @@ module dm_fsm(  // Outputs
         nxt_state = 16'd0;      // Loop default state
         case(state)
             default: begin // Default/Idle case
-                nxt_state = wr  ?  16'd20 : ((rd & ~hit & valid )? 16'd1: 16'd0);
+                nxt_state = wr  ?  16'd20 : ((rd & (~hit | ~valid))? 16'd1: 16'd0);
 
                 stall_out = wr|rd ? 1'b1: 1'b0;
                 comp = 1'b1;
                 cache_en = rd ? 1'b1 : 1'b0;
-                done = (rd & (hit | ~valid)) ? 1'b1 : 1'b0;
-                CacheHit = (rd & hit) ? 1'b1: 1'b0; 
+                done = (rd & hit & valid) ? 1'b1 : 1'b0;
+                CacheHit = (rd & hit & valid) ? 1'b1: 1'b0; 
             end
             
             /* ----- CACHE READ FSM ----- */
-            16'd1: begin // Check cache  
+            16'd1: begin // Cache miss | Check valid & dirty 
                 cache_en = 1'b1;
-                comp = 1'b1;
-                
+                comp = 1'b1;        
                 stall_out = 1'b1;
-                nxt_state = (hit | ~valid) ? 16'd0 : 16'd11;
-                done = (hit | ~valid) ? 1'b1 : 1'b0;
+                
+                nxt_state = valid & dirty ? 16'd11 : 16'd3;
             end
 
             16'd2: begin // Cache miss fsm reset
@@ -256,12 +255,12 @@ module dm_fsm(  // Outputs
 
                 16'd3 : begin // Cache Miss, read index 0 
                     cache_en = 1'b1;
-                    mem_rd = (addr[2:1] == 2'b00) ? 1'b0 : 1'b1;
+                    mem_rd = ((addr[2:1] == 2'b00) & wr) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[0];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = (addr[2:1] == 2'b00) ? 16'd5 : 16'd4;
+                    nxt_state = ((addr[2:1] == 2'b00) & wr) ? 16'd5 : 16'd4;
                     stall_inc = 16'h0001;
                 end
 
@@ -271,12 +270,12 @@ module dm_fsm(  // Outputs
                     cache_wr = 1'b1;
                     offset = 3'b000;
 
-                    mem_rd = (addr[2:1] == 2'b01) & wr? 1'b0 : 1'b1;
+                    mem_rd = ((addr[2:1] == 2'b01) & wr) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[1];
 
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = (addr[2:1] == 2'b01) & wr ? 16'd6 : 16'd4;//Stall 
+                    nxt_state = ((addr[2:1] == 2'b01) & wr) ? 16'd6 : 16'd4;//Stall 
                     stall_inc = 16'h0002;
                 end
 
@@ -286,12 +285,12 @@ module dm_fsm(  // Outputs
                     cache_wr = 1'b1;
                     offset = 3'b010;
 
-                    mem_rd = (addr[2:1] == 2'b10) & wr ? 1'b0 : 1'b1;
+                    mem_rd = ((addr[2:1] == 2'b10) & wr) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[2];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = (addr[2:1] == 2'b10) & wr? 16'd7 : 16'd4; //Stall 
+                    nxt_state = ((addr[2:1] == 2'b10) & wr) ? 16'd7 : 16'd4; //Stall 
                     stall_inc = 16'h0003;
                 end
 
@@ -301,12 +300,12 @@ module dm_fsm(  // Outputs
                     cache_wr = 1'b1;
                     offset = 3'b100;
 
-                    mem_rd = (addr[2:1] == 2'b11) & wr ? 1'b0 : 1'b1;
+                    mem_rd = ((addr[2:1] == 2'b11) & wr) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[3];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = (addr[2:1] == 2'b11) & wr? 16'd8 : 16'd4; //Stall 
+                    nxt_state = ((addr[2:1] == 2'b11) & wr) ? 16'd8 : 16'd4; //Stall 
                     stall_inc = 16'h0004;
                 end
 
@@ -326,7 +325,7 @@ module dm_fsm(  // Outputs
     end 
 
     cla16b stallInc(.sum(stalling), .cOut(), .inA(nxt_state), .inB(stall_inc), .cIn(1'b0));
-    dff_16 stateReg(.q(state), .err(), .d(nxt_state), .clk(clk), .rst(rst));
+    dff_16b stateReg(.q(state), .err(), .d(nxt_state), .clk(clk), .rst(rst));
 
 
 endmodule

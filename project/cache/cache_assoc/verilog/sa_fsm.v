@@ -150,7 +150,7 @@ module sa_fsm(   // Outputs
         mem_wr = 1'b0;          // Don't write to memory
         mem_addr = mem_addr_offset[4];  //Default memory read/write address
 
-        sel = 1'b0;             // Output from cache1 
+        // sel = 1'b0;             // Output from cache1 
         stall_inc = 16'h0000;
         stall_out= 1'b0;
         
@@ -174,20 +174,22 @@ module sa_fsm(   // Outputs
                 nxt_victim = ~victim;
 
                 sel = hit1 ? 1'b0 : 1'b1;
-                done = ((hit1 | hit2)) ? 1'b1 : 1'b0;
+                done = ((hit1 & valid1) | (hit2 & valid2)) ? 1'b1 : 1'b0;
                 CacheHit = (hit1 & valid1) | (hit2 & valid2);
 
                 comp = 1'b1;
                 
                 stall_out = 1'b1;
-                nxt_state = (hit1 | hit2) ? 16'd0 : 16'd11;
+                nxt_state = ((hit1 & valid1) | (hit2 & valid2)) ? 16'd0 :  16'd9;  
+                 
             end
 
             16'd2: begin // Cache miss fsm reset
                 cache1_en = ~victim;
                 cache2_en = victim;
+                // sel = 
                 nxt_state = 16'd0;    //Reset FSM
-                CacheHit = hit1|hit2;
+                CacheHit = 1'b0;
                 done = 1'b1;           
                 set_victim = 1'b1;     
             end
@@ -309,12 +311,12 @@ module sa_fsm(   // Outputs
                 16'd3 : begin // Cache Miss, read index 0 
                     cache1_en = ~victim;
                     cache2_en = victim;
-                    mem_rd = (addr[2:1] == 2'b00) ? 1'b0 : 1'b1;
+                    mem_rd = ((addr[2:1] == 2'b00) & wr)? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[0];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = (addr[2:1] == 2'b00) ? 16'd5 : 16'd4;
+                    nxt_state = ((addr[2:1] == 2'b00) & wr) ? 16'd5 : 16'd4;
                     stall_inc = 16'h0001;
                 end
 
@@ -326,12 +328,12 @@ module sa_fsm(   // Outputs
                     cache2_wr = victim;
                     offset = 3'b000;
 
-                    mem_rd = (addr[2:1] == 2'b01) & wr? 1'b0 : 1'b1;
+                    mem_rd = ((addr[2:1] == 2'b01) & wr) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[1];
 
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = (addr[2:1] == 2'b01) & wr ? 16'd6 : 16'd4;//Stall 
+                    nxt_state = ((addr[2:1] == 2'b01) & wr) ? 16'd6 : 16'd4;//Stall 
                     stall_inc = 16'h0002;
                 end
 
@@ -343,12 +345,12 @@ module sa_fsm(   // Outputs
                     cache2_wr = victim;
                     offset = 3'b010;
 
-                    mem_rd = (addr[2:1] == 2'b10) & wr ? 1'b0 : 1'b1;
+                    mem_rd = ((addr[2:1] == 2'b10) & wr) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[2];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = (addr[2:1] == 2'b10) & wr? 16'd7 : 16'd4; //Stall 
+                    nxt_state = ((addr[2:1] == 2'b10) & wr) ? 16'd7 : 16'd4; //Stall 
                     stall_inc = 16'h0003;
                 end
 
@@ -360,12 +362,12 @@ module sa_fsm(   // Outputs
                     cache2_wr = victim;
                     offset = 3'b100;
 
-                    mem_rd = (addr[2:1] == 2'b11) & wr ? 1'b0 : 1'b1;
+                    mem_rd = ((addr[2:1] == 2'b11) & wr) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[3];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = (addr[2:1] == 2'b11) & wr? 16'd8 : 16'd4; //Stall 
+                    nxt_state = ((addr[2:1] == 2'b11) & wr) ? 16'd8 : 16'd4; //Stall 
                     stall_inc = 16'h0004;
                 end
 
@@ -388,7 +390,7 @@ module sa_fsm(   // Outputs
 
     dff vic(.q(victim), .d(write_victim), .clk(clk), .rst(rst));
     cla16b stallInc(.sum(stalling), .cOut(), .inA(nxt_state), .inB(stall_inc), .cIn(1'b0));
-    dff_16 stateReg(.q(state), .err(), .d(nxt_state), .clk(clk), .rst(rst));
+    dff_16b stateReg(.q(state), .err(), .d(nxt_state), .clk(clk), .rst(rst));
 
 
 endmodule

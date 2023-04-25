@@ -6,7 +6,7 @@
 
 */
 `default_nettype none
-module dff_16 (
+module dff_16b (
             // Output
             q, err,
             // Inputs
