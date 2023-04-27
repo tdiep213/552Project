@@ -537,65 +537,74 @@ module dm_fsm(  // Outputs
                     stall_out = 1'b1;
                 end
 
-                /* WRITE CACHE LINE TO MEMORY*/
-                /* Also done as part of write to cache*/
+                 /* WRITE CACHE LINE TO MEMORY*/
+                /* 
+                    Initiates a write request for each of the cache line offsets
+                    Only requires stalling logic after final write requiest 
+                    due to each offset being contained in seperate memory banks
+                    and having the ability to write to seperate banks in parallel 
 
-                16'd10: begin   //Stall
-                    // nxt_state = |busy ? 16'd10 : stalling;
-                    // stall_out = 1'b1;
-                    nxt_state = |busy ? 16'd10 : 16'd3;
-                    stall_out = 1'b1;
-                end
+                    Memory takes 4 cycles to complete a write operation
 
-                16'd11: begin  //Write offset 0
+                    Currently doesn't handle busy memory bank errors
+                */
+
+                //Write Cache Line w/ offset 0 to corresponding memory location
+                16'd11: begin  
                     cache_en = 1'b1;
                     offset = 3'b000;
 
                     mem_addr = mem_addr_wb[0];
-                    mem_wr = 1'b1;//|busy ? 1'b0 : 1'b1;
+                    mem_wr = 1'b1;
 
                     stall_inc = 16'd1;
                     stall_out = 1'b1;
-                    nxt_state = 16'd12;//|busy ? 16'd11: 16'd12;/*stall*/
+                    nxt_state = 16'd12;
                 end
 
-                16'd12: begin  //Write offset 1
+                //Write Cache Line w/ offset 1 to corresponding memory location
+                16'd12: begin  
                     cache_en = 1'b1;
                     offset = 3'b010;
 
                     mem_addr = mem_addr_wb[1];
-                    mem_wr = 1'b1;//|busy ? 1'b0 : 1'b1;
+                    mem_wr = 1'b1;
 
                     stall_out = 1'b1;
                     stall_inc = 16'd2;
-                    nxt_state = 16'd13;//|busy ? 16'd12: 16'd13;/*stall*/
+                    nxt_state = 16'd13;
                 end
 
-                16'd13: begin  //Write offset 2
+                //Write Cache Line w/ offset 2 to corresponding memory location
+                16'd13: begin  
                     cache_en = 1'b1;
                     offset = 3'b100;
 
                     mem_addr = mem_addr_wb[2];
-                    mem_wr = 1'b1;//|busy ? 1'b0 : 1'b1;
+                    mem_wr = 1'b1;
 
                     stall_out = 1'b1;
                     stall_inc = 16'd3;
-                    nxt_state = 16'd14;//|busy ? 16'd13: 16'd14;/*stall*/
+                    nxt_state = 16'd14;
                 end
 
-                16'd14: begin  //Write offset 3
+                //Write Cache Line w/ offset 3 to corresponding memory location
+                16'd14: begin 
                     cache_en = 1'b1;
                     offset = 3'b110;
 
                     mem_addr = mem_addr_wb[3];
-                    mem_wr = 1'b1;//|busy ? 1'b0 : 1'b1;
+                    mem_wr = 1'b1;
 
                     stall_out = 1'b1;
                     stall_inc = 16'd4;
-                    nxt_state = 16'd3;//|busy ? 16'd14 : 16'd3;
+                    nxt_state = 16'd3;
                 end
 
                 /* WRITE MEMORY TO CACHE LINE */
+                /*
+                */
+
                 16'd4: begin // Miss stalls
                     offset = 3'b000;
                     write_sel = 1'b0;
@@ -604,74 +613,83 @@ module dm_fsm(  // Outputs
                     nxt_state = stalling; 
                 end
 
-                16'd3 : begin // Cache Miss, read index 0 
+
+                16'd3 : begin
+                    //Read Memory offset 0
                     cache_en = 1'b1;
+
                     mem_rd = ((addr[2:1] == 2'b00) & wr) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[0];
                     
-                    write_sel = 1'b0;
+
                     stall_out = 1'b1;
-                    nxt_state = ((addr[2:1] == 2'b00) & wr) ? 16'd5 : 16'd4;
-                    stall_inc = 16'h0001;
+                    nxt_state = 16'd5;
                 end
 
-                16'd5: begin // Read offset 1
-                    //Write to offset 0
+                16'd5: begin 
+                    //Read Memory offset 1
                     cache_en = 1'b1;
-                    cache_wr = 1'b1;
-                    offset = 3'b000;
 
                     mem_rd = ((addr[2:1] == 2'b01) & wr) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[1];
 
-                    write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = ((addr[2:1] == 2'b01) & wr) ? 16'd6 : 16'd4;//Stall 
-                    stall_inc = 16'h0002;
+                    nxt_state = 16'd6;
                 end
 
                 16'd6: begin // Read offset 2
-                    //Write to offset 1
+                    //Write to offset 0
                     cache_en = 1'b1;
-                    cache_wr = 1'b1;
-                    offset = 3'b010;
+                    cache_wr = ((addr[2:1] == 2'b00) & wr) ? 1'b0 : 1'b1;
+
+                    offset = 3'b000;
+                    write_sel = 1'b0;
 
                     mem_rd = ((addr[2:1] == 2'b10) & wr) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[2];
-                    
-                    write_sel = 1'b0;
+
                     stall_out = 1'b1;
-                    nxt_state = ((addr[2:1] == 2'b10) & wr) ? 16'd7 : 16'd4; //Stall 
-                    stall_inc = 16'h0003;
+                    nxt_state = 16'd7; 
                 end
 
                 16'd7: begin // Read offset 3
-                    //Write to offset 2
+                    //Write to offset 1
                     cache_en = 1'b1;
-                    cache_wr = 1'b1;
-                    offset = 3'b100;
+                    cache_wr = ((addr[2:1] == 2'b01) & wr) ? 1'b0 : 1'b1;
+                    offset = 3'b010;
 
                     mem_rd = ((addr[2:1] == 2'b11) & wr) ? 1'b0 : 1'b1;
                     mem_addr = mem_addr_offset[3];
                     
                     write_sel = 1'b0;
-                    stall_out = 1'b1;
-                    nxt_state = ((addr[2:1] == 2'b11) & wr) ? 16'd8 : 16'd4; //Stall 
-                    stall_inc = 16'h0004;
+                    stall_out = 1'b1; 
+
+                    nxt_state = 16'd8;
                 end
 
-                16'd8: begin // Write offset 3
+                16'd8: begin // Write offset 2
                     cache_en = 1'b1;
-                    cache_wr = 1'b1;
-                    offset = 3'b110;
+                    cache_wr = ((addr[2:1] == 2'b10) & wr) ? 1'b0 : 1'b1;
 
+                    offset = 3'b100;
+                    write_sel = 1'b0;
+                    
+                    stall_out = 1'b1;
+                    nxt_state = 16'd10;
+                end
+
+                16'd10: begin // Write offSet 3
+                    cache_en = 1'b1;
+                    cache_wr = ((addr[2:1] == 2'b11) & wr) ? 1'b0 : 1'b1;
+
+                    offset = 3'b110;
+                    write_sel = 1'b0;
+                    
                     // If we're reading, we can return to reset/idle
                     // If we're writing, we write to new cache line
-                    write_sel = 1'b0;
                     stall_out = 1'b1;
                     nxt_state = rd ? 16'd2 : 16'd21; //reset statemachine 
                 end
-
         endcase 
     end 
 
