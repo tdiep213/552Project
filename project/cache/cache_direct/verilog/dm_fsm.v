@@ -78,8 +78,8 @@ module dm_fsm(  // Outputs
     110 100 010 000 
 
     */
-    wire[15:0] state, stalling;
-    reg[15:0]  stall_inc, nxt_state;
+    wire[15:0] state;
+    reg[15:0]  nxt_state;
     /* State list
 
     1 -> 19 Read
@@ -118,7 +118,6 @@ module dm_fsm(  // Outputs
         mem_addr = mem_addr_offset[4];  //Default memory read/write address
 
         sel = 1'b0;             // Output from cache 
-        stall_inc = 16'h0000;
         stall_out= 1'b0;
         
         write_sel = 1'b1;
@@ -206,7 +205,6 @@ module dm_fsm(  // Outputs
                     mem_addr = mem_addr_wb[0];
                     mem_wr = 1'b1;
 
-                    stall_inc = 16'd1;
                     stall_out = 1'b1;
                     nxt_state = 16'd12;
                 end
@@ -220,7 +218,6 @@ module dm_fsm(  // Outputs
                     mem_wr = 1'b1;
 
                     stall_out = 1'b1;
-                    stall_inc = 16'd2;
                     nxt_state = 16'd13;
                 end
 
@@ -233,7 +230,6 @@ module dm_fsm(  // Outputs
                     mem_wr = 1'b1;
 
                     stall_out = 1'b1;
-                    stall_inc = 16'd3;
                     nxt_state = 16'd14;
                 end
 
@@ -246,22 +242,12 @@ module dm_fsm(  // Outputs
                     mem_wr = 1'b1;
 
                     stall_out = 1'b1;
-                    stall_inc = 16'd4;
                     nxt_state = 16'd3;
                 end
 
                 /* WRITE MEMORY TO CACHE LINE */
                 /*
                 */
-
-                16'd4: begin // Miss stalls
-                    offset = 3'b000;
-                    write_sel = 1'b0;
-
-                    stall_out = 1'b1;
-                    nxt_state = stalling; 
-                end
-
 
                 16'd3 : begin
                     //Read Memory offset 0
@@ -286,7 +272,8 @@ module dm_fsm(  // Outputs
                     nxt_state = 16'd6;
                 end
 
-                16'd6: begin // Read offset 2
+                16'd6: begin 
+                    // Read offset 2
                     //Write to offset 0
                     cache_en = 1'b1;
                     cache_wr = ((addr[2:1] == 2'b00) & wr) ? 1'b0 : 1'b1;
@@ -342,7 +329,6 @@ module dm_fsm(  // Outputs
         endcase 
     end 
 
-    cla16b stallInc(.sum(stalling), .cOut(), .inA(nxt_state), .inB(stall_inc), .cIn(1'b0));
     dff_16b stateReg(.q(state), .err(), .d(nxt_state), .clk(clk), .rst(rst));
 
 
