@@ -109,28 +109,28 @@ module sa_fsm(   // Outputs
     wire[15:0] state, stalling;
     reg[15:0]  stall_inc, nxt_state;
 
-    wire dirty;
+    wire dirty, valid;
     assign dirty = victim ? dirty2 : dirty1;
+    assign valid = victim ? valid2 : valid1;
     /* State list
-
-    1 -> 19 Read
-    20 ->
-
     0/default   = rst/idle state
 
-    1           = Check cache
-    2           = Read Cache hit
+    1           = Check Cache Hit/Miss
+    2           = Read Cache miss | FSM reset
 
     3           = Read memory index w/ offset 0
-    4           = R/W stall  
-    5           = Read memory index w/ offset 1 | Write Cache w/ offset 0
-    6           = Read memory index w/ offset 2 | Write Cache w/ offset 1
-    7           = Read memory index w/ offset 3 | Write Cache w/ offset 2
+    4           = Read memory index w/ offset 1
+    5           = Read memory index w/ offset 2 | Write Cache w/ offset 0
+    6           = Read memory index w/ offset 3 | Write Cache w/ offset 1
+    7           = Write Cache w/ offset 2
     8           = Write Cache w/ offset 3
 
-    9           = Check dirty bit for READ
-    10          = DIRTY | Write cache to memory
-    11          =    
+    9           = Write Cache miss | check dirty and valid bits
+
+    11          = Write cache line to memory offset 0
+    12          = Write cache line to memory offset 1
+    13          = Write cache line to memory offset 2
+    14          = Write cache line to memory offset 3
 
     20          = Check cache
     21          = Write to cache
@@ -174,7 +174,7 @@ module sa_fsm(   // Outputs
                 nxt_victim = ~victim;
 
                 sel = (hit1 & valid1) ? 1'b0 : (hit2 & valid2) ? 1'b1 : victim;
-                done = ((hit1 & valid1) | (hit2 & valid2)) ? 1'b1 : 1'b0;
+                done = (hit1 & valid1) | (hit2 & valid2);
                 CacheHit = (hit1 & valid1) | (hit2 & valid2);
 
                 comp = 1'b1;
@@ -184,10 +184,10 @@ module sa_fsm(   // Outputs
                  
             end
 
-            16'd2: begin // Cache miss fsm reset
+            16'd2: begin // Cache Read miss | FSM reset
                 cache1_en = ~victim;
                 cache2_en = victim;
-                // sel = 
+
                 nxt_state = 16'd0;    //Reset FSM
                 CacheHit = 1'b0;
                 done = 1'b1;           
@@ -208,14 +208,15 @@ module sa_fsm(   // Outputs
 
                 //Write to cache
                 CacheHit = (hit1 & valid1) | (hit2 & valid2);
-                cache1_wr = (hit1 & valid1)  ? 1'b1 : 1'b0;
-                cache2_wr = (hit2 & valid2)  ? 1'b1 : 1'b0;
-                done = (hit1 & valid1) | (hit2 & valid2) ? 1'b1 : 1'b0;
-                CacheHit = (hit1 & valid1) | (hit2 & valid2) ? 1'b1 : 1'b0;
+                cache1_wr = (hit1 & valid1);
+                cache2_wr = (hit2 & valid2);
+                done = (hit1 & valid1) | (hit2 & valid2);
+                CacheHit = (hit1 & valid1) | (hit2 & valid2);
                 stall_out = 1'b1;
             end
 
-            16'd21: begin // Write to cache
+            16'd21: begin 
+                //Write Cache miss | write to cache
                 //Write data to default offset and index
                 cache1_en = ~victim;
                 cache2_en = victim;
@@ -235,148 +236,148 @@ module sa_fsm(   // Outputs
                     comp = 1'b1;
                     cache1_en = ~victim;
                     cache2_en = victim;
-                    nxt_state = dirty ? 16'd11: 16'd3;
+                    nxt_state = (dirty & valid) ? 16'd11: 16'd3;
                     stall_out = 1'b1;
                 end
 
                 /* WRITE CACHE LINE TO MEMORY*/
                 /* Also done as part of write to cache*/
 
-                16'd10: begin   //Stall
-                    // nxt_state = |busy ? 16'd10 : stalling;
-                    stall_out = 1'b1;
-                    nxt_state = |busy ? 16'd10 : 16'd3;
-                end
 
-                16'd11: begin  //Write offset 0
+                //Write Victim Cache Line w/ offset 0 to corresponding memory location
+                16'd11: begin  
                     cache1_en = ~victim;
                     cache2_en = victim;
                     offset = 3'b000;
 
                     mem_addr = mem_addr_wb[0];
-                    mem_wr = |busy ? 1'b0 : 1'b1;
+                    mem_wr = 1'b1;
 
-                    stall_inc = 16'd1;
                     stall_out = 1'b1;
                     nxt_state = 16'd12;/*stall*/
                 end
 
-                16'd12: begin  //Write offset 1
+                //Write Cache Line w/ offset 1 to corresponding memory location
+                16'd12: begin 
                     cache1_en = ~victim;
                     cache2_en = victim;
                     offset = 3'b010;
 
                     mem_addr = mem_addr_wb[1];
-                    mem_wr = |busy ? 1'b0 : 1'b1;
+                    mem_wr =  1'b1;
 
                     stall_out = 1'b1;
-                    stall_inc = 16'd2;
                     nxt_state = 16'd13;/*stall*/
                 end
 
-                16'd13: begin  //Write offset 2
+                //Write Cache Line w/ offset 2 to corresponding memory location
+                16'd13: begin 
                     cache1_en = ~victim;
                     cache2_en = victim;
                     offset = 3'b100;
 
                     mem_addr = mem_addr_wb[2];
-                    mem_wr = |busy ? 1'b0 : 1'b1;
+                    mem_wr = 1'b1;
 
                     stall_out = 1'b1;
-                    stall_inc = 16'd3;
                     nxt_state = 16'd14;/*stall*/
                 end
 
-                16'd14: begin  //Write offset 3
+                //Write Cache Line w/ offset 3 to corresponding memory location
+                16'd14: begin  
                     cache1_en = ~victim;
                     cache2_en = victim;
                     offset = 3'b110;
 
                     mem_addr = mem_addr_wb[3];
-                    mem_wr = |busy ? 1'b0 : 1'b1;
+                    mem_wr = 1'b1;
 
                     stall_out = 1'b1;
-                    stall_inc = 16'd4;
-                    nxt_state = 16'd10;
+                    nxt_state = 16'd3;
                 end
 
                 /* WRITE MEMORY TO CACHE LINE */
-                16'd4: begin // Miss stalls
-                    offset = 3'b000;
-                    write_sel = 1'b0;
 
-                    stall_out = 1'b1;
-                    nxt_state = stalling; 
-                end
 
-                16'd3 : begin // Cache Miss, read index 0 
+                16'd3 : begin
+                    //Read Memory offset 0
                     cache1_en = ~victim;
                     cache2_en = victim;
-                    mem_rd = ((addr[2:1] == 2'b00) & wr)? 1'b0 : 1'b1;
+
+                    mem_rd = ~((addr[2:1] == 2'b00) & wr);
                     mem_addr = mem_addr_offset[0];
                     
-                    write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = ((addr[2:1] == 2'b00) & wr) ? 16'd5 : 16'd4;
-                    stall_inc = 16'h0001;
+                    nxt_state = 16'd4;
                 end
 
-                16'd5: begin // Read offset 1
+                16'd4: begin 
+                    // Read offset 1
+                    cache1_en = ~victim;
+                    cache2_en = victim;
+
+                    mem_rd = ~((addr[2:1] == 2'b01) & wr);
+                    mem_addr = mem_addr_offset[1];
+
+                    stall_out = 1'b1;
+                    nxt_state =16'd5;
+                end
+
+                16'd5: begin 
+                    // Read offset 2
                     //Write to offset 0
                     cache1_en = ~victim;
                     cache2_en = victim;
-                    cache1_wr = ~victim;
-                    cache2_wr = victim;
+                    cache1_wr = ~victim & ~((addr[2:1] == 2'b00) & wr);
+                    cache2_wr = victim  & ~((addr[2:1] == 2'b00) & wr);
+
                     offset = 3'b000;
 
-                    mem_rd = ((addr[2:1] == 2'b01) & wr) ? 1'b0 : 1'b1;
-                    mem_addr = mem_addr_offset[1];
-
-                    write_sel = 1'b0;
-                    stall_out = 1'b1;
-                    nxt_state = ((addr[2:1] == 2'b01) & wr) ? 16'd6 : 16'd4;//Stall 
-                    stall_inc = 16'h0002;
-                end
-
-                16'd6: begin // Read offset 2
-                    //Write to offset 1
-                    cache1_en = ~victim;
-                    cache2_en = victim;
-                    cache1_wr = ~victim;
-                    cache2_wr = victim;
-                    offset = 3'b010;
-
-                    mem_rd = ((addr[2:1] == 2'b10) & wr) ? 1'b0 : 1'b1;
+                    mem_rd = ~((addr[2:1] == 2'b10) & wr);
                     mem_addr = mem_addr_offset[2];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = ((addr[2:1] == 2'b10) & wr) ? 16'd7 : 16'd4; //Stall 
-                    stall_inc = 16'h0003;
+                    nxt_state = 16'd6;
                 end
 
-                16'd7: begin // Read offset 3
-                    //Write to offset 2
+                16'd6: begin 
+                    // Read offset 3
+                    //Write to offset 1
                     cache1_en = ~victim;
                     cache2_en = victim;
-                    cache1_wr = ~victim;
-                    cache2_wr = victim;
-                    offset = 3'b100;
+                    cache1_wr = ~victim & ~((addr[2:1] == 2'b01) & wr);
+                    cache2_wr = victim & ~((addr[2:1] == 2'b01) & wr);
 
-                    mem_rd = ((addr[2:1] == 2'b11) & wr) ? 1'b0 : 1'b1;
+                    offset = 3'b010;
+
+                    mem_rd = ~((addr[2:1] == 2'b11) & wr);
                     mem_addr = mem_addr_offset[3];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1;
-                    nxt_state = ((addr[2:1] == 2'b11) & wr) ? 16'd8 : 16'd4; //Stall 
-                    stall_inc = 16'h0004;
+                    nxt_state = 16'd7;
                 end
 
-                16'd8: begin // Write offset 3
+                16'd7: begin 
+                    // Write offset 2
                     cache1_en = ~victim;
                     cache2_en = victim;
-                    cache1_wr = ~victim;
-                    cache2_wr = victim;
+                    cache1_wr = ~victim & ~((addr[2:1] == 2'b10) & wr);
+                    cache2_wr = victim & ~((addr[2:1] == 2'b10) & wr);
+                    offset = 3'b100;
+
+                    write_sel = 1'b0;
+                    stall_out = 1'b1;
+                    nxt_state = 16'd8;
+                end
+
+                16'd8: begin 
+                    // Write offset 3
+                    cache1_en = ~victim;
+                    cache2_en = victim;
+                    cache1_wr = ~victim & ~((addr[2:1] == 2'b11) & wr);
+                    cache2_wr = victim  & ~((addr[2:1] == 2'b11) & wr);
                     offset = 3'b110;
 
                     // If we're reading, we can return to reset/idle

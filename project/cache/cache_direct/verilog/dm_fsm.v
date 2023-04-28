@@ -165,7 +165,7 @@ module dm_fsm(
             end
 
             16'd21: begin 
-                // Write to cache
+                //Write Cache miss | write to cache
                 //Write data to default offset and index
                 cache_en = 1'b1;
                 cache_wr = 1'b1;
@@ -185,7 +185,7 @@ module dm_fsm(
                     stall_out = 1'b1;
                 end
 
-                 /* WRITE CACHE LINE TO MEMORY*/
+                /* WRITE CACHE LINE TO MEMORY*/
                 /* 
                     Initiates a write request for each of the cache line offsets
                     Only requires stalling logic after final write requiest 
@@ -288,7 +288,8 @@ module dm_fsm(
                     nxt_state = 16'd6; 
                 end
 
-                16'd6: begin // Read offset 3
+                16'd6: begin 
+                    //Read offset 3
                     //Write to offset 1
                     cache_en = 1'b1;
                     cache_wr = ~((addr[2:1] == 2'b01) & wr);
@@ -303,7 +304,8 @@ module dm_fsm(
                     nxt_state = 16'd7;
                 end
 
-                16'd7: begin // Write offset 2
+                16'd7: begin 
+                    // Write offset 2
                     cache_en = 1'b1;
                     cache_wr = ~((addr[2:1] == 2'b10) & wr);
 
@@ -314,7 +316,8 @@ module dm_fsm(
                     nxt_state = 16'd8;
                 end
 
-                16'd8: begin // Write offSet 3
+                16'd8: begin 
+                    // Write offSet 3
                     cache_en = 1'b1;
                     cache_wr = ~((addr[2:1] == 2'b11) & wr);
 
