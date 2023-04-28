@@ -206,7 +206,6 @@ module sa_fsm(   // Outputs
                 nxt_state = (hit1 & valid1) | (hit2 & valid2)  ? 16'd0: 16'd9/* WRITE CACHE MISS */;
 
                 //Write to cache
-                CacheHit = (hit1 & valid1) | (hit2 & valid2);
                 cache1_wr = (hit1 & valid1);
                 cache2_wr = (hit2 & valid2);
                 done = (hit1 & valid1) | (hit2 & valid2);
@@ -253,7 +252,7 @@ module sa_fsm(   // Outputs
                     mem_wr = 1'b1;
 
                     stall_out = 1'b1;
-                    nxt_state = 16'd12;/*stall*/
+                    nxt_state = 16'd12;
                 end
 
                 //Write Cache Line w/ offset 1 to corresponding memory location
