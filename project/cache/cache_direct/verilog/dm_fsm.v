@@ -1,7 +1,16 @@
-module dm_fsm(  // Outputs
-            mem_addr, mem_wr, mem_rd, cache_en, cache_tag, cache_index,
-            offset, cache_data_wr, cache_wr, comp, valid_in, sel,
+module dm_fsm(  
+            // Outputs
+                //PROC
             done, CacheHit, stall_out,
+                // Memory
+            mem_addr, mem_wr, mem_rd, 
+                //Cache
+            cache_tag, cache_index, offset,
+            cache_data_wr, valid_in,
+            cache_en, cache_wr, comp,
+                //MEM_SYS
+            sel,
+
             // Inputs
                //PROC
             addr,
@@ -87,19 +96,22 @@ module dm_fsm(  // Outputs
 
     0/default   = rst/idle state
 
-    1           = Check cache
-    2           = Read Cache hit
+    1           = Read Cache miss | check dirty and valid bits
+    2           = Read Cache miss | FSM reset
 
     3           = Read memory index w/ offset 0
-    4           = R/W stall  
-    5           = Read memory index w/ offset 1 | Write Cache w/ offset 0
-    6           = Read memory index w/ offset 2 | Write Cache w/ offset 1
-    7           = Read memory index w/ offset 3 | Write Cache w/ offset 2
+    4           = Read memory index w/ offset 1
+    5           = Read memory index w/ offset 2 | Write Cache w/ offset 0
+    6           = Read memory index w/ offset 3 | Write Cache w/ offset 1
+    7           = Write Cache w/ offset 2
     8           = Write Cache w/ offset 3
 
-    9           = Check dirty bit for READ
-    10          = DIRTY | Write cache to memory
-    11          =    
+    9           = Write Cache miss | check dirty and valid bits
+
+    11          = Write cache line to memory offset 0
+    12          = Write cache line to memory offset 1
+    13          = Write cache line to memory offset 2
+    14          = Write cache line to memory offset 3
 
     20          = Check cache
     21          = Write to cache
@@ -127,23 +139,24 @@ module dm_fsm(  // Outputs
             default: begin // Default/Idle case
                 nxt_state = wr  ?  16'd20 : ((rd & (~hit | ~valid))? 16'd1: 16'd0);
 
-                stall_out = wr|rd ? 1'b1: 1'b0;
+                stall_out = wr|rd;
                 comp = 1'b1;
-                cache_en = rd ? 1'b1 : 1'b0;
-                done = (rd & hit & valid) ? 1'b1 : 1'b0;
-                CacheHit = (rd & hit & valid) ? 1'b1: 1'b0; 
+                cache_en = rd;
+                done = (rd & hit & valid);
+                CacheHit = (rd & hit & valid);
             end
             
             /* ----- CACHE READ FSM ----- */
-            16'd1: begin // Cache miss | Check valid & dirty 
+            16'd1: begin // Cache Read miss | Check valid & dirty 
                 cache_en = 1'b1;
                 comp = 1'b1;        
                 stall_out = 1'b1;
                 
-                nxt_state = valid & dirty ? 16'd11 : 16'd3;
+                nxt_state = (valid & dirty) ? 16'd11 : 16'd3;
             end
 
-            16'd2: begin // Cache miss fsm reset
+            //Not 100% sure if this is needed lol
+            16'd2: begin // Cache Read miss | FSM reset
                 cache_en = 1'b1;
                 nxt_state = 16'd0;    //Reset FSM
                 CacheHit = 1'b0;
@@ -158,14 +171,14 @@ module dm_fsm(  // Outputs
 
                 nxt_state = (hit & valid) ? 16'd0: 16'd9/* WRITE CACHE MISS */;
 
-                //Yeah the ternaries aren't needed, but I find it easier to read
-                cache_wr = (hit & valid) ? 1'b1 : 1'b0;
-                done = (hit  & valid) ? 1'b1 : 1'b0;
-                CacheHit = (hit & valid)? 1'b1 : 1'b0;
+                cache_wr = (hit & valid);
+                done = (hit  & valid);
+                CacheHit = (hit & valid);
                 stall_out = 1'b1;
             end
 
-            16'd21: begin // Write to cache
+            16'd21: begin 
+                // Write to cache
                 //Write data to default offset and index
                 cache_en = 1'b1;
                 cache_wr = 1'b1;
@@ -178,10 +191,10 @@ module dm_fsm(  // Outputs
 
 
                 /* DIRTY BIT MEMORY CHECK */
-                16'd9: begin   //Check dirty bit
+                16'd9: begin   //Cache Miss | Check dirty bit
                     comp = 1'b1;
                     cache_en = 1'b1;
-                    nxt_state = dirty ? 16'd11: 16'd3;
+                    nxt_state = (dirty & valid) ? 16'd11: 16'd3;
                     stall_out = 1'b1;
                 end
 
@@ -253,70 +266,70 @@ module dm_fsm(  // Outputs
                     //Read Memory offset 0
                     cache_en = 1'b1;
 
-                    mem_rd = ((addr[2:1] == 2'b00) & wr) ? 1'b0 : 1'b1;
+                    mem_rd = ~((addr[2:1] == 2'b00) & wr);
                     mem_addr = mem_addr_offset[0];
                     
+
+                    stall_out = 1'b1;
+                    nxt_state = 16'd4;
+                end
+
+                16'd4: begin 
+                    //Read Memory offset 1
+                    cache_en = 1'b1;
+
+                    mem_rd = ~((addr[2:1] == 2'b01) & wr);
+                    mem_addr = mem_addr_offset[1];
 
                     stall_out = 1'b1;
                     nxt_state = 16'd5;
                 end
 
                 16'd5: begin 
-                    //Read Memory offset 1
-                    cache_en = 1'b1;
-
-                    mem_rd = ((addr[2:1] == 2'b01) & wr) ? 1'b0 : 1'b1;
-                    mem_addr = mem_addr_offset[1];
-
-                    stall_out = 1'b1;
-                    nxt_state = 16'd6;
-                end
-
-                16'd6: begin 
                     // Read offset 2
                     //Write to offset 0
                     cache_en = 1'b1;
-                    cache_wr = ((addr[2:1] == 2'b00) & wr) ? 1'b0 : 1'b1;
+                    cache_wr = ~((addr[2:1] == 2'b00) & wr);
 
                     offset = 3'b000;
                     write_sel = 1'b0;
 
-                    mem_rd = ((addr[2:1] == 2'b10) & wr) ? 1'b0 : 1'b1;
+                    mem_rd = ~((addr[2:1] == 2'b10) & wr);
                     mem_addr = mem_addr_offset[2];
 
                     stall_out = 1'b1;
-                    nxt_state = 16'd7; 
+                    nxt_state = 16'd6; 
                 end
 
-                16'd7: begin // Read offset 3
+                16'd6: begin // Read offset 3
                     //Write to offset 1
                     cache_en = 1'b1;
-                    cache_wr = ((addr[2:1] == 2'b01) & wr) ? 1'b0 : 1'b1;
+                    cache_wr = ~((addr[2:1] == 2'b01) & wr);
                     offset = 3'b010;
 
-                    mem_rd = ((addr[2:1] == 2'b11) & wr) ? 1'b0 : 1'b1;
+                    mem_rd = ~((addr[2:1] == 2'b11) & wr);
                     mem_addr = mem_addr_offset[3];
                     
                     write_sel = 1'b0;
                     stall_out = 1'b1; 
 
-                    nxt_state = 16'd8;
+                    nxt_state = 16'd7;
                 end
 
-                16'd8: begin // Write offset 2
+                16'd7: begin // Write offset 2
                     cache_en = 1'b1;
-                    cache_wr = ((addr[2:1] == 2'b10) & wr) ? 1'b0 : 1'b1;
+                    cache_wr = ~((addr[2:1] == 2'b10) & wr);
 
                     offset = 3'b100;
                     write_sel = 1'b0;
                     
                     stall_out = 1'b1;
-                    nxt_state = 16'd10;
+                    nxt_state = 16'd8;
                 end
 
-                16'd10: begin // Write offSet 3
+                16'd8: begin // Write offSet 3
                     cache_en = 1'b1;
-                    cache_wr = ((addr[2:1] == 2'b11) & wr) ? 1'b0 : 1'b1;
+                    cache_wr = ~((addr[2:1] == 2'b11) & wr);
 
                     offset = 3'b110;
                     write_sel = 1'b0;
