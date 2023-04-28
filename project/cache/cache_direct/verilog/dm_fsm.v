@@ -6,15 +6,14 @@ module dm_fsm(
             mem_addr, mem_wr, mem_rd, 
                 //Cache
             cache_tag, cache_index, offset,
-            cache_data_wr, valid_in,
-            cache_en, cache_wr, comp,
+            cache_en, cache_wr,
+            valid_in, comp,
                 //MEM_SYS
             sel,
 
             // Inputs
                //PROC
             addr,
-            data,
             rd,
             wr,
                //MEM
@@ -32,7 +31,6 @@ module dm_fsm(
 
 
     output reg [15:0] mem_addr; 
-    output wire [15:0] cache_data_wr;
     output wire [7:0]  cache_index;
     output wire [4:0] cache_tag;
     output reg [2:0] offset;
@@ -48,8 +46,7 @@ module dm_fsm(
                 write_sel,
                 stall_out;
 
-    input wire [15:0] addr,
-                      data;
+    input wire [15:0] addr;
     input wire [4:0] tag_in;
     input wire [3:0] busy;
     input wire rd, 
@@ -79,21 +76,11 @@ module dm_fsm(
     assign mem_addr_wb[2] = {tag_in, cache_index, 3'b100}; 
     assign mem_addr_wb[3] = {tag_in, cache_index, 3'b110}; 
 
-    // wire[15:0] data_out;
-    assign cache_data_wr = data;
 
-    /*
-    offset
-    110 100 010 000 
-
-    */
     wire[15:0] state;
     reg[15:0]  nxt_state;
+
     /* State list
-
-    1 -> 19 Read
-    20 ->
-
     0/default   = rst/idle state
 
     1           = Read Cache miss | check dirty and valid bits
