@@ -110,14 +110,14 @@ module proc (/*AUTOARG*/
     if_id IF_ID_PIPE(
         /*-----PIPELINE OUT-----*/
         .InstrOut(ID_Instr), .ImmExtOut(ID_ImmExt), .PcOut(ID_PC),              //Data out
-        .LinkRegOut(ID_LinkReg), .WriteRegAddrOut(ID_WriteRegAddr), .b_flagOut(ID_b_flag),  .j_flagOut(ID_j_flag),               //Control out (Decode)
+        .LinkRegOut({ID_Link, ID_LBI}), .WriteRegAddrOut(ID_WriteRegAddr), .b_flagOut(ID_b_flag),  .j_flagOut(ID_j_flag),               //Control out (Decode)
         .ALUSelOut(ID_ALUSel),                                                  //Control out (Execute)
         .MemEnableOut(ID_MemEnable), .MemWrOut(ID_MemWr), .HaltOut(ID_Halt), //Control out (Memory)
         .Val2RegOut(ID_Val2Reg), .RegWriteOut(ID_RegWrite), .ForwardsOut(ID_Forwards),                   //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
         .InstrIn(IF_Instr), .ImmExtIn(IF_ImmExt), .PcIn(IF_PC),                 //Data in 
-        .LinkRegIn(LinkReg), .WriteRegAddrIn(IF_WriteRegAddr), .b_flagIn(b_flag), .j_flagIn(j_flag),                       //Execute control//Control in (Decode)
+        .LinkRegIn({Link, LBI}), .WriteRegAddrIn(IF_WriteRegAddr), .b_flagIn(b_flag), .j_flagIn(j_flag),                       //Execute control//Control in (Decode)
         .ALUSelIn(ALUSel),                                                      //Control in (Execute)
         .MemEnableIn(MemEnable), .MemWrIn(MemWr), .HaltIn(Halt),                //Control in (Memory)
         .Val2RegIn(Val2Reg), .RegWriteIn(RegWrite), .ForwardsIn(Forwards),                           //Control in (Writeback)
@@ -145,14 +145,14 @@ module proc (/*AUTOARG*/
             .RsOut(EX_Rs), .RtOut(EX_Rt), .WriteRegAddrOut(EX_WriteRegAddr),               
         .ALUSelOut(EX_ALUSel),                                              //Control out (Execute)
         .MemEnableOut(EX_MemEnable), .MemWrOut(EX_MemWr), .HaltOut(EX_Halt),//Control out (Memory)
-        .Val2RegOut(EX_Val2Reg), .RegWriteOut(EX_RegWrite), .LinkRegOut(EX_LinkReg), .ForwardsOut(EX_Forwards),                                           //Control out (Writeback)
+        .Val2RegOut(EX_Val2Reg), .RegWriteOut(EX_RegWrite), .LinkRegOut({EX_Link, EX_LBI}), .ForwardsOut(EX_Forwards),                                           //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
         .InstrIn(ID_Instr), .ImmExtIn(ID_ImmExt), .PcIn(ID_PC),             //Data in
             .RsIn(ID_Rs), .RtIn(ID_Rt), .WriteRegAddrIn(ID_WriteRegAddr),     
         .ALUSelIn(ID_ALUSel),                                               //Control in (Execute)
         .MemEnableIn(ID_MemEnable), .MemWrIn(ID_MemWr), .HaltIn(ID_Halt),   //Control in (Memory)
-        .Val2RegIn(ID_Val2Reg), .RegWriteIn(ID_RegWrite), .LinkRegIn(ID_LinkReg), .ForwardsIn(ID_Forwards),                                          //Control in (Writeback)
+        .Val2RegIn(ID_Val2Reg), .RegWriteIn(ID_RegWrite), .LinkRegIn({ID_Link, ID_LBI}), .ForwardsIn(ID_Forwards),                                          //Control in (Writeback)
 
         .clk(clk), .rst(rst)
     );
@@ -170,12 +170,12 @@ module proc (/*AUTOARG*/
         /*-----PIPELINE OUT-----*/
         .RtOut(MEM_Rt), .ALUoutOut(MEM_ALUout), .WriteRegAddrOut(MEM_WriteRegAddr), .ImmExtOut(MEM_ImmExt), .PcOut(MEM_PC), //Data out
         .MemEnableOut(MEM_MemEnable), .MemWrOut(MEM_MemWr), .HaltOut(MEM_Halt),     //Control out (Memory)
-        .Val2RegOut(MEM_Val2Reg), .RegWriteOut(MEM_RegWrite), .LinkRegOut(MEM_LinkReg),                                                   //Control out (Writeback)
+        .Val2RegOut(MEM_Val2Reg), .RegWriteOut(MEM_RegWrite), .LinkRegOut({MEM_Link, MEM_LBI}),                                                   //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
         .RtIn(EX_Rt), .ALUoutIn(EX_ALUout), .WriteRegAddrIn(EX_WriteRegAddr), .ImmExtIn(EX_ImmExt), .PcIn(EX_PC),   //Data in
         .MemEnableIn(EX_MemEnable), .MemWrIn(EX_MemWr), .HaltIn(EX_Halt),       //Control in (Memory)
-        .Val2RegIn(EX_Val2Reg), .RegWriteIn(EX_RegWrite), .LinkRegIn(EX_LinkReg),                                                 //Control in (Writeback)
+        .Val2RegIn(EX_Val2Reg), .RegWriteIn(EX_RegWrite), .LinkRegIn({EX_Link, EX_LBI}),                                                 //Control in (Writeback)
 
         .clk(clk), .rst(rst)
     );
@@ -190,11 +190,11 @@ module proc (/*AUTOARG*/
         mem_wb MEM_WB_PIPE(
         /*-----PIPELINE OUT-----*/
         .MemOutOut(WB_MEMout), .ALUoutOut(WB_ALUout), .WriteRegAddrOut(WB_WriteRegAddr), .ImmExtOut(WB_ImmExt), .PcOut(WB_PC),                              //Data out
-        .Val2RegOut(WB_Val2Reg), .RegWriteOut(WB_RegWrite), .LinkRegOut(WB_LinkReg),                                               //Control out (Writeback)
+        .Val2RegOut(WB_Val2Reg), .RegWriteOut(WB_RegWrite), .LinkRegOut({WB_Link, WB_LBI}),                                               //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
         .MemOutIn(MEM_MEMout), .ALUoutIn(MEM_ALUout), .WriteRegAddrIn(MEM_WriteRegAddr), .ImmExtIn(MEM_ImmExt), .PcIn(MEM_PC),   //Data in
-        .Val2RegIn(MEM_Val2Reg), .RegWriteIn(MEM_RegWrite), .LinkRegIn(MEM_LinkReg),                                                            //Control in (Writeback)
+        .Val2RegIn(MEM_Val2Reg), .RegWriteIn(MEM_RegWrite), .LinkRegIn({MEM_Link, MEM_LBI}),                                                            //Control in (Writeback)
 
         .clk(clk), .rst(rst)
     );
