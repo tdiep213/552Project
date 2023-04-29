@@ -8,24 +8,17 @@
     //PC + Instruction Memory
 module fetch (
    // outputs
-   Instr_C, 
-   PC, 
-   RegWrite, 
+   Instr_C, PC, 
    WriteRegAddr,
-   MemEnable, 
-   MemWr,
-   Val2Reg, 
-   ALUSel, 
-   ImmSel,
-   LinkReg, 
-   ctrlErr, 
-   b_flag,
-   j_flag,
-   Halt,
+   RegWrite, Val2Reg, Link, LBI, // Register Ctrl signals
+   ALUSel, ImmSel,               // Execute ctrl signals
+   MemEnable, MemWr,             // mem ctrl signals
+   b_flag, j_flag, RegJmp,       // branch ctrl signals
+   Halt, ctrlErr, Forwards       // Special ctrl signals
    // inputs
    BrnchAddr,
    Imm, 
-   Rs,     RegJmp, jmpPC,
+   Rs,     jmpPC,
    SIIC,
    PcSel,
    clk, 
@@ -35,10 +28,10 @@ module fetch (
    output wire RegWrite, MemEnable, 
                MemWr, Val2Reg, ctrlErr, ALUSel, b_flag, j_flag;
 
-   output wire [1:0] LinkReg;
    output reg [2:0] WriteRegAddr;
    output wire [2:0] ImmSel;
-   output wire RegJmp, Halt, SIIC;
+   output wire [5:0] Forwards;
+   output wire RegJmp, Link, LBI, Halt, SIIC;
 
    input wire[15:0] Imm, Rs, jmpPC;
    input wire[15:0] BrnchAddr;
@@ -107,8 +100,8 @@ module fetch (
    .ALUSel(ALUSel), 
    .ImmSel(ImmSel), 
    .Halt(Halt), 
-   .Link(LinkReg[1]), 
-   .LBI(LinkReg[0]),
+   .Link(Link), 
+   .LBI(LBI),
    .ctrlErr(ctrlErr),
    .SIIC(SIIC),
    .b_flag(b_flag),

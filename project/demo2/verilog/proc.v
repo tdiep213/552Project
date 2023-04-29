@@ -34,7 +34,7 @@ module proc (/*AUTOARG*/
     // deprecated wire[4:0] ALUcntrl;
     wire RegJmp, Halt;  //FETCH
     wire RegWrite;   //DECODE
-    wire[1:0] LinkReg, DestRegSel;
+    wire[1:0] DestRegSel;
     wire SIIC;
 
     wire[15:0] EPC, EPC_D;
@@ -45,35 +45,36 @@ module proc (/*AUTOARG*/
     wire ctrlErr, ext_err;     //ERRORs
     wire b_flag; 
     wire j_flag;
+    wire LBI, Link;
     wire[2:0] IF_WriteRegAddr;
     wire HazNOP;
+    wire [5:0] Forwards;
     /*-----ID WIRES-----*/
     wire[15:0] ID_Instr, ID_PC, ID_ImmExt, ID_Rs, ID_Rt, JmpData;
     wire[2:0] ID_WriteRegAddr;
-    wire[1:0] ID_LinkReg, ID_DestRegSel;
+    wire[1:0] ID_DestRegSel;
     wire ID_RegWrite;
     wire ID_PcSel, ID_b_flag, ID_j_flag;
-    wire ID_ALUSel, ID_MemEnable, ID_MemWr, ID_Halt, ID_Val2Reg;     
+    wire ID_ALUSel, ID_MemEnable, ID_MemWr, ID_Halt, ID_Val2Reg, ID_LBI, ID_Link; 
+    wire [5:0] ID_Forwards;    
 
     /*-----EX WIRES-----*/
     wire[15:0] EX_Instr, EX_ImmExt, EX_PC, EX_Rs, EX_Rt, EX_ALUout;
     wire[2:0] EX_WriteRegAddr;
-    wire[1:0] EX_LinkReg;
-    wire EX_MemEnable, EX_MemWr, EX_Halt, EX_Val2Reg, EX_ALUSel, EX_RegWrite;
+    wire EX_MemEnable, EX_MemWr, EX_Halt, EX_Val2Reg, EX_ALUSel, EX_RegWrite, EX_LBI, EX_Link;
+    wire [5:0] EX_Forwards;
     
 
     /*-----MEM WIRES-----*/
 
     wire[15:0] MEM_Rt, MEM_ALUout, MEM_MEMout, MEM_PC, MEM_ImmExt; 
     wire[2:0] MEM_WriteRegAddr;
-    wire[1:0] MEM_LinkReg;
-    wire MEM_MemEnable, MEM_MemWr, MEM_Halt, MEM_Val2Reg, MEM_RegWrite;        
+    wire MEM_MemEnable, MEM_MemWr, MEM_Halt, MEM_Val2Reg, MEM_RegWrite, MEM_LBI, MEM_Link;        
 
     /*-----WB WIRES-----*/
     wire[15:0] WB_MEMout, WB_ALUout, WB_PC, WB_ImmExt;
     wire[2:0] WB_WriteRegAddr;
-    wire[1:0] WB_LinkReg;
-    wire WB_Val2Reg, WB_RegWrite;
+    wire WB_Val2Reg, WB_RegWrite, WB_LBI, WB_Link;
 
 
     /*-----FETCH-----*/
@@ -92,6 +93,7 @@ module proc (/*AUTOARG*/
             .ImmSel(ImmSel),
             .LinkReg(LinkReg), 
             .ctrlErr(ctrlErr),
+            .Forwards(Forwards),
             .b_flag(b_flag),
             .j_flag(j_flag),
             .Halt(Halt), 
@@ -111,14 +113,14 @@ module proc (/*AUTOARG*/
         .LinkRegOut(ID_LinkReg), .WriteRegAddrOut(ID_WriteRegAddr), .b_flagOut(ID_b_flag),  .j_flagOut(ID_j_flag),               //Control out (Decode)
         .ALUSelOut(ID_ALUSel),                                                  //Control out (Execute)
         .MemEnableOut(ID_MemEnable), .MemWrOut(ID_MemWr), .HaltOut(ID_Halt), //Control out (Memory)
-        .Val2RegOut(ID_Val2Reg), .RegWriteOut(ID_RegWrite),                     //Control out (Writeback)
+        .Val2RegOut(ID_Val2Reg), .RegWriteOut(ID_RegWrite), .ForwardsOut(ID_Forwards),                   //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
         .InstrIn(IF_Instr), .ImmExtIn(IF_ImmExt), .PcIn(IF_PC),                 //Data in 
         .LinkRegIn(LinkReg), .WriteRegAddrIn(IF_WriteRegAddr), .b_flagIn(b_flag), .j_flagIn(j_flag),                       //Execute control//Control in (Decode)
         .ALUSelIn(ALUSel),                                                      //Control in (Execute)
         .MemEnableIn(MemEnable), .MemWrIn(MemWr), .HaltIn(Halt),                //Control in (Memory)
-        .Val2RegIn(Val2Reg), .RegWriteIn(RegWrite),                             //Control in (Writeback)
+        .Val2RegIn(Val2Reg), .RegWriteIn(RegWrite), .ForwardsIn(Forwards),                           //Control in (Writeback)
 
         .clk(clk), .rst(rst)
     );
@@ -131,8 +133,8 @@ module proc (/*AUTOARG*/
 
 
     decode D( .PcSel(ID_PcSel), .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .JmpData(JmpData), .Instr(ID_Instr), .Imm(WB_ImmExt), .Writeback(Writeback),
-                .PC(WB_PC), .PCNOW(ID_PC), .LBI(WB_LinkReg[0]), .Link(WB_LinkReg[1]), .b_flag(ID_b_flag), .j_flag(ID_j_flag),
-                .Halt(Halt), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .clk(clk), .rst(rst) );
+                .PC(WB_PC), .PCNOW(ID_PC), .LBI(WB_LBI), .Link(WB_Link), .b_flag(ID_b_flag), .j_flag(ID_j_flag), .EXFD_Rs(EX_Rs), .MEMFD_Rs(MEM_Rs),
+                .Halt(Halt), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .Forwards(ID_Forwards[1:0]), .clk(clk), .rst(rst) );
     /*---------------*/
 
     /*-----ID/EX-----*/
@@ -143,14 +145,14 @@ module proc (/*AUTOARG*/
             .RsOut(EX_Rs), .RtOut(EX_Rt), .WriteRegAddrOut(EX_WriteRegAddr),               
         .ALUSelOut(EX_ALUSel),                                              //Control out (Execute)
         .MemEnableOut(EX_MemEnable), .MemWrOut(EX_MemWr), .HaltOut(EX_Halt),//Control out (Memory)
-        .Val2RegOut(EX_Val2Reg), .RegWriteOut(EX_RegWrite), .LinkRegOut(EX_LinkReg),                                            //Control out (Writeback)
+        .Val2RegOut(EX_Val2Reg), .RegWriteOut(EX_RegWrite), .LinkRegOut(EX_LinkReg), .ForwardsOut(EX_Forwards),                                           //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
         .InstrIn(ID_Instr), .ImmExtIn(ID_ImmExt), .PcIn(ID_PC),             //Data in
             .RsIn(ID_Rs), .RtIn(ID_Rt), .WriteRegAddrIn(ID_WriteRegAddr),     
         .ALUSelIn(ID_ALUSel),                                               //Control in (Execute)
         .MemEnableIn(ID_MemEnable), .MemWrIn(ID_MemWr), .HaltIn(ID_Halt),   //Control in (Memory)
-        .Val2RegIn(ID_Val2Reg), .RegWriteIn(ID_RegWrite), .LinkRegIn(ID_LinkReg),                                           //Control in (Writeback)
+        .Val2RegIn(ID_Val2Reg), .RegWriteIn(ID_RegWrite), .LinkRegIn(ID_LinkReg), .ForwardsIn(ID_Forwards),                                          //Control in (Writeback)
 
         .clk(clk), .rst(rst)
     );
@@ -158,7 +160,9 @@ module proc (/*AUTOARG*/
     /*---------------*/
 
     /*-----EXECUTE-----*/
-    execute X(.out(EX_ALUout), .RsVal(EX_Rs), .RtVal(EX_Rt), .Imm(EX_ImmExt), .ALUSel(EX_ALUSel), .opcode(EX_Instr[15:11]), .funct(EX_Instr[1:0]));
+    execute X(.out(EX_ALUout), .RsVal(EX_Rs), .RtVal(EX_Rt), .Imm(EX_ImmExt), 
+              .ALUSel(EX_ALUSel), .opcode(EX_Instr[15:11]), .funct(EX_Instr[1:0]), 
+              .EX_FD_Rs(EX_Rs), .MEM_FD_Rs(MEM_Rs), .EX_FD_Rt(EX_Rt), .MEM_FD_Rt(MEM_Rt), .Forwards(EX_Forwards[5:3]));
     /*---------------*/
 
     /*-----EX/MEM-----*/
