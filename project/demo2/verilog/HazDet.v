@@ -1,6 +1,6 @@
-module HazDet(NOP, PcStall, Instr, valid_n, MemEnable, Rd, Imm, Reg1Data, rst, clk);
+module HazDet(NOP, PcStall, Forwards, Instr, valid_n, MemEnable, Rd, Imm, Reg1Data, rst, clk);
 output wire NOP, PcStall; 
-
+output wire [5:0] Forwards;
 
 input wire[15:0] Instr, Imm, Reg1Data;
 input wire[2:0] Rd;
@@ -50,14 +50,30 @@ dff REG_ID_EX [3:0](.q({EX_Rd, EX_valid_n}), .d({ID_Rd, ID_valid_n}), .clk(clk),
 dff REG_EX_MEM[3:0](.q({MEM_Rd, MEM_valid_n}), .d({EX_Rd, EX_valid_n}), .clk(clk), .rst(rst));
 dff REG_MEM_WB[3:0](.q({WB_Rd, WB_valid_n}), .d({MEM_Rd, MEM_valid_n}), .clk(clk), .rst(rst));
 
+wire EXtoEX_FDRs, MEMtoEX_FDRs, EXtoEX_FDRt, MEMtoEX_FDRt;
+wire EXtoID_FDRs, MEMtoID_FDRs;
+
+assign EXtoEX_FDRs = (ID_Rd == IF_Rs) & ~ID_MemEnable;  // These signals travels with instruction, and opens forwarding path if true.
+assign EXtoEX_FDRt = (ID_Rd == IF_Rt) & ~ID_MemEnable; 
+
+assign MEMtoEX_FDRs = EX_Rd == IF_Rs;
+assign MEMtoEX_FDRt = EX_Rd == IF_Rt;
+
+// If Doing JR or JALR only
+assign EXtoID_FDRs = (EX_Rd == IF_Rs) & ~EX_MemEnable;
+assign MEMtoID_FDRs = (MEM_Rd == IF_Rs);
+
+assign Forwards[5:0] = {EXtoEX_FDRs, MEMtoEX_FDRs, EXtoEX_FDRt, MEMtoEX_FDRt, 
+                        EXtoID_FDRs, MEMtoID_FDRs};
+
 assign RegHazDet =
 
-    ((ID_Rd == IF_Rs) & ID_valid_n) |
-    ((EX_Rd == IF_Rs) & EX_valid_n) |
+    ((ID_Rd == IF_Rs) & (ID_valid_n | ID_MemEnable)) |
+    ((EX_Rd == IF_Rs) & (EX_valid_n | EX_MemEnable)) |
     ((MEM_Rd== IF_Rs) & MEM_valid_n) |
     ((WB_Rd == IF_Rs) & WB_valid_n) | 
 
-    ((ID_Rd == IF_Rt) & ID_valid_n) |
+    ((ID_Rd == IF_Rt) & (ID_valid_n | ID_MemEnable)) |
     ((EX_Rd == IF_Rt) & EX_valid_n) | 
     ((MEM_Rd== IF_Rt) & MEM_valid_n) | 
     ((WB_Rd == IF_Rt) & WB_valid_n) ;
