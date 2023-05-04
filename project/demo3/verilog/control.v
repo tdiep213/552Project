@@ -199,7 +199,7 @@ module control(
                     default: ctrlErr = 1'b1;   
                 endcase 
             end
-            default: ctrlErr = 1'b1;
+            // default: ctrlErr = 1'b1;
         endcase 
 //========================================================//
     end

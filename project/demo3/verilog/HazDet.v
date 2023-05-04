@@ -13,6 +13,7 @@ assign IF_Rs = Instr[10:8];
 assign IF_Rt = Instr[7:5];
 
 wire NOPchk;
+wire ID_MemEnable, EX_MemEnable;
 reg jr_flag;
 
 always @* begin
@@ -82,7 +83,7 @@ assign RegHazDet =
 /*-----MEM RAW Hazard Check-----*/
 
 wire[15:0] MemAddr, ID_MemAddr, EX_MemAddr, MEM_MemAddr, WB_MemAddr;
-wire ID_MemEnable, EX_MemEnable, MEM_MemEnable, WB_MemEnable;
+wire MEM_MemEnable, WB_MemEnable;
 wire MemHazDet;
 
 cla16b RtImm(.sum(MemAddr), .cOut(), .inA(Reg1Data), .inB(Imm), .cIn(1'b0));   

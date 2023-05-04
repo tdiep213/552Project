@@ -12,16 +12,18 @@ module brancher(nextPC, Inc2, currentPC,
                 Halt, SIIC);
     
     // Outputs
-    output wire[15:0] nextPC, Inc2;
+    output wire[15:0] Inc2;
+    output reg[15:0]  nextPC;
     // Inputs
-    input wire PcSel, RegJmp, Halt, SIIC;
+    input wire PCSel, RegJmp, Halt, SIIC;
     input wire [2:0] RsWrAddr;
     input wire[15:0] currentPC, Imm, RsValue, EXtoID_Rs, MEMtoID_Rs; //(one for mem and one for ex to id fwding)
-    input wire [1:0] BrancherFWDs
+    input wire [1:0] BrancherFWDs;
 
     wire [15:0] PcImm, RsImm;
     wire zero;
     assign zero = 0;
+    reg [15:0] Rs; 
     
     always@* begin
         case(BrancherFWDs)
@@ -42,13 +44,13 @@ module brancher(nextPC, Inc2, currentPC,
             4'b0100: nextPC = PcImm;
             4'b1100: nextPC = RsImm;
             4'b???1: nextPC = 2;
-            default: nextPC = currentPC     // Default to Halt
+            default: nextPC = currentPC;     // Default to Halt
         endcase
     end
 
     // Stall logic stays in PC
     // always @* begin 
-    //     casex({PcSel, RegJmp, Halt, SIIC})
+    //     casex({PCSel, RegJmp, Halt, SIIC})
     //         4'b0000: PcAddr = PcStall ? PcQ : Inc2 ; //PC+2
     //         4'b?100: PcAddr = PcStall ? PcQ : jalrImm;//JR JALR        
     //         4'b1000: PcAddr = PcImm;//J JAL Branch

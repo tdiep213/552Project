@@ -20,6 +20,8 @@ module execute (out, RsVal, RtVal, Imm, EX_FD_Rs, MEM_FD_Rs, EX_FD_Rt, MEM_FD_Rt
    assign EXtoEX_FDRt  = Forwards[1];
    assign MEMtoEX_FDRt = Forwards[0];
 
+   reg[15:0] RtTrue, RsTrue;
+
    always@* begin
       case({EXtoEX_FDRt, MEMtoEX_FDRt})
          2'b00: RtTrue = RtVal;

@@ -79,19 +79,26 @@ module proc (/*AUTOARG*/
 
     /*-----FETCH-----*/
     wire[15:0] IF_Instr, IF_PC, IF_ImmExt; 
+    // wire LinkReg; 
 
     fetch F(
         // outputs
             .Instr_C(IF_Instr), 
             .PC(IF_PC),  
-            .RegWrite(RegWrite), 
             .WriteRegAddr(IF_WriteRegAddr),
-            .MemEnable(MemEnable), 
+            .Val2Reg(Val2Reg),
+            .Link(Link),
+            .LBI(LBI),
+            .ALUSel(ALUSel),
             .MemWr(MemWr),
-            .Val2Reg(Val2Reg), 
-            .ALUSel(ALUSel), 
             .ImmSel(ImmSel),
-            .LinkReg(LinkReg), 
+
+            .RegWrite(RegWrite), 
+            .MemEnable(MemEnable), 
+            
+             
+             
+            
             .ctrlErr(ctrlErr),
             .Forwards(Forwards),
             .b_flag(b_flag),
@@ -130,10 +137,10 @@ module proc (/*AUTOARG*/
 
     /*-----DECODE-----*/
     
-
+    wire[15:0] MEM_Rs;
 
     decode D( .PcSel(ID_PcSel), .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .JmpData(JmpData), .Instr(ID_Instr), .Imm(WB_ImmExt), .Writeback(Writeback),
-                .PC(WB_PC), .PCNOW(ID_PC), .LBI(WB_LBI), .Link(WB_Link), .b_flag(ID_b_flag), .j_flag(ID_j_flag), .EXFD_Rs(EX_Rs), .MEMFD_Rs(MEM_Rs),
+                .PC(WB_PC), .PCNOW(ID_PC), .LBI(WB_LBI), .Link(WB_Link), .b_flag(ID_b_flag), .j_flag(ID_j_flag), .EX_FD_Rs(EX_Rs), .MEM_FD_Rs(MEM_Rs),
                 .Halt(Halt), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .Forwards(ID_Forwards[1:0]), .clk(clk), .rst(rst) );
     /*---------------*/
 

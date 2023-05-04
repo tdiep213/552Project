@@ -14,7 +14,7 @@ module fetch (
    ALUSel, ImmSel,               // Execute ctrl signals
    MemEnable, MemWr,             // mem ctrl signals
    b_flag, j_flag, RegJmp,       // branch ctrl signals
-   Halt, ctrlErr, Forwards       // Special ctrl signals
+   Halt, ctrlErr, Forwards,       // Special ctrl signals
    // inputs
    BrnchAddr,
    Imm, 
@@ -47,8 +47,9 @@ module fetch (
 
    wire [1:0] ChkRegSel;
    reg [2:0] ChkRegAddr;
+   wire[15:0] prevPC, newAddr;
 
-   pc ProgCnt(.PC(PC), .prevPC(prevPC), .newAddr(newAddr), .PcStall(PcStall), .clk(clk), .rst(rst));
+   pc ProgCnt(.PC(PC), .prevPC(prevPC), .newAddr(newAddr), .PcStall(PCStall), .clk(clk), .rst(rst));
 
    memory2c InstrMem(.data_out(Instr), 
                      .data_in(), 
@@ -137,8 +138,9 @@ module fetch (
     .ALUSel(), 
     .ImmSel(), 
     .Halt(), 
-    .LinkReg(), 
+    .Link(), 
     .ctrlErr(),
+    .LBI(),
     .SIIC(),
     .b_flag(),
     .valid_n(valid),

@@ -5,7 +5,7 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, EXFD_Rs, MEMFD_Rs,
+module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, EX_FD_Rs, MEM_FD_Rs,
                Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag, 
                Halt,  WriteRegAddr, Forwards, en, clk, rst );
    // TODO: Your code here
@@ -13,7 +13,7 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, EXFD_Rs, MEMFD_Rs
    output wire PcSel;
 
    input wire[15:0] Instr, Imm, PC, PCNOW;
-   input wire[15:0] Writeback, EXFD_Rs, MEMFD_Rs;
+   input wire[15:0] Writeback, EX_FD_Rs, MEM_FD_Rs;
    input wire[2:0] WriteRegAddr, Forwards;
    input wire LBI, Link, en, b_flag, j_flag, Halt;
    input wire clk, rst;
@@ -25,6 +25,8 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, EXFD_Rs, MEMFD_Rs
    wire [15:0] PcSum2, ImmSel, PC_instr, WriteData, JmpDataIn;
 
    wire EXtoID_FDRs, MEMtoID_FDRs;
+
+   reg[15:0] TrueData;
 
    assign EXtoID_FDRs  = Forwards[1];
    assign MEMtoID_FDRs = Forwards[0];
