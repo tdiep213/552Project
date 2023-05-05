@@ -105,7 +105,7 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm, EX_FD_Rs,
    brancher branchCntrl(
                .nextPC(nextPC), 
                .Inc2(), 
-               .currentPC(PC), 
+               .currentPC(PCNOW), 
                .PCSel(PcSel), 
                .RegJmp(RegJmp), 
                .BrancherFWDs(Forwards[1:0]),
