@@ -20,7 +20,7 @@ module brancher(nextPC, Inc2, currentPC,
     input wire[15:0]  currentPC, Imm, RsValue, EXtoID_Rs, MEMtoID_Rs; //(one for mem and one for ex to id fwding)
     input wire [1:0] BrancherFWDs;
 
-    input wire rst;
+    input wire rst, clk;
     wire [15:0] PcImm, RsImm;
     wire zero;
     assign zero = 0;
