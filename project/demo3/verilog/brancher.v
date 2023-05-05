@@ -14,7 +14,7 @@ module brancher(nextPC, Inc2, currentPC,
     
     // Outputs
     output wire[15:0] Inc2;
-    output reg[15:0]  nextPC;
+    output wire[15:0]  nextPC;
     // Inputs
     input wire PCSel, RegJmp, Halt, SIIC;
     input wire[15:0]  currentPC, Imm, RsValue, EXtoID_Rs, MEMtoID_Rs; //(one for mem and one for ex to id fwding)
