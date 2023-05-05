@@ -17,11 +17,11 @@ module brancher(nextPC, Inc2, currentPC,
     output reg[15:0]  nextPC;
     // Inputs
     input wire PCSel, RegJmp, Halt, SIIC;
-    input wire[15:0] preNextPC, currentPC, Imm, RsValue, EXtoID_Rs, MEMtoID_Rs; //(one for mem and one for ex to id fwding)
+    input wire[15:0]  currentPC, Imm, RsValue, EXtoID_Rs, MEMtoID_Rs; //(one for mem and one for ex to id fwding)
     input wire [1:0] BrancherFWDs;
 
     input wire rst;
-    wire [15:0] PcImm, RsImm;
+    wire [15:0] PcImm, RsImm preNextPC;
     wire zero;
     assign zero = 0;
     reg [15:0] Rs; 
