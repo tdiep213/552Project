@@ -9,7 +9,7 @@
 module brancher(nextPC, Inc2, currentPC, 
                 PCSel, RegJmp, BrancherFWDs,
                 Imm, RsValue, EXtoID_Rs, MEMtoID_Rs, 
-                rst,
+                rst, clk,
                 Halt, SIIC);
     
     // Outputs

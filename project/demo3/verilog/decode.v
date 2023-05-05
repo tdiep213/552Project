@@ -114,7 +114,7 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm, EX_FD_Rs,
                .EXtoID_Rs(EX_FD_Rs), 
                .MEMtoID_Rs(MEM_FD_Rs), 
                .Halt(Halt),
-               .rst(rst),
+               .rst(rst), .clk(clk),
                 .SIIC()//Unused
                 );
 
