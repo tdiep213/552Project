@@ -21,10 +21,10 @@ module brancher(nextPC, Inc2, currentPC,
     input wire [1:0] BrancherFWDs;
 
     input wire rst;
-    wire [15:0] PcImm, RsImm, preNextPC;
+    wire [15:0] PcImm, RsImm;
     wire zero;
     assign zero = 0;
-    reg [15:0] Rs; 
+    reg [15:0] Rs, preNextPC; 
     
     always@* begin
         case(BrancherFWDs)
