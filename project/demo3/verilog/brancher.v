@@ -17,7 +17,7 @@ module brancher(nextPC, Inc2, currentPC,
     output reg[15:0]  nextPC;
     // Inputs
     input wire PCSel, RegJmp, Halt, SIIC;
-    input wire[15:0] currentPC, Imm, RsValue, EXtoID_Rs, MEMtoID_Rs; //(one for mem and one for ex to id fwding)
+    input wire[15:0] preNextPC, currentPC, Imm, RsValue, EXtoID_Rs, MEMtoID_Rs; //(one for mem and one for ex to id fwding)
     input wire [1:0] BrancherFWDs;
 
     input wire rst;
@@ -41,24 +41,14 @@ module brancher(nextPC, Inc2, currentPC,
 
     always@* begin
         casex({RegJmp, PCSel, Halt, rst})
-            4'b0000: nextPC = Inc2;
-            4'b0100: nextPC = PcImm;
-            4'b1100: nextPC = RsImm;
-            4'b???1: nextPC = 0;
-            default: nextPC = currentPC;     // Default to Halt
+            4'b0000: preNextPC = Inc2;
+            4'b0100: preNextPC = PcImm;
+            4'b1100: preNextPC = RsImm;
+            4'b???1: preNextPC = 0;
+            default: preNextPC = currentPC;     // Default to Halt
         endcase
     end
 
-    // Stall logic stays in PC
-    // always @* begin 
-    //     casex({PCSel, RegJmp, Halt, SIIC})
-    //         4'b0000: PcAddr = PcStall ? PcQ : Inc2 ; //PC+2
-    //         4'b?100: PcAddr = PcStall ? PcQ : jalrImm;//JR JALR        
-    //         4'b1000: PcAddr = PcImm;//J JAL Branch
-    //         4'b???1: PcAddr = 2;    //Exception Handler
-    //         default: PcAddr = PcQ; //Halt
-    //     endcase
-    // end
-
+    dff_16 NPCDFF(.q(nextPC), .err(), .d(preNextPC), .clk(clk), .rst(rst));
 endmodule
 `default_nettype wire
