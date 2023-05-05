@@ -12,7 +12,7 @@ module execute (out, RsVal, RtVal, Imm, EX_FD_Rs, MEM_FD_Rs, EX_FD_Rt, MEM_FD_Rt
    input wire ALUSel;
    input wire[4:0] opcode;
    input wire[1:0] funct;
-   input wire[4:0] Forwards;
+   input wire[3:0] Forwards;
 
    wire EXtoEX_FDRs, MEMtoEX_FDRs, EXtoEX_FDRt, MEMtoEX_FDRt;
    assign EXtoEX_FDRs  = Forwards[3];

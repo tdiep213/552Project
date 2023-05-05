@@ -5,17 +5,19 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, EX_FD_Rs, MEM_FD_Rs,
-               Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag, 
+module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm, EX_FD_Rs, MEM_FD_Rs,
+               Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag,RegJmp, 
                Halt,  WriteRegAddr, Forwards, en, clk, rst );
    // TODO: Your code here
    output wire[15:0] Reg1Data, Reg2Data, JmpData; 
    output wire PcSel;
+   output wire[15:0] nextPC;
 
    input wire[15:0] Instr, Imm, PC, PCNOW;
    input wire[15:0] Writeback, EX_FD_Rs, MEM_FD_Rs;
-   input wire[2:0] WriteRegAddr, Forwards;
-   input wire LBI, Link, en, b_flag, j_flag, Halt;
+   input wire[2:0] WriteRegAddr;
+   input wire[1:0] Forwards;
+   input wire LBI, Link, en, b_flag, j_flag,RegJmp, Halt;
    input wire clk, rst;
 
    
@@ -98,6 +100,23 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, Instr, Imm, EX_FD_Rs, MEM_FD_
          2'b11: branch = ~Sflag;   // BGEZ Rs, immediate if (Rs >= 0) then PC <- PC + 2 + I(sign ext.)
       endcase
    end
+
+
+   brancher branchCntrl(
+               .nextPC(nextPC), 
+               .Inc2(), 
+               .currentPC(PC), 
+               .PCSel(PcSel), 
+               .RegJmp(RegJmp), 
+               .BrancherFWDs(Forwards[1:0]),
+               .Imm(Imm),
+               .RsValue(Reg1Data), 
+               .EXtoID_Rs(EX_FD_Rs), 
+               .MEMtoID_Rs(MEM_FD_Rs), 
+               .Halt(Halt),
+               .rst(rst),
+                .SIIC()//Unused
+                );
 
 endmodule
 `default_nettype wire

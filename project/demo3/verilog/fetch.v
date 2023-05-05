@@ -17,6 +17,7 @@ module fetch (
    Halt, ctrlErr, Forwards,       // Special ctrl signals
    // inputs
    BrnchAddr,
+   nextPC,
    Imm, 
    Rs,     jmpPC,
    SIIC,
@@ -33,7 +34,7 @@ module fetch (
    output wire [5:0] Forwards;
    output wire RegJmp, Link, LBI, Halt, SIIC;
 
-   input wire[15:0] Imm, Rs, jmpPC;
+   input wire[15:0] Imm, Rs, jmpPC, nextPC;
    input wire[15:0] BrnchAddr;
    input wire PcSel;
 
@@ -47,9 +48,11 @@ module fetch (
 
    wire [1:0] ChkRegSel;
    reg [2:0] ChkRegAddr;
-   wire[15:0] prevPC, newAddr;
+   wire[15:0] prevPC;
 
-   pc ProgCnt(.PC(PC), .prevPC(prevPC), .newAddr(newAddr), .PcStall(PCStall), .clk(clk), .rst(rst));
+   pc ProgCnt(.PC(PC), .prevPC(prevPC), .newAddr(nextPC), .PcStall(PCStall), .clk(clk), .rst(rst));
+
+   
 
    memory2c InstrMem(.data_out(Instr), 
                      .data_in(), 

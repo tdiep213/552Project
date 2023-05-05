@@ -46,6 +46,24 @@ module control(
     input wire[4:0] Instr;
 
     always @* begin
+        //Default Cases so they get set even without INSTR
+        PcSel           = 1'b0;    // Do Not add Imm to PC + 2
+        RegJmp          = 1'b0;    // Do Not Jmp from Rs
+        Val2Reg         = 1'b0;    // Do transmit ALU output // 1'bX 
+        ALUSel          = 1'b0;    // Do Not use the Immediate value in ALU
+        Link            = 1'b0;    // Do Not LBI
+        LBI             = 1'b0;    // Do Not Link, 
+        DestRegSel[1:0] = 2'b00;   // Do use Rs
+        ImmSel[2:0]     = 3'b000;  // Do zero extend 5 bits.
+        RegWrite        = 1'b0;    // Do Not write to register
+        MemWr           = 1'b0;    // Do Not write to memory
+        MemEnable       = 1'b0;    // Do Not enable mem access
+        SIIC            = 1'b0;    // Do Not SIIC
+        b_flag          = 1'b0;    // Do set branch flag
+        valid_n         = 1'b0;    // Do set valid NOP
+        Halt            = 1'b0;    // Do Not Halt
+        ALUcntrl        = Instr;   // Do pass instr through
+        ctrlErr         = 1'b0;    // Do Not set error bit
         casex(Instr[4:0])
         default: begin
             PcSel           = 1'b0;    // Do Not add Imm to PC + 2

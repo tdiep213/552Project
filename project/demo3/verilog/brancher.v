@@ -8,7 +8,8 @@
     //Branch + Jump calculation
 module brancher(nextPC, Inc2, currentPC, 
                 PCSel, RegJmp, BrancherFWDs,
-                Imm, RsValue, EXtoID_Rs, MEMtoID_Rs, RsWrAddr, 
+                Imm, RsValue, EXtoID_Rs, MEMtoID_Rs, 
+                rst,
                 Halt, SIIC);
     
     // Outputs
@@ -16,10 +17,10 @@ module brancher(nextPC, Inc2, currentPC,
     output reg[15:0]  nextPC;
     // Inputs
     input wire PCSel, RegJmp, Halt, SIIC;
-    input wire [2:0] RsWrAddr;
     input wire[15:0] currentPC, Imm, RsValue, EXtoID_Rs, MEMtoID_Rs; //(one for mem and one for ex to id fwding)
     input wire [1:0] BrancherFWDs;
 
+    input wire rst;
     wire [15:0] PcImm, RsImm;
     wire zero;
     assign zero = 0;
@@ -39,11 +40,11 @@ module brancher(nextPC, Inc2, currentPC,
     cla16b RSIMM(.sum(RsImm), .cOut(), .inA(Inc2),      .inB(Imm),      .cIn(zero));
 
     always@* begin
-        casex({RegJmp, PCSel, Halt, SIIC})
+        casex({RegJmp, PCSel, Halt, rst})
             4'b0000: nextPC = Inc2;
             4'b0100: nextPC = PcImm;
             4'b1100: nextPC = RsImm;
-            4'b???1: nextPC = 2;
+            4'b???1: nextPC = 0;
             default: nextPC = currentPC;     // Default to Halt
         endcase
     end
