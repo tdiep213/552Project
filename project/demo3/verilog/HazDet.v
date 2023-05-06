@@ -61,8 +61,8 @@ assign MEMtoEX_FDRs = EX_Rd == IF_Rs;
 assign MEMtoEX_FDRt = EX_Rd == IF_Rt;
 
 // If Doing JR or JALR only
-assign EXtoID_FDRs = (EX_Rd == IF_Rs) & ~EX_MemEnable;
-assign MEMtoID_FDRs = (MEM_Rd == IF_Rs);
+assign EXtoID_FDRs = ((EX_Rd == IF_Rs) & ~EX_MemEnable & jr_flag);
+assign MEMtoID_FDRs = (MEM_Rd == IF_Rs) & jr_flag;
 
 assign Forwards[5:0] = {EXtoEX_FDRs, MEMtoEX_FDRs, EXtoEX_FDRt, MEMtoEX_FDRt, 
                         EXtoID_FDRs, MEMtoID_FDRs};
