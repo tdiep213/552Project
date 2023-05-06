@@ -31,7 +31,7 @@ wire prevJBNOP;
 always @* begin
     case(Instr[15:13])
         3'b001: JBNOP = 1'b1; //JUMP
-        3'b011: JBNOP = 1'b1; //BRANCH
+        3'b011: JBNOP = 1'b0; //BRANCH
         default: JBNOP = 1'b0;
     endcase
 end

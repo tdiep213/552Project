@@ -58,6 +58,7 @@ module proc (/*AUTOARG*/
     wire ID_RegWrite;
     wire ID_PcSel, ID_b_flag, ID_j_flag;
     wire ID_ALUSel, ID_MemEnable, ID_MemWr, ID_Halt, ID_Val2Reg, ID_LBI, ID_Link; 
+    wire branchTaken;
     wire [5:0] ID_Forwards;    
 
     /*-----EX WIRES-----*/
@@ -132,7 +133,7 @@ module proc (/*AUTOARG*/
         .MemEnableIn(MemEnable), .MemWrIn(MemWr), .HaltIn(Halt),                //Control in (Memory)
         .Val2RegIn(Val2Reg), .RegWriteIn(RegWrite), .ForwardsIn(Forwards),                           //Control in (Writeback)
 
-        .clk(clk), .rst(rst)
+        .clk(clk), .rst(rst), .branchTaken(branchTaken)
     );
 
     /*---------------*/
@@ -142,7 +143,7 @@ module proc (/*AUTOARG*/
     
     wire[15:0] MEM_Rs;
 
-    decode D( .PcSel(ID_PcSel), .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .JmpData(JmpData), .Instr(ID_Instr), .nextPC(nextPC),
+    decode D( .PcSel(ID_PcSel), .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .JmpData(JmpData), .branchTaken(branchTaken), .Instr(ID_Instr), .nextPC(nextPC),
                 .Imm(WB_ImmExt), .Writeback(Writeback), .RegJmp(ID_RegJmp),
                 .PC(WB_PC), .PCNOW(ID_PC), .LBI(WB_LBI), .Link(WB_Link), .b_flag(ID_b_flag), .j_flag(ID_j_flag),
                 .Halt(Halt), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .Forwards(ID_Forwards[1:0]), .clk(clk), .rst(rst) );

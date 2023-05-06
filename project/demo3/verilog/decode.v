@@ -5,12 +5,12 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm,
+module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, Imm,
                Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag,RegJmp, 
                Halt,  WriteRegAddr, Forwards, en, clk, rst );
    // TODO: Your code here
    output wire[15:0] Reg1Data, Reg2Data, JmpData; 
-   output wire PcSel;
+   output wire PcSel, branchTaken;
    output wire[15:0] nextPC;
 
    input wire[15:0] Instr, Imm, PC, PCNOW;
@@ -94,8 +94,9 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm,
     assign Zflag = &(Reg1Data == 16'h0000);
    
    assign branch_flag = ((Instr[15:13] == 3'b011) | b_flag) ? 1'b1 : 1'b0;
-   assign PcSel = (branch_flag & ~Halt) ? (branch | j_flag) : 1'b0; 
-
+   assign PcSel = (branch_flag & ~Halt) ? (branch) : 1'b0; 
+   dff bt(.q(branchTaken), .d(PcSel), .clk(clk), .rst(rst));
+   // assign branchTaken = PcSel; //TODO: Combine signals 
    always @* begin
       case(Instr[12:11])
          2'b00: branch = Zflag;    // BEQZ Rs, immediate if (Rs == 0) then PC <- PC + 2 + I(sign ext.)    
