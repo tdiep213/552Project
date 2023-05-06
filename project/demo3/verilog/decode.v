@@ -5,13 +5,13 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, Imm,
+module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, Imm, PCIncOut,
                Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag,RegJmp, 
                Halt,  WriteRegAddr, Forwards, en, clk, rst );
    // TODO: Your code here
    output wire[15:0] Reg1Data, Reg2Data, JmpData; 
    output wire PcSel, branchTaken;
-   output wire[15:0] nextPC;
+   output wire[15:0] nextPC, PCIncOut;
 
    input wire[15:0] Instr, Imm, PC, PCNOW;
    input wire[15:0] Writeback;
@@ -27,6 +27,8 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, I
    wire [15:0] PcSum2, ImmSel, PC_instr, WriteData, JmpDataIn;
 
    wire EXtoID_FDRs, MEMtoID_FDRs;
+
+   assign PCIncOut = PcSum2 ;
 
    // reg[15:0] TrueData;
 
@@ -54,6 +56,8 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, I
          default jl_flag = 1'b0;
       endcase
    end
+
+   
    assign JmpDataIn = (~jl_flag) ? JmpData : WriteData;
    dff_16 JMPDFF(.q(JmpData), .err(), .d(JmpDataIn), .clk(clk), .rst(rst));
 
@@ -76,16 +80,21 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, I
    */
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PCNOW), .inB(16'h0002), .cIn(1'b0));
     assign ImmSel = LBI ? Imm : Writeback;
-    assign WriteData = (Link | jl_flag | EX_JL) ? PcSum2 : ImmSel;      
 
-   assign WrAddr = jl_flag ? 3'b111 : WriteRegAddr;
+    //remove jl_flag to prevent R7 overwriting things, let R7 go through the pipeline
+   //  assign WriteData = (Link /*| jl_flag*/ | EX_JL) ? PcSum2 : ImmSel;      
+   // assign WrAddr = 1'b0/*jl_flag*/ ? 3'b111 : WriteRegAddr;
+   assign WriteData = ImmSel; 
+   assign WrAddr = WriteRegAddr;
+   
+   
    // popssibly add another output to decode that contains WriteData,
    // so we can forward that to fetch and use the data one stage earlier if we need to (like for JALR and JR)
    // by passing it into the jmpPC port on fetch!!
    RegMem RegisterMem(.Reg1Data(Reg1Data),.Reg2Data(Reg2Data),
                      .ReadReg1(read1RegSel), .ReadReg2(Rt),.WriteReg(WrAddr), .WriteData(WriteData), 
    //                 //Rs                    //Rd                 //Rt
-                     .en((en & ~WB_JL & ~EX_JL & ~MEM_JL) | jl_flag), .clk(clk), .rst(rst));
+                     .en((en /*& ~WB_JL & ~EX_JL & ~MEM_JL*/) /*| jl_flag*/), .clk(clk), .rst(rst));
    /* enable priorities: 
       jr_flag: write jump and link info ASAP
       en/~WB_JR: if the wb instr requires a write reg, do so, unless that wb instr was a jump and link

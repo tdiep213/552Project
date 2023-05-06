@@ -29,10 +29,16 @@ assign NOPchk = Instr[15:11] == 5'b00001;
 /*------Branch/Jump NOP-----*/
 reg JBNOP;
 wire prevJBNOP;
+reg link;
 always @* begin
-    case(Instr[15:13])
-        3'b001: JBNOP = 1'b1; //JUMP
-        3'b011: JBNOP = 1'b0; //BRANCH
+    link = 1'b0;
+    JBNOP = 1'b0;
+    case(Instr[15:11])
+        3'b0011?: begin//JAL 
+            link = 1'b1;
+            JBNOP = 1'b0; //JUMP
+        end
+        3'b011??: JBNOP = 1'b0; //BRANCH
         default: JBNOP = 1'b0;
     endcase
 end
@@ -46,8 +52,11 @@ wire MEM_valid_n;
 wire[2:0] WB_Rd;
 wire WB_valid_n;
 wire RegHazDet; 
+wire[2:0]trueRd; 
 
-dff REG_IF_ID [3:0](.q({ID_Rd, ID_valid_n}), .d({Rd, valid_n}), .clk(clk), .rst(rst));
+assign trueRd = link ? 3'h7 : Rd;
+
+dff REG_IF_ID [3:0](.q({ID_Rd, ID_valid_n}), .d({trueRd, valid_n}), .clk(clk), .rst(rst));
 //culls instruction if branch is taken
 dff REG_ID_EX [3:0](.q({EX_Rd, EX_valid_n}), .d({ID_Rd & ~branchTaken, ID_valid_n & ~branchTaken}), .clk(clk), .rst(rst));
 dff REG_EX_MEM[3:0](.q({MEM_Rd, MEM_valid_n}), .d({EX_Rd, EX_valid_n}), .clk(clk), .rst(rst));
@@ -73,7 +82,7 @@ assign Forwards[5:0] = {EXtoEX_FDRs, MEMtoEX_FDRs, EXtoEX_FDRt, MEMtoEX_FDRt,
 assign RegHazDet =
 
     ((ID_Rd == IF_Rs) & ((ID_valid_n& ~branchTaken) /*& ~EXtoEX_FDRs| ID_MemEnable*/)) |
-    ((EX_Rd == IF_Rs) & (EX_valid_n | EX_MemEnable)) |
+    ((EX_Rd == IF_Rs) & (EX_valid_n)) |
     ((MEM_Rd== IF_Rs) & MEM_valid_n)|
     ((WB_Rd == IF_Rs) & WB_valid_n) | 
 
@@ -121,7 +130,7 @@ assign MemHazDet =
 // & EX_valid_n
 // & MEM_valid_n
 // & WB_valid_n
-assign NOP = (RegHazDet | MemHazDet | prevJBNOP ); // (~NOPchk) ? 1'b1 : 1'b0;
+assign NOP = (RegHazDet | MemHazDet  ); // (~NOPchk) ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet);// & ~NOPchk? 1'b1 : 1'b0;
 
 dff BrnchJmp(.q(prevJBNOP), .d((JBNOP & ~RegHazDet & ~MemHazDet)), .clk(clk), .rst(rst));

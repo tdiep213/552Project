@@ -141,9 +141,11 @@ module proc (/*AUTOARG*/
 
     /*-----DECODE-----*/
     
-    wire[15:0] MEM_Rs;
-
-    decode D( .PcSel(ID_PcSel), .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .JmpData(JmpData), .branchTaken(branchTaken), .Instr(ID_Instr), .nextPC(nextPC),
+    wire[15:0] MEM_Rs, ID_ImmOut, ID_PCInc;
+    wire ID_enOut;
+    assign ID_ImmOut = ID_Link ? ID_PCInc : ID_ImmExt;
+    decode D( .PcSel(ID_PcSel), .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .JmpData(JmpData), .PCIncOut(ID_PCInc),
+                .branchTaken(branchTaken), .Instr(ID_Instr), .nextPC(nextPC),
                 .Imm(WB_ImmExt), .Writeback(Writeback), .RegJmp(ID_RegJmp),
                 .PC(WB_PC), .PCNOW(ID_PC), .LBI(WB_LBI), .Link(WB_Link), .b_flag(ID_b_flag), .j_flag(ID_j_flag),
                 .Halt(Halt), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .Forwards(ID_Forwards[1:0]), .clk(clk), .rst(rst) );
@@ -160,11 +162,11 @@ module proc (/*AUTOARG*/
         .Val2RegOut(EX_Val2Reg), .RegWriteOut(EX_RegWrite), .LinkRegOut({EX_Link, EX_LBI}), .ForwardsOut(EX_Forwards),                                           //Control out (Writeback)
 
         /*-----PIPELINE IN-----*/
-        .InstrIn(ID_Instr), .ImmExtIn(ID_ImmExt), .PcIn(ID_PC),             //Data in
+        .InstrIn(ID_Instr), .ImmExtIn(ID_ImmOut), .PcIn(ID_PC),             //Data in
             .RsIn(ID_Rs), .RtIn(ID_Rt), .WriteRegAddrIn(ID_WriteRegAddr),     
         .ALUSelIn(ID_ALUSel),                                               //Control in (Execute)
         .MemEnableIn(ID_MemEnable), .MemWrIn(ID_MemWr), .HaltIn(ID_Halt),   //Control in (Memory)
-        .Val2RegIn(ID_Val2Reg), .RegWriteIn(ID_RegWrite), .LinkRegIn({ID_Link, ID_LBI}), .ForwardsIn(ID_Forwards),                                          //Control in (Writeback)
+        .Val2RegIn(ID_Val2Reg), .RegWriteIn(ID_RegWrite|ID_Link), .LinkRegIn({ID_Link, ID_LBI}), .ForwardsIn(ID_Forwards),                                          //Control in (Writeback)
 
         .clk(clk), .rst(rst)
     );
