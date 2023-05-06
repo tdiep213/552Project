@@ -40,7 +40,7 @@ module pc(
     assign jbSel = j_flag | PCSel;      // PcImm needs to be used immediatly if jumping, but needs to come from decode if branching
 
     always@* begin
-        casex({RegJmp, PCSel, Halt, rst})
+        casex({RegJmp, jbSel, Halt, rst})
             4'b0000: nextPC = TrueInc;
             4'b0100: nextPC = TruePcImm;
             4'b1100: nextPC = TrueRsImm;
