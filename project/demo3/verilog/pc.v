@@ -4,14 +4,14 @@ module pc(
     PC, 
     //Inputs
     Rs, Imm,
-    PcStall, RegJmp, PCSel, Halt, b_flag,//Control Signals
+    PcStall, RegJmp, PCSel, Halt,//Control Signals
     clk, rst
 );
 
     output wire[15:0] PC;       // PC used on the outside
 
     input wire [15:0] Rs, Imm;       //
-    input wire PcStall, RegJmp, PCSel, Halt, b_flag;         //
+    input wire PcStall, RegJmp, PCSel, Halt;         //
     input wire clk, rst;
     
     wire [15:0] PcImm, RsImm, Inc2;
@@ -31,15 +31,12 @@ module pc(
     //Holds PcImm for one extra cycle
     //Might cause an error with jump, use ? to select between the two 
     wire[15:0] PC_PLUS_IMM;
-    dff_16 PC_IMM_REG(.q(PC_PLUS_IMM), .err(), .d(PcImm), .clk(clk), .rst(rst)); 
-    
-    // dff did cause problem with jumping, so added select like suggested. Now only uses dff version if branching.
-    assign TruePcImm = b_flag ? PC_PLUS_IMM : PcImm;
+    dff_16 PC_IMM_REG(.q(PC_PLUS_IMM), .err(), .d(PcImm), .clk(clk), .rst(rst));
 
     always@* begin
         casex({RegJmp, PCSel, Halt, rst})
             4'b0000: nextPC = PcStall ? PC : Inc2;
-            4'b0100: nextPC = PcStall ? PC : TruePcImm;
+            4'b0100: nextPC = PcStall ? PC : PC_PLUS_IMM;
             4'b1100: nextPC = PcStall ? PC : RsImm;
             4'b???1: nextPC = 0;
             default: nextPC = PC;     // Default to Halt
