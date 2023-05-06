@@ -23,7 +23,7 @@ module pc(
     // dff_16 PcReg    (.q(prevPC),      .err(), .d(PC),     .clk(clk), .rst(rst));   // Keep track of last PC
     // dff_16 NextPcReg(.q(savedNextPC), .err(), .d(nextPC), .clk(clk), .rst(rst));   // Keep track of last new addr.
 
-    cla16b PcInc(.sum(Inc2),  .cOut(), .inA(PC), .inB(16'h0002), .cIn(1'b0));
+    cla16b PcInc(.sum(Inc2),  .cOut(), .inA(PC),      .inB(16'h0002), .cIn(1'b0));
     cla16b PCIMM(.sum(PcImm), .cOut(), .inA(Inc2),    .inB(Imm),      .cIn(1'b0));
     cla16b RSIMM(.sum(RsImm), .cOut(), .inA(Rs),      .inB(Imm),      .cIn(1'b0));
 
