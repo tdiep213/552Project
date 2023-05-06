@@ -23,8 +23,6 @@ module RegMem(
     input wire[2:0] ReadReg1, ReadReg2, WriteReg;
     output wire[15:0] Reg1Data, Reg2Data;
 
-
-    wire[15:0] out1, out2;
     rf_bypass RegFile(.read1OutData(Reg1Data), .read2OutData(Reg2Data), .err(),
                   .clk(clk), .rst(rst), .read1RegSel(ReadReg1), .read2RegSel(ReadReg2),
                   .writeRegSel(WriteReg), .writeInData(WriteData), .writeEn(en));
