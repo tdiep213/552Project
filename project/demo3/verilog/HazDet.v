@@ -30,6 +30,8 @@ assign NOPchk = Instr[15:11] == 5'b00001;
 reg JBNOP;
 wire prevJBNOP;
 reg link;
+
+// If we are jumping, set the JBNOP flag, and set proper flag if we are or are not linking.
 always @* begin
     link = 1'b0;
     JBNOP = 1'b0;
@@ -151,8 +153,13 @@ assign MemHazDet =
 // & EX_valid_n
 // & MEM_valid_n
 // & WB_valid_n
+
 assign NOP = (RegHazDet | MemHazDet); // (~NOPchk) ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet | (JBNOP & NewInst)) & ~prevJBNOP;// & ~NOPchk? 1'b1 : 1'b0;
+// Stall the PC if we have hazards, OR if we have a brand new Jump/Branch type instruction,
+// but not if we already stalled for that jump/branch
+// NOTE IMPORTANT! If this breaks more complicated branching ops, first try separating the JBNOP into just JNOP and BNOP,
+// Since jnops are working okay. 
 
 dff BrnchJmp(.q(prevJBNOP), .d((JBNOP & ~RegHazDet & ~MemHazDet)), .clk(clk), .rst(rst));
 

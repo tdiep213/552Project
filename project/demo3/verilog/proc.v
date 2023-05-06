@@ -149,6 +149,9 @@ module proc (/*AUTOARG*/
                 .Imm(WB_ImmExt), .Writeback(Writeback), .RegJmp(ID_RegJmp),
                 .PC(WB_PC), .PCNOW(ID_PC), .LBI(WB_LBI), .Link(WB_Link), .b_flag(ID_b_flag), .j_flag(ID_j_flag), .EX_FD_Rs(EX_ALUout), .MEM_FD_Rs(MEM_Val2Reg ? MEM_MEMout : MEM_ALUout),
                 .Halt(Halt), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .Forwards(ID_Forwards[1:0]), .clk(clk), .rst(rst) );
+    // *remove after reading* I added the two FDRs inputs for a test, but they are not connected to anything anymore inside decode,
+    // so you may removed them if desired
+    
     /*---------------*/
 
     /*-----ID/EX-----*/

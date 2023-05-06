@@ -39,7 +39,9 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, I
    the individual signals are good though
    
    */
-   // Fixing my dumbassery another time.
+   // Fixing my dumbassery another time. // I ended up not using the inputs I added
+                                          // back in a few commits ago. Just remove them in a new commit
+                                          // if they are cluttery and never needed.
    // always@* begin
    //    case({EXtoID_FDRs, MEMtoID_FDRs})
    //       2'b00: TrueData = Writeback;
@@ -105,6 +107,8 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, I
    
    assign branch_flag = ((Instr[15:13] == 3'b011) | b_flag) ? 1'b1 : 1'b0;
    assign PcSel = (jl_flag | (branch_flag & ~Halt)) ? (branch | j_flag) : 1'b0; 
+   // Added jl_flag to the PcSel because I didn't want to affect the branch logic,
+   // and also keep it specific to jump and link ops so old jump logic isn't broken
    
    //Tells the IF/ID pipeline register to flush the next instruction 
    //Due to a branch being taken
