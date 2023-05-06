@@ -48,7 +48,7 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
     //LMAO, Wasn't expecting that to work at 1:48am 
     assign {LinkRegOut, WriteRegAddrOut, RegWriteOut, b_flagOut, j_flagOut, RegJmpOut} = branchTaken ? 9'h00 : ID_cntrl_array;
     assign {ALUSelOut, ForwardsOut} = branchTaken ? 7'h00 : EX_cntrl_array;
-    assign {MemEnableOut, MemWrOut, HaltOut} = branchTaken ? 3'h00 : MEM_cntrl_array;
+    assign {MemEnableOut, MemWrOut, HaltOut} = branchTaken ? 3'h0 : MEM_cntrl_array;
     
     dff ID_cntrl[8:0](.q(ID_cntrl_array),
                       .d({LinkRegIn, WriteRegAddrIn, RegWriteIn, b_flagIn, j_flagIn, RegJmpIn}), .clk(clk) , .rst(rst));
