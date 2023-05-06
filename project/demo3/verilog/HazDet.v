@@ -69,8 +69,8 @@ assign Forwards[5:0] = {EXtoEX_FDRs, MEMtoEX_FDRs, EXtoEX_FDRt, MEMtoEX_FDRt,
 
 assign RegHazDet =
 
-    ((ID_Rd == IF_Rs) & (ID_valid_n & ~EXtoEX_FDRs | ID_MemEnable)) |
-    ((EX_Rd == IF_Rs) & (EX_valid_n | EX_MemEnable) /*& ~MEMtoEX_FDRs*/ & ~EXtoID_FDRs) |
+    ((ID_Rd == IF_Rs) & (ID_valid_n /*& ~EXtoEX_FDRs*/ | ID_MemEnable)) |
+    ((EX_Rd == IF_Rs) & (EX_valid_n | EX_MemEnable) & ~MEMtoEX_FDRs & ~EXtoID_FDRs) |
     ((MEM_Rd== IF_Rs) & MEM_valid_n & ~MEMtoID_FDRs)|
     ((WB_Rd == IF_Rs) & WB_valid_n) | 
 
