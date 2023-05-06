@@ -5,7 +5,7 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm, EX_FD_Rs, MEM_FD_Rs,
+module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm,
                Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag,RegJmp, 
                Halt,  WriteRegAddr, Forwards, en, clk, rst );
    // TODO: Your code here
@@ -14,7 +14,7 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm, EX_FD_Rs,
    output wire[15:0] nextPC;
 
    input wire[15:0] Instr, Imm, PC, PCNOW;
-   input wire[15:0] Writeback, EX_FD_Rs, MEM_FD_Rs;
+   input wire[15:0] Writeback;
    input wire[2:0] WriteRegAddr;
    input wire[1:0] Forwards;
    input wire LBI, Link, en, b_flag, j_flag,RegJmp, Halt;
@@ -28,19 +28,19 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm, EX_FD_Rs,
 
    wire EXtoID_FDRs, MEMtoID_FDRs;
 
-   reg[15:0] TrueData;
+   // reg[15:0] TrueData;
 
    assign EXtoID_FDRs  = Forwards[1];
    assign MEMtoID_FDRs = Forwards[0];
 
-   always@* begin
-      case({EXtoID_FDRs, MEMtoID_FDRs})
-         2'b00: TrueData = Writeback;
-         2'b01: TrueData = MEM_FD_Rs;
-         2'b10: TrueData = EX_FD_Rs;
-         default: TrueData = Writeback;
-      endcase
-   end
+   // always@* begin
+   //    case({EXtoID_FDRs, MEMtoID_FDRs})
+   //       2'b00: TrueData = Writeback;
+   //       2'b01: TrueData = MEM_FD_Rs;
+   //       2'b10: TrueData = EX_FD_Rs;
+   //       default: TrueData = Writeback;
+   //    endcase
+   // end
    //wire NOP_det;
    //assign NOP_det = (Instr[15:11] == 5'b00001) ? 1'b1 : 1'b0;
    always @* begin
@@ -71,7 +71,7 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm, EX_FD_Rs,
    //dff_16 PCDFF(.q(PC_instr), .err(), .d(PC), .clk(clk), .rst(rst));
    */
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PCNOW), .inB(16'h0002), .cIn(1'b0));
-    assign ImmSel = LBI ? Imm : TrueData;
+    assign ImmSel = LBI ? Imm : Writeback;
     assign WriteData = (Link | jl_flag | EX_JL) ? PcSum2 : ImmSel;      
 
    assign WrAddr = jl_flag ? 3'b111 : WriteRegAddr;

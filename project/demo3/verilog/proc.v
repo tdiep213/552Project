@@ -144,7 +144,7 @@ module proc (/*AUTOARG*/
 
     decode D( .PcSel(ID_PcSel), .Reg1Data(ID_Rs), .Reg2Data(ID_Rt), .JmpData(JmpData), .Instr(ID_Instr), .nextPC(nextPC),
                 .Imm(WB_ImmExt), .Writeback(Writeback), .RegJmp(ID_RegJmp),
-                .PC(WB_PC), .PCNOW(ID_PC), .LBI(WB_LBI), .Link(WB_Link), .b_flag(ID_b_flag), .j_flag(ID_j_flag), .EX_FD_Rs(EX_Rs), .MEM_FD_Rs(MEM_Rs),
+                .PC(WB_PC), .PCNOW(ID_PC), .LBI(WB_LBI), .Link(WB_Link), .b_flag(ID_b_flag), .j_flag(ID_j_flag),
                 .Halt(Halt), .WriteRegAddr(WB_WriteRegAddr), .en(WB_RegWrite), .Forwards(ID_Forwards[1:0]), .clk(clk), .rst(rst) );
     /*---------------*/
 
@@ -173,7 +173,7 @@ module proc (/*AUTOARG*/
     /*-----EXECUTE-----*/
     execute X(.out(EX_ALUout), .RsVal(EX_Rs), .RtVal(EX_Rt), .Imm(EX_ImmExt), 
               .ALUSel(EX_ALUSel), .opcode(EX_Instr[15:11]), .funct(EX_Instr[1:0]), 
-              .EX_FD_Rs(EX_Rs), .MEM_FD_Rs(MEM_Rs), .EX_FD_Rt(EX_Rt), .MEM_FD_Rt(MEM_Rt), .Forwards(EX_Forwards[5:2]));
+              .EX_EX_FD(MEM_ALUout), .MEM_EX_FD(WB_MEMout), .Forwards(EX_Forwards[5:2]));
     /*---------------*/
 
     /*-----EX/MEM-----*/
