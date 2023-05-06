@@ -41,9 +41,22 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
     
     assign InstrOut = branchTaken ? 16'h0800 : Instrc; // Culls Instruction if branch taken 
 
-    dff ID_cntrl[8:0](.q({LinkRegOut, WriteRegAddrOut, RegWriteOut, b_flagOut, j_flagOut, RegJmpOut}),  .d({LinkRegIn, WriteRegAddrIn, RegWriteIn, b_flagIn, j_flagIn, RegJmpIn}), .clk(clk) , .rst(rst));
-    dff EX_cntrl[6:0](.q({ALUSelOut, ForwardsOut}),  .d({ALUSelIn, ForwardsIn}), .clk(clk), .rst(rst));
-    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk), .rst(rst));
+    wire[8:0] ID_cntrl_array;
+    wire[6:0] EX_cntrl_array;
+    wire[2:0] MEM_cntrl_array;
+
+    //LMAO, Wasn't expecting that to work at 1:48am 
+    assign {LinkRegOut, WriteRegAddrOut, RegWriteOut, b_flagOut, j_flagOut, RegJmpOut} = branchTaken ? 9'h00 : ID_cntrl_array;
+    assign {ALUSelOut, ForwardsOut} = branchTaken ? 7'h00 : EX_cntrl_array;
+    assign {MemEnableOut, MemWrOut, HaltOut} = branchTaken ? 3'h00 : MEM_cntrl_array;
+    
+    dff ID_cntrl[8:0](.q(ID_cntrl_array),
+                      .d({LinkRegIn, WriteRegAddrIn, RegWriteIn, b_flagIn, j_flagIn, RegJmpIn}), .clk(clk) , .rst(rst));
+    
+    dff EX_cntrl[6:0](.q(EX_cntrl_array),  .d({ALUSelIn, ForwardsIn}), .clk(clk), .rst(rst));
+    
+    dff MEM_cntrl[2:0](.q(MEM_cntrl_array),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk), .rst(rst));
+    
     dff WB_cntrl(.q(Val2RegOut),  .d(Val2RegIn), .clk(clk), .rst(rst));
 
     // (.q(),  .d(), .clk(clk), .rst(rst));

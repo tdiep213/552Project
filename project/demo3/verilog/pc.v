@@ -27,10 +27,16 @@ module pc(
     cla16b PCIMM(.sum(PcImm), .cOut(), .inA(Inc2),    .inB(Imm),      .cIn(1'b0));
     cla16b RSIMM(.sum(RsImm), .cOut(), .inA(Rs),      .inB(Imm),      .cIn(1'b0));
 
+
+    //Holds PcImm for one extra cycle
+    //Might cause an error with jump, use ? to select between the two 
+    wire[15:0] PC_PLUS_IMM;
+    dff_16 PC_IMM_REG(.q(PC_PLUS_IMM), .err(), .d(PcImm), .clk(clk), .rst(rst));
+
     always@* begin
         casex({RegJmp, PCSel, Halt, rst})
             4'b0000: nextPC = PcStall ? PC : Inc2;
-            4'b0100: nextPC = PcStall ? PC : PcImm;
+            4'b0100: nextPC = PcStall ? PC : PC_PLUS_IMM;
             4'b1100: nextPC = PcStall ? PC : RsImm;
             4'b???1: nextPC = 0;
             default: nextPC = PC;     // Default to Halt

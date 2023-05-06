@@ -21,7 +21,7 @@ module fetch (
    Imm, 
    Rs,     jmpPC,
    SIIC,
-   PcSel,
+   PcSel, branchTaken,
    clk, 
    rst);
    // TODO: Your code here
@@ -36,7 +36,7 @@ module fetch (
 
    input wire[15:0] Imm, Rs, jmpPC, nextPC;
    input wire[15:0] BrnchAddr;
-   input wire PcSel;
+   input wire PcSel, branchTaken;
 
    input wire clk, rst;
 
@@ -75,6 +75,7 @@ module fetch (
                .valid_n(valid_n), .MemEnable(MemEnable), 
                .Rd(ChkRegAddr), .Imm(Imm), .Reg1Data(Rs), 
                .Instr(Instr), 
+               .branchTaken(branchTaken),
                .clk(clk), .rst(rst));
 
    // This is the stuff that got things moving again, your crying dff was a good lead//

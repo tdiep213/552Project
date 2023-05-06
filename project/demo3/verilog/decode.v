@@ -95,8 +95,11 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, I
    
    assign branch_flag = ((Instr[15:13] == 3'b011) | b_flag) ? 1'b1 : 1'b0;
    assign PcSel = (branch_flag & ~Halt) ? (branch) : 1'b0; 
-   dff bt(.q(branchTaken), .d(PcSel), .clk(clk), .rst(rst));
-   // assign branchTaken = PcSel; //TODO: Combine signals 
+   
+   //Tells the IF/ID pipeline register to flush the next instruction 
+   //Due to a branch being taken
+   dff InstrFlush(.q(branchTaken), .d(PcSel), .clk(clk), .rst(rst)); 
+   
    always @* begin
       case(Instr[12:11])
          2'b00: branch = Zflag;    // BEQZ Rs, immediate if (Rs == 0) then PC <- PC + 2 + I(sign ext.)    

@@ -107,7 +107,7 @@ module proc (/*AUTOARG*/
             .RegJmp(RegJmp), 
         // inputs
             .nextPC(nextPC),
-            .Imm(IF_ImmExt), .BrnchAddr(ID_ImmExt), 
+            .Imm(IF_ImmExt), .BrnchAddr(ID_ImmExt),  .branchTaken(branchTaken),
              .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst), .Rs(ID_Rs), .jmpPC(JmpData));
 
  

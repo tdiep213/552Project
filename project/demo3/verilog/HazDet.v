@@ -1,10 +1,11 @@
-module HazDet(NOP, PcStall, Forwards, Instr, valid_n, MemEnable, Rd, Imm, Reg1Data, rst, clk);
+module HazDet(NOP, PcStall, Forwards, Instr, valid_n, branchTaken, MemEnable, Rd, Imm, Reg1Data, rst, clk);
 output wire NOP, PcStall; 
 output wire [5:0] Forwards;
 
 input wire[15:0] Instr, Imm, Reg1Data;
 input wire[2:0] Rd;
 input wire valid_n, MemEnable;
+input wire branchTaken;
 input wire rst, clk;
 
 wire[2:0] IF_Rs, IF_Rt;
@@ -47,7 +48,8 @@ wire WB_valid_n;
 wire RegHazDet; 
 
 dff REG_IF_ID [3:0](.q({ID_Rd, ID_valid_n}), .d({Rd, valid_n}), .clk(clk), .rst(rst));
-dff REG_ID_EX [3:0](.q({EX_Rd, EX_valid_n}), .d({ID_Rd, ID_valid_n}), .clk(clk), .rst(rst));
+//culls instruction if branch is taken
+dff REG_ID_EX [3:0](.q({EX_Rd, EX_valid_n}), .d({ID_Rd & ~branchTaken, ID_valid_n & ~branchTaken}), .clk(clk), .rst(rst));
 dff REG_EX_MEM[3:0](.q({MEM_Rd, MEM_valid_n}), .d({EX_Rd, EX_valid_n}), .clk(clk), .rst(rst));
 dff REG_MEM_WB[3:0](.q({WB_Rd, WB_valid_n}), .d({MEM_Rd, MEM_valid_n}), .clk(clk), .rst(rst));
 
@@ -90,12 +92,12 @@ cla16b RtImm(.sum(MemAddr), .cOut(), .inA(Reg1Data), .inB(Imm), .cIn(1'b0));
 
 // Update addresses used in other stages
 dff_16 MEM_IF_ID( .q(ID_MemAddr),  .err(), .d(MemAddr),     .clk(clk), .rst(rst));
-dff_16 MEM_ID_EX( .q(EX_MemAddr),  .err(), .d(ID_MemAddr),  .clk(clk), .rst(rst));
+dff_16 MEM_ID_EX( .q(EX_MemAddr),  .err(), .d(ID_MemAddr & ~branchTaken),  .clk(clk), .rst(rst));
 dff_16 MEM_EX_MEM(.q(MEM_MemAddr), .err(), .d(EX_MemAddr),  .clk(clk), .rst(rst));
 dff_16 MEM_MEM_WB(.q(WB_MemAddr),  .err(), .d(WB_MemAddr), .clk(clk), .rst(rst));
 
 dff En_IF_ID (.q(ID_MemEnable),  .d(MemEnable),     .clk(clk), .rst(rst));
-dff En_ID_EX (.q(EX_MemEnable),  .d(ID_MemEnable),  .clk(clk), .rst(rst));
+dff En_ID_EX (.q(EX_MemEnable),  .d(ID_MemEnable & ~branchTaken),  .clk(clk), .rst(rst));
 dff En_EX_MEM(.q(MEM_MemEnable), .d(EX_MemEnable),  .clk(clk), .rst(rst));
 dff En_MEM_WB(.q(WB_MemEnable),  .d(MEM_MemEnable), .clk(clk), .rst(rst));
 // might be overkill on number of cases, but better safe than sorry
@@ -103,13 +105,13 @@ dff En_MEM_WB(.q(WB_MemEnable),  .d(MEM_MemEnable), .clk(clk), .rst(rst));
 assign MemHazDet = 
 // If Mem is being accessed in this instruction, and mem was accessed in one of these previous instructions
 ((MemEnable == 1'b1 ) &(
- (ID_MemEnable  == 1'b1) |
+ ((ID_MemEnable  == 1'b1)& ~branchTaken) |
  (EX_MemEnable  == 1'b1) |
  (MEM_MemEnable == 1'b1) |
  (WB_MemEnable  == 1'b1)))
 &
 // AND the Memory accessed is the same memory accessed before
-(((ID_MemAddr  == MemAddr)  ) |
+((((ID_MemAddr  == MemAddr)& ~branchTaken)  ) |
  ((EX_MemAddr  == MemAddr)  ) |
  ((MEM_MemAddr == MemAddr)  ) |
  ((WB_MemAddr  == MemAddr)  ));
