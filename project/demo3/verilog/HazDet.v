@@ -144,7 +144,7 @@ assign MemHazDet =
 // & EX_valid_n
 // & MEM_valid_n
 // & WB_valid_n
-assign NOP = (RegHazDet | MemHazDet | JBNOP); // (~NOPchk) ? 1'b1 : 1'b0;
+assign NOP = (RegHazDet | MemHazDet); // (~NOPchk) ? 1'b1 : 1'b0;
 assign PcStall = (RegHazDet | MemHazDet | JBNOP); //& ~prevJBNOP;// & ~NOPchk? 1'b1 : 1'b0;
 
 dff BrnchJmp(.q(prevJBNOP), .d((JBNOP & ~RegHazDet & ~MemHazDet)), .clk(clk), .rst(rst));
