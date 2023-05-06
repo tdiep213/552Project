@@ -100,10 +100,10 @@ assign RegHazDet =
     ((MEM_Rd== IF_Rs) & MEM_valid_n)|
     ((WB_Rd == IF_Rs) & WB_valid_n) | 
 
-    ((ID_Rd == IF_Rt) & ((ID_valid_n& ~branchTaken) /*& ~EXtoEX_FDRt| ID_MemEnable*/)) |
+    ((((ID_Rd == IF_Rt) & ((ID_valid_n& ~branchTaken) /*& ~EXtoEX_FDRt| ID_MemEnable*/)) |
     ((EX_Rd == IF_Rt) & EX_valid_n) | 
     ((MEM_Rd== IF_Rt) & MEM_valid_n)| 
-    ((WB_Rd == IF_Rt) & WB_valid_n) ;
+    ((WB_Rd == IF_Rt) & WB_valid_n)) & ~jr_flag);
 
 
 /*-----MEM RAW Hazard Check-----*/
