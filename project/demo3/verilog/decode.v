@@ -102,21 +102,21 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm, EX_FD_Rs,
    end
 
 
-   brancher branchCntrl(
-               .nextPC(nextPC), 
-               .Inc2(), 
-               .currentPC(PCNOW), 
-               .PCSel(PcSel), 
-               .RegJmp(RegJmp), 
-               .BrancherFWDs(Forwards[1:0]),
-               .Imm(Imm),
-               .RsValue(Reg1Data), 
-               .EXtoID_Rs(EX_FD_Rs), 
-               .MEMtoID_Rs(MEM_FD_Rs), 
-               .Halt(Halt),
-               .rst(rst), .clk(clk),
-                .SIIC()//Unused
-                );
+   // brancher branchCntrl(
+   //             .nextPC(nextPC), 
+   //             .Inc2(), 
+   //             .currentPC(PCNOW), 
+   //             .PCSel(PcSel), 
+   //             .RegJmp(RegJmp), 
+   //             .BrancherFWDs(Forwards[1:0]),
+   //             .Imm(Imm),
+   //             .RsValue(Reg1Data), 
+   //             .EXtoID_Rs(EX_FD_Rs), 
+   //             .MEMtoID_Rs(MEM_FD_Rs), 
+   //             .Halt(Halt),
+   //             .rst(rst), .clk(clk),
+   //              .SIIC()//Unused
+   //              );
 
 endmodule
 `default_nettype wire

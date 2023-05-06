@@ -35,9 +35,9 @@ module brancher(nextPC, Inc2, currentPC,
         endcase
     end
     
-    cla16b PcInc(.sum(Inc2),  .cOut(), .inA(currentPC), .inB(16'h0002), .cIn(zero));
-    cla16b PCIMM(.sum(PcImm), .cOut(), .inA(Inc2),      .inB(Imm),      .cIn(zero));
-    cla16b RSIMM(.sum(RsImm), .cOut(), .inA(Inc2),      .inB(Imm),      .cIn(zero));
+    cla16b PcInc(.sum(Inc2),  .cOut(), .inA(nextPC), .inB(16'h0002), .cIn(1'b0));
+    cla16b PCIMM(.sum(PcImm), .cOut(), .inA(Inc2),      .inB(Imm),      .cIn(1'b0));
+    cla16b RSIMM(.sum(RsImm), .cOut(), .inA(Rs),      .inB(Imm),      .cIn(1'b0));
 
     always@* begin
         casex({RegJmp, PCSel, Halt, rst})
