@@ -4,14 +4,14 @@ module pc(
     PC, 
     //Inputs
     Rs, Imm,
-    PcStall, RegJmp, PCSel, Halt, j_flag,//Control Signals
+    PcStall, RegJmp, PCSel, Halt,//Control Signals
     clk, rst
 );
 
     output wire[15:0] PC;       // PC used on the outside
 
     input wire [15:0] Rs, Imm;       //
-    input wire PcStall, RegJmp, PCSel, Halt, j_flag;         //
+    input wire PcStall, RegJmp, PCSel, Halt;         //
     input wire clk, rst;
     
     wire [15:0] PcImm, RsImm, Inc2;
@@ -37,10 +37,8 @@ module pc(
     assign TrueInc = PcStall ? PC : Inc2;
     assign TrueRsImm = PcStall ? PC : RsImm;
 
-    assign jbSel = j_flag | PCSel;      // PcImm needs to be used immediatly if jumping, but needs to come from decode if branching
-
     always@* begin
-        casex({RegJmp, jbSel, Halt, rst})
+        casex({RegJmp, PCSel, Halt, rst})
             4'b0000: nextPC = TrueInc;
             4'b0100: nextPC = TruePcImm;
             4'b1100: nextPC = TrueRsImm;
