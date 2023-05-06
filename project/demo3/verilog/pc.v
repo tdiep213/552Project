@@ -30,14 +30,18 @@ module pc(
 
     //Holds PcImm for one extra cycle
     //Might cause an error with jump, use ? to select between the two 
-    wire[15:0] PC_PLUS_IMM;
+    wire[15:0] PC_PLUS_IMM, TruePcImm, TrueInc, TrueRsImm;
     dff_16 PC_IMM_REG(.q(PC_PLUS_IMM), .err(), .d(PcImm), .clk(clk), .rst(rst));
+
+    assign TruePcImm = PcStall ? PC : PC_PLUS_IMM;
+    assign TrueInc = PcStall ? PC : Inc2;
+    assign TrueRsImm = PcStall ? PC : RsImm;
 
     always@* begin
         casex({RegJmp, PCSel, Halt, rst})
-            4'b0000: nextPC = PcStall ? PC : Inc2;
-            4'b0100: nextPC = PcStall ? PC : PC_PLUS_IMM;
-            4'b1100: nextPC = PcStall ? PC : RsImm;
+            4'b0000: nextPC = TruePcImm;
+            4'b0100: nextPC = TrueInc;
+            4'b1100: nextPC = TrueRsImm;
             4'b???1: nextPC = 0;
             default: nextPC = PC;     // Default to Halt
         endcase
