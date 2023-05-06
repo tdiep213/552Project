@@ -51,7 +51,7 @@ module fetch (
    wire[15:0] prevPC;
 
    // pc ProgCnt(.PC(PC), .prevPC(prevPC), .newAddr(nextPC), .PcStall(PCStall), .clk(clk), .rst(rst));
-   pc ProgCnt(.PC(PC), .Rs(Rs), .Imm(Imm), .PcStall(PCStall), .RegJmp(ID_RegJmp), .PCSel(PcSel), .Halt(Halt), .clk(clk), .rst(rst));
+   pc ProgCnt(.PC(PC), .Rs(Rs), .Imm(Imm), .PcStall(PCStall), .RegJmp(RegJmp), .PCSel(PcSel), .Halt(Halt), .clk(clk), .rst(rst));
    
 
    memory2c InstrMem(.data_out(Instr), 
@@ -116,7 +116,7 @@ module fetch (
    .Instr(Instr_B[15:11]));
 
    assign Instr_C[10:0] = Instr_B[10:0];
-    
+   
 
    always@* begin
       case(ChkRegSel)
