@@ -33,6 +33,7 @@ module pc(
     wire[15:0] PC_PLUS_IMM, TruePcImm, TrueInc, TrueRsImm;
     dff_16 PC_IMM_REG(.q(PC_PLUS_IMM), .err(), .d(PcImm), .clk(clk), .rst(rst));
 
+    // this has no functional affect, it just helped me see the values easier in modelsim waves.
     assign TruePcImm = PcStall ? PC : PC_PLUS_IMM;
     assign TrueInc = PcStall ? PC : Inc2;
     assign TrueRsImm = PcStall ? PC : RsImm;
