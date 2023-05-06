@@ -68,6 +68,13 @@ wire WB_valid_n;
 wire RegHazDet; 
 wire[2:0]trueRd; 
 
+wire [15:0] prevInstr;
+wire NewInst;
+
+assign NewInst = (Instr != prevInstr);
+
+dff_16 instrDff(.q(prevInstr), .err(), .d(Instr), .clk(clk), .rst(rst));
+
 assign trueRd = link ? 3'h7 : Rd;
 
 dff REG_IF_ID [3:0](.q({ID_Rd, ID_valid_n}), .d({trueRd, valid_n}), .clk(clk), .rst(rst));
@@ -145,7 +152,7 @@ assign MemHazDet =
 // & MEM_valid_n
 // & WB_valid_n
 assign NOP = (RegHazDet | MemHazDet); // (~NOPchk) ? 1'b1 : 1'b0;
-assign PcStall = (RegHazDet | MemHazDet | JBNOP); //& ~prevJBNOP;// & ~NOPchk? 1'b1 : 1'b0;
+assign PcStall = (RegHazDet | MemHazDet | (JBNOP & ~NewInst); //& ~prevJBNOP;// & ~NOPchk? 1'b1 : 1'b0;
 
 dff BrnchJmp(.q(prevJBNOP), .d((JBNOP & ~RegHazDet & ~MemHazDet)), .clk(clk), .rst(rst));
 
