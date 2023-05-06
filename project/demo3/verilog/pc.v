@@ -30,7 +30,7 @@ module pc(
 
     //Holds PcImm for one extra cycle
     //Might cause an error with jump, use ? to select between the two 
-    wire[15:0] PC_PLUS_IMM;
+    wire[15:0] PC_PLUS_IMM, TruePcImm, TrueInc, TrueRsImm;
     dff_16 PC_IMM_REG(.q(PC_PLUS_IMM), .err(), .d(PcImm), .clk(clk), .rst(rst));
 
     assign TruePcImm = PcStall ? PC : PC_PLUS_IMM;
