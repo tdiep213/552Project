@@ -40,7 +40,7 @@ always @* begin
         end
         5'b00100: begin // J
             link = 1'b0;
-            JBNOP = 1'b1; //JUMP
+            JBNOP = (1'b1 & ~prevJBNOP); //JUMP
         end
         5'b011??: JBNOP = 1'b0; //BRANCH
         default: JBNOP = 1'b0;
@@ -135,7 +135,7 @@ assign MemHazDet =
 // & MEM_valid_n
 // & WB_valid_n
 assign NOP = (RegHazDet | MemHazDet); // (~NOPchk) ? 1'b1 : 1'b0;
-assign PcStall = (RegHazDet | MemHazDet | JBNOP) & ~prevJBNOP;// & ~NOPchk? 1'b1 : 1'b0;
+assign PcStall = (RegHazDet | MemHazDet | JBNOP) //& ~prevJBNOP;// & ~NOPchk? 1'b1 : 1'b0;
 
 dff BrnchJmp(.q(prevJBNOP), .d((JBNOP & ~RegHazDet & ~MemHazDet)), .clk(clk), .rst(rst));
 
