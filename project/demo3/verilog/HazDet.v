@@ -36,8 +36,8 @@ always @* begin
     case(Instr[15:11])
         5'b00101: begin // JAL 
             link = 1'b1;
-            JBNOP = 1'b0; //JUMP
-        end
+            JBNOP = 1'b1; //JUMP    // changed from 0 to 1, saw some commits about this, but unsure 
+        end                         // if this case statement (JBNOP signal) was used when those changes were made
         5'b00100: begin // J
             link = 1'b0;
             JBNOP = (1'b1 & ~prevJBNOP); //JUMP
