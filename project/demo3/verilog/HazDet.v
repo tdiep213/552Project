@@ -1,10 +1,10 @@
-module HazDet(NOP, PcStall, Forwards, Instr, valid_n, MemEnable, Rd, Imm, Reg1Data, rst, clk);
+module HazDet(NOP, PcStall, Forwards, Instr, valid_n, validRs, validRt, MemEnable, Rd, Imm, Reg1Data, rst, clk);
 output wire NOP, PcStall; 
 output wire [5:0] Forwards;
 
 input wire[15:0] Instr, Imm, Reg1Data;
 input wire[2:0] Rd;
-input wire valid_n, MemEnable;
+input wire valid_n, validRs, validRt, MemEnable;
 input wire rst, clk;
 
 wire[2:0] IF_Rs, IF_Rt;
@@ -69,15 +69,15 @@ assign Forwards[5:0] = {EXtoEX_FDRs, MEMtoEX_FDRs, EXtoEX_FDRt, MEMtoEX_FDRt,
 
 assign RegHazDet =
 
-    ((ID_Rd == IF_Rs) & (ID_valid_n /*& ~EXtoEX_FDRs*/| ID_MemEnable)) |
-    ((EX_Rd == IF_Rs) & (EX_valid_n | EX_MemEnable)) |
-    ((MEM_Rd== IF_Rs) & MEM_valid_n)|
-    ((WB_Rd == IF_Rs) & WB_valid_n) | 
+    ((ID_Rd == IF_Rs) & ((validRs & ID_valid_n) /*& ~EXtoEX_FDRs*/| ID_MemEnable)) |
+    ((EX_Rd == IF_Rs) & ((validRs & EX_valid_n) | EX_MemEnable)) |
+    ((MEM_Rd== IF_Rs) & (validRs & MEM_valid_n))|
+    ((WB_Rd == IF_Rs) & (validRs & WB_valid_n)) | 
 
-    ((ID_Rd == IF_Rt) & (ID_valid_n /*& ~EXtoEX_FDRt*/| ID_MemEnable)) |
-    ((EX_Rd == IF_Rt) & EX_valid_n) | 
-    ((MEM_Rd== IF_Rt) & MEM_valid_n)| 
-    ((WB_Rd == IF_Rt) & WB_valid_n) ;
+    ((ID_Rd == IF_Rt) & ((validRt & ID_valid_n) /*& ~EXtoEX_FDRt*/| ID_MemEnable)) |
+    ((EX_Rd == IF_Rt) & (validRt & EX_valid_n)) | 
+    ((MEM_Rd== IF_Rt) & (validRt & MEM_valid_n))| 
+    ((WB_Rd == IF_Rt) & (validRt & WB_valid_n)) ;
 
 
 /*-----MEM RAW Hazard Check-----*/
@@ -118,8 +118,8 @@ assign MemHazDet =
 // & EX_valid_n
 // & MEM_valid_n
 // & WB_valid_n
-assign NOP = (RegHazDet | MemHazDet | prevJBNOP ) & (~NOPchk) ? 1'b1 : 1'b0;
-assign PcStall = (RegHazDet | MemHazDet) & ~NOPchk? 1'b1 : 1'b0;
+assign NOP = (RegHazDet | MemHazDet | prevJBNOP ) & (~NOPchk);// ? 1'b1 : 1'b0;
+assign PcStall = (RegHazDet | MemHazDet) & ~NOPchk;//? 1'b1 : 1'b0;
 
 dff BrnchJmp(.q(prevJBNOP), .d((JBNOP & ~RegHazDet & ~MemHazDet)), .clk(clk), .rst(rst));
 

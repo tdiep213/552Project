@@ -26,16 +26,24 @@ module control(
     Halt,       // Stop current and future instructions from executing
     ctrlErr,    // temporary err flag for phase 1.
     SIIC,       // SIIC
-    valid_n,    // whomst? :P
+    
 
     // Writeback Signal
     Link,       // Jump and Link instructions
     LBI,        // Load byte immediate instructions
 
+    // Valid Reg Read
+    validRs,
+    validRt, 
+    // Valid Reg Write
+    valid_n,    //Technically the _n means active low, and I think that's what I meant when I wrote it
+                //but that's not true anymore, a better name would be validRd
+
     //Input(s)
     Instr     // 5 msb of instruction
 );
     output reg  Halt, ctrlErr, SIIC, valid_n,   // special control
+                validRs, validRt,               // Hazard Control
                 RegWrite, Val2Reg, Link, LBI,   // Register control
                 PcSel, RegJmp, b_flag, j_flag,  // PC control
                 MemEnable, MemWr,               // Memory Control
@@ -64,6 +72,8 @@ module control(
         Halt            = 1'b0;    // Do Not Halt
         ALUcntrl        = Instr;   // Do pass instr through
         ctrlErr         = 1'b0;    // Do Not set error bit
+        validRs         = 1'b0;    // Not a valid read
+        validRt         = 1'b0;    // Not a valid read
         casex(Instr[4:0])
         default: begin
             PcSel           = 1'b0;    // Do Not add Imm to PC + 2
@@ -113,6 +123,7 @@ module control(
                 ALUSel          = 1'b1;     // Do use the Immediate value in ALU
                 DestRegSel[1:0] = 2'b11;    // Do use Rd-I
                 valid_n         = 1'b1;
+                validRs         = 1'b1;
                 case(Instr[1])
                     1'b0: ImmSel[2:0]   = 3'b100;   // Do use sign extension (specific to I-format 1!!)
                     default: ctrlErr    = 1'b1;
@@ -143,6 +154,7 @@ module control(
                 MemWr           = 1'b1;     // Do write to memory
                 MemEnable       = 1'b1;     // Do enable mem access
                 valid_n         = 1'b1;
+                validRs         = 1'b1;
             end
 //========================================================//
 
@@ -152,13 +164,17 @@ module control(
                 DestRegSel[1:0] = 2'b01;    // Do use Rd-R
                 RegWrite        = 1'b1;     // Do write to register;
                 valid_n         = 1'b1;
+                validRs         = 1'b1;
+                validRt         = 1'b1;
             end
 //========================================================//
 
 //===================== I Format 2 =======================//
             5'b011??: begin                 //Branch
                 ImmSel[2:0] = 3'b101;      // Do sign extend 8 bits.
-                valid_n     = 1'b1;
+                //valid_n    = 1'b1;
+                validRs     = 1'b1;
+                // validRt     = 1'b1;
             end
             5'b11000, 5'b10010: begin   // LBI and SLBI
                 ALUSel      = 1'b1;     // Do use the Immediate value in ALU
@@ -175,12 +191,13 @@ module control(
                     default: ctrlErr = 1'b1;
                 endcase
             end
+
+            //---------------------- J Format ------------------------//
             5'b001??: begin 
                 ALUSel          = 1'b1;     // Sometimes Care // Do use the Immediate value in ALU
                 DestRegSel[1:0] = 2'b10;    // Do use R7
-
-                case(Instr[0])
-//---------------------- J Format ------------------------//
+                case(Instr[0]) 
+                    // Jump no Reg
                     1'b0:  begin 
                         j_flag      = 1'b1;
                         ImmSel[2:0] = 3'b110;       // Do sign extend 11 bits.
@@ -197,8 +214,10 @@ module control(
                             default: ctrlErr = 1'b1;  
                         endcase
                     end
-//--------------------------------------------------------//
+                    
+                    // Jump w/ Reg
                     1'b1: begin
+                        validRs     = 1'b1;
                         RegJmp      = 1'b1;     // Do Jmp from Rs
                         ImmSel[2:0] = 3'b101;   // Do sign extend 8 bits.
                         

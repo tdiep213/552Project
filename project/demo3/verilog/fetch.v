@@ -45,7 +45,7 @@ module fetch (
    wire[15:0] Instr_B;
    wire[1:0] DestRegSel;
    wire HazNOP, PCStall, valid_n, PCStall_prev, PCStall_now, HazNOP_prev;
-
+   wire validRs, validRt;
    wire [1:0] ChkRegSel;
    reg [2:0] ChkRegAddr;
    wire[15:0] prevPC;
@@ -72,7 +72,7 @@ module fetch (
 
    //assign HazDet_Instr = PCStall_prev ? 16'h0800 : Instr;
    HazDet HDU( .NOP(HazNOP), .PcStall(PCStall), .Forwards(Forwards), 
-               .valid_n(valid_n), .MemEnable(MemEnable), 
+               .valid_n(valid_n), .validRs(validRs), .validRt(validRt), .MemEnable(MemEnable), 
                .Rd(ChkRegAddr), .Imm(Imm), .Reg1Data(Rs), 
                .Instr(Instr), 
                .clk(clk), .rst(rst));
@@ -107,6 +107,8 @@ module fetch (
    .Link(Link), 
    .LBI(LBI),
    .ctrlErr(ctrlErr),
+   .validRs(validRs),
+   .validRt(validRt),
    .SIIC(SIIC),
    .b_flag(b_flag),
    .valid_n(valid_n),
@@ -141,7 +143,9 @@ module fetch (
     .ALUSel(), 
     .ImmSel(), 
     .Halt(), 
-    .Link(), 
+    .Link(),
+    .validRt(),
+    .validRs(), 
     .ctrlErr(),
     .LBI(),
     .SIIC(),
