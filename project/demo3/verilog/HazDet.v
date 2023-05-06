@@ -34,9 +34,13 @@ always @* begin
     link = 1'b0;
     JBNOP = 1'b0;
     case(Instr[15:11])
-        5'b0011?: begin//JAL 
+        5'b00101: begin // JAL 
             link = 1'b1;
             JBNOP = 1'b0; //JUMP
+        end
+        5'b00100: begin // J
+            link = 1'b0;
+            JBNOP = 1'b1; //JUMP
         end
         5'b011??: JBNOP = 1'b0; //BRANCH
         default: JBNOP = 1'b0;
