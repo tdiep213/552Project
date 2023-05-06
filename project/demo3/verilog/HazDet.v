@@ -34,10 +34,10 @@ always @* begin
     link = 1'b0;
     JBNOP = 1'b0;
     case(Instr[15:11])
-        5'b00101: begin // JAL 
-            link = 1'b1;
-            JBNOP = 1'b1; //JUMP    // changed from 0 to 1, saw some commits about this, but unsure 
-        end                         // if this case statement (JBNOP signal) was used when those changes were made
+        5'b00110: begin // JAL      // aha, I had the wrong instruction for this part during the other tests
+            link = 1'b1;            // thankfully that didn't impact any of the other tests until now... 0_0
+            JBNOP = 1'b1; //JUMP        // <-- changed from 0 to 1, saw some commits about this, but unsure 
+        end                             // if this case statement (JBNOP signal) was used when those changes were made
         5'b00100: begin // J
             link = 1'b0;
             JBNOP = (1'b1 & ~prevJBNOP); //JUMP
