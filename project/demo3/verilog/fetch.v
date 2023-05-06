@@ -21,7 +21,7 @@ module fetch (
    Imm, 
    Rs,     jmpPC,
    SIIC,
-   PcSel, branchTaken,
+   PcSel, branchTaken, ID_RegJmp,
    clk, 
    rst);
    // TODO: Your code here
@@ -36,7 +36,7 @@ module fetch (
 
    input wire[15:0] Imm, Rs, jmpPC, nextPC;
    input wire[15:0] BrnchAddr;
-   input wire PcSel, branchTaken;
+   input wire PcSel, branchTaken, ID_RegJmp;
 
    input wire clk, rst;
 
@@ -51,7 +51,7 @@ module fetch (
    wire[15:0] prevPC;
 
    // pc ProgCnt(.PC(PC), .prevPC(prevPC), .newAddr(nextPC), .PcStall(PCStall), .clk(clk), .rst(rst));
-   pc ProgCnt(.PC(PC), .Rs(Rs), .Imm(Imm), .PcStall(PCStall), .RegJmp(RegJmp), .PCSel(PcSel), .Halt(Halt), .clk(clk), .rst(rst));
+   pc ProgCnt(.PC(PC), .Rs(Rs), .Imm(Imm), .PcStall(PCStall), .RegJmp(ID_RegJmp), .PCSel(PcSel), .Halt(Halt), .clk(clk), .rst(rst));
    
 
    memory2c InstrMem(.data_out(Instr), 

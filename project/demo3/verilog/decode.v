@@ -94,7 +94,7 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, I
     assign Zflag = &(Reg1Data == 16'h0000);
    
    assign branch_flag = ((Instr[15:13] == 3'b011) | b_flag) ? 1'b1 : 1'b0;
-   assign PcSel = (branch_flag & ~Halt) ? (branch) : 1'b0; 
+   assign PcSel = (branch_flag & ~Halt) ? (branch | j_flag) : 1'b0; 
    
    //Tells the IF/ID pipeline register to flush the next instruction 
    //Due to a branch being taken

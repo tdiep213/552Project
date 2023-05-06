@@ -64,6 +64,7 @@ module control(
         Halt            = 1'b0;    // Do Not Halt
         ALUcntrl        = Instr;   // Do pass instr through
         ctrlErr         = 1'b0;    // Do Not set error bit
+        j_flag          = 1'b0;
         casex(Instr[4:0])
         default: begin
             PcSel           = 1'b0;    // Do Not add Imm to PC + 2
@@ -175,12 +176,13 @@ module control(
                     default: ctrlErr = 1'b1;
                 endcase
             end
+
+    //---------------------- J Format ------------------------//
             5'b001??: begin 
                 ALUSel          = 1'b1;     // Sometimes Care // Do use the Immediate value in ALU
                 DestRegSel[1:0] = 2'b10;    // Do use R7
-
+                
                 case(Instr[0])
-//---------------------- J Format ------------------------//
                     1'b0:  begin 
                         j_flag      = 1'b1;
                         ImmSel[2:0] = 3'b110;       // Do sign extend 11 bits.
