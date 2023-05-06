@@ -34,7 +34,7 @@ module pc(
     dff_16 PC_IMM_REG(.q(PC_PLUS_IMM), .err(), .d(PcImm), .clk(clk), .rst(rst)); 
     
     // dff did cause problem with jumping, so added select like suggested. Now only uses dff version if branching.
-    TruePcImm = b_flag ? PC_PLUC_IMM : PcImm;
+    assign TruePcImm = b_flag ? PC_PLUC_IMM : PcImm;
 
     always@* begin
         casex({RegJmp, PCSel, Halt, rst})
