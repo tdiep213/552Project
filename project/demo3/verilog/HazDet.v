@@ -42,12 +42,11 @@ always @* begin
             link = 1'b0;
             JBNOP = (1'b1 & ~prevJBNOP); //JUMP
         end
-        
+        /*
         5'b00111: begin // JALR
             link = 1'b1;
             JBNOP = (1'b1 & ~prevJBNOP);
         end
-        /*
         5'b00101: begin // JR
             link = 1'b0;
             JBNOP = (1'b1 & ~prevJBNOP);
