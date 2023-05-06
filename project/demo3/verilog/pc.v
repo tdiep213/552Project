@@ -29,9 +29,9 @@ module pc(
 
     always@* begin
         casex({RegJmp, PCSel, Halt, rst})
-            4'b0000: nextPC = Inc2;
-            4'b0100: nextPC = PcImm;
-            4'b1100: nextPC = RsImm;
+            4'b0000: nextPC = PcStall ? PC : Inc2;
+            4'b0100: nextPC = PcStall ? PC : PcImm;
+            4'b1100: nextPC = PcStall ? PC : RsImm;
             4'b???1: nextPC = 0;
             default: nextPC = PC;     // Default to Halt
         endcase
