@@ -6,20 +6,19 @@
 */
 `default_nettype none
 module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, Imm, PCIncOut,
-               Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag,RegJmp, 
+               Writeback, PC, PCNOW, LBI, Link, b_flag, j_flag, EX_FD_Rs, MEM_FD_Rs, RegJmp, 
                Halt,  WriteRegAddr, Forwards, en, clk, rst );
    // TODO: Your code here
    output wire[15:0] Reg1Data, Reg2Data, JmpData; 
    output wire PcSel, branchTaken;
    output wire[15:0] nextPC, PCIncOut;
 
-   input wire[15:0] Instr, Imm, PC, PCNOW;
+   input wire[15:0] Instr, Imm, PC, PCNOW, EX_FD_Rs, MEM_FD_Rs;
    input wire[15:0] Writeback;
    input wire[2:0] WriteRegAddr;
    input wire[1:0] Forwards;
    input wire LBI, Link, en, b_flag, j_flag,RegJmp, Halt;
    input wire clk, rst;
-
    
    wire[2:0] Rs, Rt, WrAddr, read1RegSel;
    reg branch, jl_flag;
@@ -36,10 +35,11 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, I
    assign MEMtoID_FDRs = Forwards[0];
    /* NOTES FOR TIMO'S FORWARD CHANGES
    forward values actually come from the pipeline registers not where you were pulling them from
-   you can't have Rs/Rt** forwards since you're only forwarding the results of the ALU/MEM read **(no Rt in decode)
+   you can't have Rs/Rt** forwards since you're only forwarding the results of the ALU/MEM read 
    the individual signals are good though
-   // Oh I thought I was pulling the correct RsValues from pipeline registers but it makes sense that something wasn't lining up.
+   
    */
+   // Fixing my dumbassery another time.
    // always@* begin
    //    case({EXtoID_FDRs, MEMtoID_FDRs})
    //       2'b00: TrueData = Writeback;
@@ -77,12 +77,12 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, I
 
    /* bad
    // PC_instr is the PC value of the instruction currently in Decode (earlier than current PC because stages)
-   //dff_16 PCDFF(.q(PC_instr), .err(), .d(PC), .clk(clk), .rst(rst));
+   // dff_16 PCDFF(.q(PC_instr), .err(), .d(PC), .clk(clk), .rst(rst));
    */
     cla16b Pc2(.sum(PcSum2), .cOut(), .inA(PCNOW), .inB(16'h0002), .cIn(1'b0));
     assign ImmSel = LBI ? Imm : Writeback;
 
-    //remove jl_flag to prevent R7 overwriting things, let R7 go through the pipeline
+   //remove jl_flag to prevent R7 overwriting things, let R7 go through the pipeline
    //  assign WriteData = (Link /*| jl_flag*/ | EX_JL) ? PcSum2 : ImmSel;      
    // assign WrAddr = 1'b0/*jl_flag*/ ? 3'b111 : WriteRegAddr;
    assign WriteData = ImmSel; 
