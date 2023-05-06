@@ -32,7 +32,11 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, nextPC, Instr, Imm,
 
    assign EXtoID_FDRs  = Forwards[1];
    assign MEMtoID_FDRs = Forwards[0];
-
+   /* NOTES FOR TIMO'S FORWARD CHANGES
+   forward values actually come from the pipeline registers not where you were pulling them from 
+   you can't have Rs/Rt forwards since you're only forwarding the results of the ALU/MEM read
+   the individual signals are good though
+   */
    // always@* begin
    //    case({EXtoID_FDRs, MEMtoID_FDRs})
    //       2'b00: TrueData = Writeback;
