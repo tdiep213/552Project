@@ -35,9 +35,10 @@ module decode (Reg1Data, Reg2Data, JmpData, PcSel, branchTaken, nextPC, Instr, I
    assign EXtoID_FDRs  = Forwards[1];
    assign MEMtoID_FDRs = Forwards[0];
    /* NOTES FOR TIMO'S FORWARD CHANGES
-   forward values actually come from the pipeline registers not where you were pulling them from 
-   you can't have Rs/Rt forwards since you're only forwarding the results of the ALU/MEM read
+   forward values actually come from the pipeline registers not where you were pulling them from
+   you can't have Rs/Rt** forwards since you're only forwarding the results of the ALU/MEM read **(no Rt in decode)
    the individual signals are good though
+   // Oh I thought I was pulling the correct RsValues from pipeline registers but it makes sense that something wasn't lining up.
    */
    // always@* begin
    //    case({EXtoID_FDRs, MEMtoID_FDRs})
