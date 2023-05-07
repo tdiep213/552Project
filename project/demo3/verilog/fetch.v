@@ -52,7 +52,7 @@ module fetch (
 
    // pc ProgCnt(.PC(PC), .prevPC(prevPC), .newAddr(nextPC), .PcStall(PCStall), .clk(clk), .rst(rst));
    pc ProgCnt(.PC(PC), .Rs(Rs), .Imm(Imm), .PcStall(PCStall), .RegJmp(RegJmp), .PCSel(PcSel), .Halt(Halt), .clk(clk), .rst(rst));
-   
+   // NOTE! Replaced ID_RegJmp with RegJmp resolved 10 jump errors, so I'm leaving it alone for now. Jump bug resolution is still underway.
 
    memory2c InstrMem(.data_out(Instr), 
                      .data_in(), 
