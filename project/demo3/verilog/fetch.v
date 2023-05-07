@@ -15,7 +15,9 @@ module fetch (
    MemEnable, MemWr,             // mem ctrl signals
    b_flag, j_flag, RegJmp,       // branch ctrl signals
    Halt, ctrlErr, Forwards,       // Special ctrl signals
+   instr_stall,
    // inputs
+   mem_stall,
    BrnchAddr,
    nextPC,
    Imm, 
@@ -34,10 +36,12 @@ module fetch (
    output wire [5:0] Forwards;
    output wire RegJmp, Link, LBI, Halt, SIIC;
 
+   output wire instr_stall;
+
    input wire[15:0] Imm, Rs, jmpPC, nextPC;
    input wire[15:0] BrnchAddr;
    input wire PcSel, branchTaken, ID_RegJmp;
-
+   input wire mem_stall;
    input wire clk, rst;
 
    wire[15:0] PcAddr, Instr;
@@ -49,16 +53,39 @@ module fetch (
    wire [1:0] ChkRegSel;
    reg [2:0] ChkRegAddr;
    wire[15:0] prevPC;
-
-   // pc ProgCnt(.PC(PC), .prevPC(prevPC), .newAddr(nextPC), .PcStall(PCStall), .clk(clk), .rst(rst));
-   pc ProgCnt(.PC(PC), .Rs(Rs), .Imm(Imm), .PcStall(PCStall), .RegJmp(ID_RegJmp), .PCSel(PcSel), .Halt(Halt), .clk(clk), .rst(rst));
    
 
+   // pc ProgCnt(.PC(PC), .prevPC(prevPC), .newAddr(nextPC), .PcStall(PCStall), .clk(clk), .rst(rst));
+   pc ProgCnt(.PC(PC), .Rs(Rs), .Imm(Imm), .PcStall(PCStall | instr_stall | mem_stall), .RegJmp(ID_RegJmp), .PCSel(PcSel), .Halt(Halt), .clk(clk), .rst(rst));
+   
+wire[15:0] TradInstr;
    memory2c InstrMem(.data_out(Instr), 
                      .data_in(), 
                      .addr(PC), 
                      .enable(1'b1), .wr(1'b0), 
                      .createdump(), .clk(clk), .rst(rst));
+
+   
+   wire cacheRD;
+
+   assign instr_stall = 1'b0;
+
+   // dff CACHE_RD(.q(cacheRD), .d(1'd1), .clk(clk), .rst(rst));
+   // mem_system InstrMemCache(
+   //                   // Outputs
+   //                   .DataOut(Instr), 
+   //                   .Done(), 
+   //                   .Stall(instr_stall), 
+   //                   .CacheHit(),
+   //                   .err(),
+   //                   // Inputs
+   //                   .Addr(PC), 
+   //                   .DataIn(), 
+   //                   .Rd(1'b1;), 
+   //                   .Wr(1'b0), 
+   //                   .createdump(), 
+   //                   .clk(clk), .rst(rst)
+   // );
 
    always@* begin
       case(DestRegSel)
@@ -79,7 +106,7 @@ module fetch (
                .clk(clk), .rst(rst));
 
    // This is the stuff that got things moving again, your crying dff was a good lead//
-   assign Instr_B = HazNOP ? 16'h0800 : Instr;
+   assign Instr_B = (HazNOP|instr_stall) ? 16'h0800 : Instr;
    assign PCStall_now = (HazNOP & PCStall);
     
    dff StallDFF(.q(PCStall_prev), .d(PCStall_now), .clk(clk), .rst(rst));
@@ -151,7 +178,7 @@ module fetch (
     .j_flag(),   
     //Input(s)
     .Instr(Instr[15:11]));
-   assign valid_n = valid & ~HazNOP;
+   // assign valid_n = valid & ~HazNOP;
 
 endmodule
 `default_nettype wire

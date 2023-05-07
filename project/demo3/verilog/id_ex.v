@@ -11,6 +11,7 @@ module id_ex(
     MemEnableIn, MemWrIn, HaltIn,       //Control in (Memory)
     Val2RegIn, RegWriteIn, LinkRegIn,                       //Control in (Writeback)
 
+    mem_stall,
     clk, rst);
     
 
@@ -32,15 +33,20 @@ module id_ex(
     input wire MemEnableIn, MemWrIn, HaltIn;       //Control in (Memory)
     input wire Val2RegIn, RegWriteIn;                          //Control in (Writeback)
 
+    input wire mem_stall;
     input wire clk, rst;
 
+    wire clk_en, clk_cntrl;
+    dff CLK_CNTRL(.q(clk_cntrl), .d(mem_stall), .clk(clk), .rst(rst));
+    assign clk_en = clk & ~clk_cntrl;
 
-    dff_16 DATA[4:0](.q({InstrOut, ImmExtOut, PcOut,RsOut, RtOut}), .err(), .d({InstrIn, ImmExtIn, PcIn,RsIn, RtIn}), .clk(clk), .rst(rst));
-    dff WB_data[2:0](.q(WriteRegAddrOut),  .d(WriteRegAddrIn), .clk(clk), .rst(rst));
 
-    dff EX_cntrl[6:0](.q({ALUSelOut, ForwardsOut}), .d({ALUSelIn, ForwardsIn}), .clk(clk), .rst(rst));
-    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk), .rst(rst));
-    dff WB_cntrl[3:0](.q({Val2RegOut, RegWriteOut, LinkRegOut}),  .d({Val2RegIn, RegWriteIn, LinkRegIn}), .clk(clk), .rst(rst));
+    dff_16 DATA[4:0](.q({InstrOut, ImmExtOut, PcOut,RsOut, RtOut}), .err(), .d({InstrIn, ImmExtIn, PcIn,RsIn, RtIn}), .clk(clk_en), .rst(rst));
+    dff WB_data[2:0](.q(WriteRegAddrOut),  .d(WriteRegAddrIn), .clk(clk_en), .rst(rst));
+
+    dff EX_cntrl[6:0](.q({ALUSelOut, ForwardsOut}), .d({ALUSelIn, ForwardsIn}), .clk(clk_en), .rst(rst));
+    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk_en), .rst(rst));
+    dff WB_cntrl[3:0](.q({Val2RegOut, RegWriteOut, LinkRegOut}),  .d({Val2RegIn, RegWriteIn, LinkRegIn}), .clk(clk_en), .rst(rst));
 
     // (.q(),  .d(), .clk(clk), .rst(rst));
 

@@ -7,7 +7,7 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
         MemEnableIn, MemWrIn, HaltIn,
         Val2RegOut, // Writeback control
         Val2RegIn,
-        branchTaken
+        branchTaken, instr_stall, mem_stall
 
 );
     output wire[15:0] InstrOut, ImmExtOut, PcOut;
@@ -23,7 +23,7 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
     input wire Val2RegIn;                           //Writeback
 
     input wire branchTaken;                         //Branch Pred
-
+    input wire instr_stall, mem_stall;
     output wire[1:0] LinkRegOut;
     output wire[2:0] WriteRegAddrOut;
     output wire[5:0] ForwardsOut;
@@ -35,9 +35,14 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
 
     input wire clk, rst;
     wire[15:0] Instrc;
-    dff_16 Instruction(.q(Instrc), .err(), .d(InstrIn), .clk(clk), .rst(rst));
-    dff_16 Immediate(.q(ImmExtOut), .err(), .d(ImmExtIn), .clk(clk), .rst(rst));
-    dff_16 ProgCnt(.q(PcOut), .err(), .d(PcIn), .clk(clk), .rst(rst));
+    
+    wire clk_en, clk_cntrl;
+    dff CLK_CNTRL(.q(clk_cntrl), .d(instr_stall | mem_stall), .clk(clk), .rst(rst));
+    assign clk_en = clk & ~clk_cntrl;
+
+    dff_16 Instruction(.q(Instrc), .err(), .d(InstrIn), .clk(clk_en), .rst(rst));
+    dff_16 Immediate(.q(ImmExtOut), .err(), .d(ImmExtIn), .clk(clk_en), .rst(rst));
+    dff_16 ProgCnt(.q(PcOut), .err(), .d(PcIn), .clk(clk_en), .rst(rst));
     
     assign InstrOut = branchTaken ? 16'h0800 : Instrc; // Culls Instruction if branch taken 
 
@@ -51,14 +56,14 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
     assign {MemEnableOut, MemWrOut, HaltOut} = branchTaken ? 3'h0 : MEM_cntrl_array;
     
     dff ID_cntrl[8:0](.q(ID_cntrl_array),
-                      .d({LinkRegIn, WriteRegAddrIn, RegWriteIn, b_flagIn, j_flagIn, RegJmpIn}), .clk(clk) , .rst(rst));
+                      .d({LinkRegIn, WriteRegAddrIn, RegWriteIn, b_flagIn, j_flagIn, RegJmpIn}), .clk(clk_en) , .rst(rst));
     
-    dff EX_cntrl[6:0](.q(EX_cntrl_array),  .d({ALUSelIn, ForwardsIn}), .clk(clk), .rst(rst));
+    dff EX_cntrl[6:0](.q(EX_cntrl_array),  .d({ALUSelIn, ForwardsIn}), .clk(clk_en), .rst(rst));
     
-    dff MEM_cntrl[2:0](.q(MEM_cntrl_array),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk), .rst(rst));
+    dff MEM_cntrl[2:0](.q(MEM_cntrl_array),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk_en), .rst(rst));
     
-    dff WB_cntrl(.q(Val2RegOut),  .d(Val2RegIn), .clk(clk), .rst(rst));
+    dff WB_cntrl(.q(Val2RegOut),  .d(Val2RegIn), .clk(clk_en), .rst(rst));
 
-    // (.q(),  .d(), .clk(clk), .rst(rst));
+    // (.q(),  .d(), .clk(clk_en), .rst(rst));
 
 endmodule

@@ -72,7 +72,8 @@ module proc (/*AUTOARG*/
 
     wire[15:0] MEM_Rt, MEM_ALUout, MEM_MEMout, MEM_PC, MEM_ImmExt; 
     wire[2:0] MEM_WriteRegAddr;
-    wire MEM_MemEnable, MEM_MemWr, MEM_Halt, MEM_Val2Reg, MEM_RegWrite, MEM_LBI, MEM_Link;        
+    wire MEM_MemEnable, MEM_MemWr, MEM_Halt, MEM_Val2Reg, MEM_RegWrite, MEM_LBI, MEM_Link;     
+    wire mem_stall;   
 
     /*-----WB WIRES-----*/
     wire[15:0] WB_MEMout, WB_ALUout, WB_PC, WB_ImmExt;
@@ -81,7 +82,8 @@ module proc (/*AUTOARG*/
 
 
     /*-----FETCH-----*/
-    wire[15:0] IF_Instr, IF_PC, IF_ImmExt; 
+    wire[15:0] IF_Instr, IF_PC, IF_ImmExt;
+    wire instr_stall; 
     // wire LinkReg; 
 
     fetch F(
@@ -99,6 +101,8 @@ module proc (/*AUTOARG*/
             .RegWrite(RegWrite), 
             .MemEnable(MemEnable), 
 
+            .instr_stall(instr_stall),
+
             .ctrlErr(ctrlErr),
             .Forwards(Forwards),
             .b_flag(b_flag),
@@ -108,7 +112,9 @@ module proc (/*AUTOARG*/
         // inputs
             .nextPC(nextPC),
             .Imm(IF_ImmExt), .BrnchAddr(ID_ImmExt),  .branchTaken(branchTaken), .ID_RegJmp(ID_RegJmp),
-            .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst), .Rs(ID_Rs), .jmpPC(JmpData));
+            .PcSel(ID_PcSel), .SIIC(SIIC), .clk(clk), .rst(rst), .Rs(ID_Rs), .jmpPC(JmpData),
+            .mem_stall(mem_stall)
+            );
 
  
     /*---------------*/
@@ -133,7 +139,7 @@ module proc (/*AUTOARG*/
         .MemEnableIn(MemEnable), .MemWrIn(MemWr), .HaltIn(Halt),                //Control in (Memory)
         .Val2RegIn(Val2Reg), .RegWriteIn(RegWrite), .ForwardsIn(Forwards),                           //Control in (Writeback)
 
-        .clk(clk), .rst(rst), .branchTaken(branchTaken)
+        .clk(clk), .rst(rst), .branchTaken(branchTaken), .instr_stall(instr_stall), .mem_stall(mem_stall)
     );
 
     /*---------------*/
@@ -171,6 +177,7 @@ module proc (/*AUTOARG*/
         .MemEnableIn(ID_MemEnable), .MemWrIn(ID_MemWr), .HaltIn(ID_Halt),   //Control in (Memory)
         .Val2RegIn(ID_Val2Reg), .RegWriteIn(ID_RegWrite|ID_Link), .LinkRegIn({ID_Link, ID_LBI}), .ForwardsIn(ID_Forwards),                                          //Control in (Writeback)
 
+        .mem_stall(mem_stall),
         .clk(clk), .rst(rst)
     );
 
@@ -194,12 +201,13 @@ module proc (/*AUTOARG*/
         .MemEnableIn(EX_MemEnable), .MemWrIn(EX_MemWr), .HaltIn(EX_Halt),       //Control in (Memory)
         .Val2RegIn(EX_Val2Reg), .RegWriteIn(EX_RegWrite), .LinkRegIn({EX_Link, EX_LBI}),                                                 //Control in (Writeback)
 
+        .mem_stall(mem_stall),
         .clk(clk), .rst(rst)
     );
     /*---------------*/
 
     /*-----MEMORY-----*/
-    memory M (.data_out(MEM_MEMout), .data_in(MEM_Rt), .addr(MEM_ALUout), .enable(MEM_MemEnable), .wr(MEM_MemWr), 
+    memory M (.data_out(MEM_MEMout), .mem_stall(mem_stall), .data_in(MEM_Rt), .addr(MEM_ALUout), .enable(MEM_MemEnable), .wr(MEM_MemWr), 
               .createdump(), .Halt(MEM_Halt), .clk(clk), .rst(rst));
     /*---------------*/
 
@@ -213,6 +221,7 @@ module proc (/*AUTOARG*/
         .MemOutIn(MEM_MEMout), .ALUoutIn(MEM_ALUout), .WriteRegAddrIn(MEM_WriteRegAddr), .ImmExtIn(MEM_ImmExt), .PcIn(MEM_PC),   //Data in
         .Val2RegIn(MEM_Val2Reg), .RegWriteIn(MEM_RegWrite), .LinkRegIn({MEM_Link, MEM_LBI}),                                                            //Control in (Writeback)
 
+        .mem_stall(mem_stall),
         .clk(clk), .rst(rst)
     );
     /*---------------*/

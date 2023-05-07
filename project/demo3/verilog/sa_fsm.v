@@ -178,7 +178,7 @@ module sa_fsm(   // Outputs
 
                 comp = 1'b1;
                 
-                stall_out = 1'b1;
+                stall_out = ~((hit1 & valid1) | (hit2 & valid2));
                 nxt_state = ((hit1 & valid1) | (hit2 & valid2)) ? 16'd0 :  16'd9;  
                  
             end
@@ -390,7 +390,7 @@ module sa_fsm(   // Outputs
 
     dff vic(.q(victim), .d(write_victim), .clk(clk), .rst(rst));
    
-    dff_16b stateReg(.q(state), .err(), .d(nxt_state), .clk(clk), .rst(rst));
+    dff_16 stateReg(.q(state), .err(), .d(nxt_state), .clk(clk), .rst(rst));
 
 
 endmodule

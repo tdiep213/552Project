@@ -155,7 +155,7 @@ assign MemHazDet =
 // & WB_valid_n
 
 assign NOP = (RegHazDet | MemHazDet); // (~NOPchk) ? 1'b1 : 1'b0;
-assign PcStall = (RegHazDet | MemHazDet | (JBNOP & NewInst)) & ~prevJBNOP;// & ~NOPchk? 1'b1 : 1'b0;
+assign PcStall = (RegHazDet | MemHazDet | (JBNOP  & NewInst)) & ~prevJBNOP;// & ~NOPchk? 1'b1 : 1'b0;
 // Stall the PC if we have hazards, OR if we have a brand new Jump/Branch type instruction,
 // but not if we already stalled for that jump/branch
 // NOTE IMPORTANT! If this breaks more complicated branching ops, first try separating the JBNOP into just JNOP and BNOP,
