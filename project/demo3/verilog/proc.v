@@ -83,7 +83,7 @@ module proc (/*AUTOARG*/
 
     /*-----FETCH-----*/
     wire[15:0] IF_Instr, IF_PC, IF_ImmExt;
-    wire instr_stall; 
+    wire instr_stall, fetch_done; 
     // wire LinkReg; 
 
     fetch F(
@@ -102,6 +102,7 @@ module proc (/*AUTOARG*/
             .MemEnable(MemEnable), 
 
             .instr_stall(instr_stall),
+            .fetch_done(fetch_done),
 
             .ctrlErr(ctrlErr),
             .Forwards(Forwards),
@@ -139,7 +140,9 @@ module proc (/*AUTOARG*/
         .MemEnableIn(MemEnable), .MemWrIn(MemWr), .HaltIn(Halt),                //Control in (Memory)
         .Val2RegIn(Val2Reg), .RegWriteIn(RegWrite), .ForwardsIn(Forwards),                           //Control in (Writeback)
 
-        .clk(clk), .rst(rst), .branchTaken(branchTaken), .instr_stall(instr_stall), .mem_stall(mem_stall)
+        .clk(clk), .rst(rst), 
+        .branchTaken(branchTaken), .instr_stall(instr_stall), .mem_stall(mem_stall),
+        .fetch_done(fetch_done)
     );
 
     /*---------------*/

@@ -7,7 +7,7 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
         MemEnableIn, MemWrIn, HaltIn,
         Val2RegOut, // Writeback control
         Val2RegIn,
-        branchTaken, instr_stall, mem_stall
+        branchTaken, instr_stall, mem_stall, fetch_done
 
 );
     output wire[15:0] InstrOut, ImmExtOut, PcOut;
@@ -24,6 +24,8 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
 
     input wire branchTaken;                         //Branch Pred
     input wire instr_stall, mem_stall;
+    input wire fetch_done;
+
     output wire[1:0] LinkRegOut;
     output wire[2:0] WriteRegAddrOut;
     output wire[5:0] ForwardsOut;
@@ -35,16 +37,18 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
 
     input wire clk, rst;
     wire[15:0] Instrc;
-    
-    wire clk_en, clk_cntrl;
-    dff CLK_CNTRL(.q(clk_cntrl), .d(instr_stall | mem_stall), .clk(clk), .rst(rst));
-    assign clk_en = clk & ~clk_cntrl;
+    wire en;
+    assign en = ~((instr_stall | mem_stall));
+    // wire clk_en, clk_cntrl;
+    // dff CLK_CNTRL(.q(clk_cntrl), .d((instr_stall | mem_stall) & ~fetch_done), .clk(clk), .rst(rst));
+    // assign clk_en = clk & ~clk_cntrl;
 
-    dff_16 Instruction(.q(Instrc), .err(), .d(InstrIn), .clk(clk_en), .rst(rst));
-    dff_16 Immediate(.q(ImmExtOut), .err(), .d(ImmExtIn), .clk(clk_en), .rst(rst));
-    dff_16 ProgCnt(.q(PcOut), .err(), .d(PcIn), .clk(clk_en), .rst(rst));
+
+    dff_16en Instruction(.q(Instrc), .en(en), .err(), .d(InstrIn), .clk(clk), .rst(rst));
+    dff_16en Immediate(.q(ImmExtOut), .en(en), .err(), .d(ImmExtIn), .clk(clk), .rst(rst));
+    dff_16en ProgCnt(.q(PcOut),.en(en), .err(), .d(PcIn), .clk(clk), .rst(rst));
     
-    assign InstrOut = branchTaken ? 16'h0800 : Instrc; // Culls Instruction if branch taken 
+    assign InstrOut = (branchTaken|instr_stall) ? 16'h0800 : Instrc; // Culls Instruction if branch taken 
 
     wire[8:0] ID_cntrl_array;
     wire[6:0] EX_cntrl_array;
@@ -55,14 +59,14 @@ module if_id(InstrOut, ImmExtOut, PcOut, InstrIn, ImmExtIn, PcIn, clk, rst,
     assign {ALUSelOut, ForwardsOut} = branchTaken ? 7'h00 : EX_cntrl_array;
     assign {MemEnableOut, MemWrOut, HaltOut} = branchTaken ? 3'h0 : MEM_cntrl_array;
     
-    dff ID_cntrl[8:0](.q(ID_cntrl_array),
-                      .d({LinkRegIn, WriteRegAddrIn, RegWriteIn, b_flagIn, j_flagIn, RegJmpIn}), .clk(clk_en) , .rst(rst));
+    dff_en ID_cntrl[8:0](.q(ID_cntrl_array),.en(en),
+                      .d({LinkRegIn, WriteRegAddrIn, RegWriteIn, b_flagIn, j_flagIn, RegJmpIn}), .clk(clk) , .rst(rst));
     
-    dff EX_cntrl[6:0](.q(EX_cntrl_array),  .d({ALUSelIn, ForwardsIn}), .clk(clk_en), .rst(rst));
+    dff_en EX_cntrl[6:0](.q(EX_cntrl_array),.en(en),  .d({ALUSelIn, ForwardsIn}), .clk(clk), .rst(rst));
     
-    dff MEM_cntrl[2:0](.q(MEM_cntrl_array),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk_en), .rst(rst));
+    dff_en MEM_cntrl[2:0](.q(MEM_cntrl_array),.en(en),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk), .rst(rst));
     
-    dff WB_cntrl(.q(Val2RegOut),  .d(Val2RegIn), .clk(clk_en), .rst(rst));
+    dff_en WB_cntrl(.q(Val2RegOut),.en(en),  .d(Val2RegIn), .clk(clk), .rst(rst));
 
     // (.q(),  .d(), .clk(clk_en), .rst(rst));
 

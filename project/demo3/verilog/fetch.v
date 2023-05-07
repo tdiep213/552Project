@@ -24,6 +24,7 @@ module fetch (
    Rs,     jmpPC,
    SIIC,
    PcSel, branchTaken, ID_RegJmp,
+   fetch_done,
    clk, 
    rst);
    // TODO: Your code here
@@ -37,6 +38,7 @@ module fetch (
    output wire RegJmp, Link, LBI, Halt, SIIC;
 
    output wire instr_stall;
+   output wire fetch_done;
 
    input wire[15:0] Imm, Rs, jmpPC, nextPC;
    input wire[15:0] BrnchAddr;
@@ -56,36 +58,35 @@ module fetch (
    
 
    // pc ProgCnt(.PC(PC), .prevPC(prevPC), .newAddr(nextPC), .PcStall(PCStall), .clk(clk), .rst(rst));
-   pc ProgCnt(.PC(PC), .Rs(Rs), .Imm(Imm), .PcStall(PCStall), .RegJmp(RegJmp), .PCSel(PcSel), .Halt(Halt), .clk(clk), .rst(rst));
+   pc ProgCnt(.PC(PC), .Rs(Rs), .Imm(Imm), .PcStall(PCStall | instr_stall), .RegJmp(RegJmp), .PCSel(PcSel), .Halt(Halt), .clk(clk), .rst(rst));
    // NOTE! Replaced ID_RegJmp with RegJmp resolved 10 jump errors, so I'm leaving it alone for now. Jump bug resolution is still underway.
-
-   memory2c InstrMem(.data_out(Instr), 
-                     .data_in(), 
-                     .addr(PC), 
-                     .enable(1'b1), .wr(1'b0), 
-                     .createdump(), .clk(clk), .rst(rst));
+   
+   // assign instr_stall = 1'b0;
+   // memory2c InstrMem(.data_out(Instr), 
+   //                   .data_in(), 
+   //                   .addr(PC), 
+   //                   .enable(1'b1), .wr(1'b0), 
+   //                   .createdump(), .clk(clk), .rst(rst));
 
    
    wire cacheRD;
 
-   assign instr_stall = 1'b0;
-
-   // dff CACHE_RD(.q(cacheRD), .d(1'd1), .clk(clk), .rst(rst));
-   // mem_system InstrMemCache(
-   //                   // Outputs
-   //                   .DataOut(Instr), 
-   //                   .Done(), 
-   //                   .Stall(instr_stall), 
-   //                   .CacheHit(),
-   //                   .err(),
-   //                   // Inputs
-   //                   .Addr(PC), 
-   //                   .DataIn(), 
-   //                   .Rd(1'b1;), 
-   //                   .Wr(1'b0), 
-   //                   .createdump(), 
-   //                   .clk(clk), .rst(rst)
-   // );
+   dff CACHE_RD(.q(cacheRD), .d(1'b1), .clk(clk), .rst(rst));
+   mem_system InstrMemCache(
+                     // Outputs
+                     .DataOut(Instr), 
+                     .Done(fetch_done), 
+                     .Stall(instr_stall), 
+                     .CacheHit(),
+                     .err(),
+                     // Inputs
+                     .Addr(PC), 
+                     .DataIn(), 
+                     .Rd(1'b1), 
+                     .Wr(1'b0), 
+                     .createdump(), 
+                     .clk(clk), .rst(rst)
+   );
 
    always@* begin
       case(DestRegSel)
@@ -101,7 +102,7 @@ module fetch (
    HazDet HDU( .NOP(HazNOP), .PcStall(PCStall), .Forwards(Forwards), 
                .valid_n(valid_n), .MemEnable(MemEnable), 
                .Rd(ChkRegAddr), .Imm(Imm), .Reg1Data(Rs), 
-               .Instr(Instr), 
+               .Instr(Instr), .fetch_done(fetch_done),
                .branchTaken(branchTaken),
                .clk(clk), .rst(rst));
 

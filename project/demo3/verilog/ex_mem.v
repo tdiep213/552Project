@@ -34,11 +34,11 @@ module ex_mem(
     assign clk_en = clk & ~clk_cntrl;
 
 
-    dff_16 DATA[3:0](.q({RtOut, ALUoutOut,PcOut, ImmExtOut}), .err(),  .d({RtIn, ALUoutIn,PcIn, ImmExtIn}), .clk(clk_en), .rst(rst));
-    dff WB_data[2:0](.q(WriteRegAddrOut),  .d(WriteRegAddrIn), .clk(clk_en), .rst(rst));
+    dff_16 DATA[3:0](.q({RtOut, ALUoutOut,PcOut, ImmExtOut}), .err(),  .d({RtIn, ALUoutIn,PcIn, ImmExtIn}), .clk(clk), .rst(rst));
+    dff WB_data[2:0](.q(WriteRegAddrOut),  .d(WriteRegAddrIn), .clk(en), .rst(rst));
 
-    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk_en), .rst(rst));
-    dff WB_cntrl[3:0](.q({Val2RegOut, RegWriteOut, LinkRegOut}),  .d({Val2RegIn, RegWriteIn, LinkRegIn}), .clk(clk_en), .rst(rst));
+    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk), .rst(rst));
+    dff WB_cntrl[3:0](.q({Val2RegOut, RegWriteOut, LinkRegOut}),  .d({Val2RegIn, RegWriteIn, LinkRegIn}), .clk(clk), .rst(rst));
 
     // (.q(),  .d(), .clk(clk), .rst(rst));
 
