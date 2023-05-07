@@ -61,32 +61,32 @@ module fetch (
    pc ProgCnt(.PC(PC), .Rs(Rs), .Imm(Imm), .PcStall(PCStall | instr_stall), .RegJmp(RegJmp), .PCSel(PcSel), .Halt(Halt), .clk(clk), .rst(rst));
    // NOTE! Replaced ID_RegJmp with RegJmp resolved 10 jump errors, so I'm leaving it alone for now. Jump bug resolution is still underway.
    
-   // assign instr_stall = 1'b0;
-   // memory2c InstrMem(.data_out(Instr), 
-   //                   .data_in(), 
-   //                   .addr(PC), 
-   //                   .enable(1'b1), .wr(1'b0), 
-   //                   .createdump(), .clk(clk), .rst(rst));
+   assign instr_stall = 1'b0;
+   memory2c InstrMem(.data_out(Instr), 
+                     .data_in(), 
+                     .addr(PC), 
+                     .enable(1'b1), .wr(1'b0), 
+                     .createdump(), .clk(clk), .rst(rst));
 
    
    wire cacheRD;
 
-   dff CACHE_RD(.q(cacheRD), .d(1'b1), .clk(clk), .rst(rst));
-   mem_system InstrMemCache(
-                     // Outputs
-                     .DataOut(Instr), 
-                     .Done(fetch_done), 
-                     .Stall(instr_stall), 
-                     .CacheHit(),
-                     .err(),
-                     // Inputs
-                     .Addr(PC), 
-                     .DataIn(), 
-                     .Rd(1'b1), 
-                     .Wr(1'b0), 
-                     .createdump(), 
-                     .clk(clk), .rst(rst)
-   );
+   // dff CACHE_RD(.q(cacheRD), .d(1'b1), .clk(clk), .rst(rst));
+   // mem_system InstrMemCache(
+   //                   // Outputs
+   //                   .DataOut(Instr), 
+   //                   .Done(fetch_done), 
+   //                   .Stall(instr_stall), 
+   //                   .CacheHit(),
+   //                   .err(),
+   //                   // Inputs
+   //                   .Addr(PC), 
+   //                   .DataIn(), 
+   //                   .Rd(1'b1), 
+   //                   .Wr(1'b0), 
+   //                   .createdump(), 
+   //                   .clk(clk), .rst(rst)
+   // );
 
    always@* begin
       case(DestRegSel)

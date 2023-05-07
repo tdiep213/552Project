@@ -41,12 +41,12 @@ module id_ex(
     assign clk_en = clk & ~clk_cntrl;
 
 
-    dff_16 DATA[4:0](.q({InstrOut, ImmExtOut, PcOut,RsOut, RtOut}), .err(), .d({InstrIn, ImmExtIn, PcIn,RsIn, RtIn}), .clk(clk), .rst(rst));
-    dff WB_data[2:0](.q(WriteRegAddrOut),  .d(WriteRegAddrIn), .clk(clk), .rst(rst));
+    dff_16 DATA[4:0](.q({InstrOut, ImmExtOut, PcOut,RsOut, RtOut}), .err(), .d({InstrIn, ImmExtIn, PcIn,RsIn, RtIn}), .clk(clk_en), .rst(rst));
+    dff WB_data[2:0](.q(WriteRegAddrOut),  .d(WriteRegAddrIn), .clk(clk_en), .rst(rst));
 
-    dff EX_cntrl[6:0](.q({ALUSelOut, ForwardsOut}), .d({ALUSelIn, ForwardsIn}), .clk(clk), .rst(rst));
-    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk), .rst(rst));
-    dff WB_cntrl[3:0](.q({Val2RegOut, RegWriteOut, LinkRegOut}),  .d({Val2RegIn, RegWriteIn, LinkRegIn}), .clk(clk), .rst(rst));
+    dff EX_cntrl[6:0](.q({ALUSelOut, ForwardsOut}), .d({ALUSelIn, ForwardsIn}), .clk(clk_en), .rst(rst));
+    dff MEM_cntrl[2:0](.q({MemEnableOut, MemWrOut, HaltOut}),  .d({MemEnableIn, MemWrIn, HaltIn}), .clk(clk_en), .rst(rst));
+    dff WB_cntrl[3:0](.q({Val2RegOut, RegWriteOut, LinkRegOut}),  .d({Val2RegIn, RegWriteIn, LinkRegIn}), .clk(clk_en), .rst(rst));
 
     // (.q(),  .d(), .clk(clk), .rst(rst));
 
