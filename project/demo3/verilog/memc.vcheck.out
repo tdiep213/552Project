@@ -1,0 +1,12 @@
+Line 20: Bad keyword integer
+Line 21: Bad keyword integer
+Line 25: Bad keyword posedge
+Line 27: Bad keyword if
+Line 28: Bad keyword for
+Line 33: Bad keyword if
+Line 33: Bad keyword &&
+Line 34: Bad keyword if
+Line 34: Bad keyword &&
+Line 65: Bad keyword for
+Line 66: begin without always/case
+End of file /home/kiffel/cs552/project-repo/552Project/project/demo3/verilog/memc.v. Hash = 1503522740

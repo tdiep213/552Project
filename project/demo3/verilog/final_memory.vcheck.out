@@ -1,0 +1,26 @@
+Line 79: Bad keyword integer
+Line 80: Bad keyword integer
+Line 81: Bad keyword integer
+Warning: Line 95 shifting by a constant value (ok except for HW2)
+Warning: Line 95 shifting by a constant value (ok except for HW2)
+Line 108: Bad keyword initial
+Line 109: begin without always/case
+Line 113: Bad keyword posedge
+Line 114: Bad keyword if
+Line 115: Bad keyword if
+Line 116: Bad keyword for
+Line 128: Bad keyword else
+Line 129: begin without always/case
+Line 129: Bad keyword if
+Line 130: begin without always/case
+Warning: Line 130 shifting by a constant value (ok except for HW2)
+Warning: Line 131 shifting by a constant value (ok except for HW2)
+Line 132: Bad keyword if
+Warning: Line 132 shifting by a constant value (ok except for HW2)
+Warning: Line 132 shifting by a constant value (ok except for HW2)
+Line 134: Bad keyword if
+Line 135: begin without always/case
+Line 135: Case(x) without always
+Line 141: Bad keyword for
+Line 142: begin without always/case
+End of file /home/kiffel/cs552/project-repo/552Project/project/demo3/verilog/final_memory.v. Hash = -1631481694

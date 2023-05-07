@@ -1,0 +1,19 @@
+Line 68: Bad keyword integer
+Line 69: Bad keyword integer
+Line 80: Bad keyword integer
+Line 82: Bad keyword initial
+Line 83: begin without always/case
+Line 92: Bad keyword for
+Line 93: begin without always/case
+Line 98: Bad keyword posedge
+Line 99: Bad keyword if
+Line 100: Bad keyword if
+Line 105: Bad keyword else
+Line 106: Bad keyword if
+Line 109: Bad keyword if
+Line 111: Bad keyword if
+Line 113: Bad keyword for
+Warning: Line 118 shifting by a constant value (ok except for HW2)
+Warning: Line 118 shifting by a constant value (ok except for HW2)
+Line 98: Always without case(x)
+End of file /home/kiffel/cs552/project-repo/552Project/project/demo3/verilog/stallmem.v. Hash = 1109918169
